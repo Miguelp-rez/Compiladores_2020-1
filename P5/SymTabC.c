@@ -26,7 +26,15 @@ void borraParam(param *p){
 /* Retorna un apuntador a una variable listParam */
 listParam *crearLP(){
      listParam* LP_tmp= (listParam *) malloc(sizeof(listParam));
-     LP_tmp->root =NULL;
+    if(LP_tmp != NULL)
+    {
+        LP_tmp->root =NULL;  
+    }
+    else
+    {
+        printf("No hay memoria disponible");  //ERROR  
+    } 
+    return LP_tmp;
 }
 /* Agrega al final de la lista el parametro e incrementa num */
 void add(listParam* lp, int tipo){
