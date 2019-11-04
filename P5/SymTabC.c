@@ -5,8 +5,15 @@
 /* Retorna un apuntador a una variable Param */
 param*crearParam(int tipo){
      param* param_tmp= (param *) malloc(sizeof(param));
-     param_tmp-> tipo = tipo;
-     param_tmp->next = NULL;
+    if(param_tmp != NULL)
+    {
+        param_tmp->tipo = tipo;
+        param_tmp->next = NULL;  
+    }
+    else
+    {
+        printf("No hay memoria disponible");  //ERROR  
+    } 
  return param_tmp;
 }
 
