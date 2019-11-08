@@ -4,17 +4,15 @@
 //FUNCIONES
 /* Retorna un apuntador a una variable Param */
 param* crearParam(int tipo){
-     param* param_tmp= (param *) malloc(sizeof(param));
-    if(param_tmp != NULL)
-    {
-        param_tmp->tipo = tipo;
-        param_tmp->next = NULL;
+    param* parametro= malloc(sizeof(param));
+    if(parametro != NULL){
+        parametro->tipo = tipo;
+        parametro->next = NULL;
     }
-    else
-    {
+    else{
         printf("No hay memoria disponible");  //ERROR
     }
- return param_tmp;
+    return parametro;
 }
 
 /* Borra param, libera la memoria */
@@ -25,44 +23,51 @@ void borraParam(param *p){
 
 /* Retorna un apuntador a una variable listParam */
 listParam *crearLP(){
-     listParam* LP_tmp= (listParam *) malloc(sizeof(listParam));
-    if(LP_tmp != NULL)
-    {
-        LP_tmp->root =NULL;
+     listParam* lista= malloc(sizeof(listParam));
+    if(lista != NULL){
+        lista->root =NULL;
     }
-    else
-    {
+    else{
         printf("No hay memoria disponible");  //ERROR
     }
-    return LP_tmp;
+    return lista;
 }
 /* Agrega al final de la lista el parametro e incrementa num */
 void add(listParam* lp, int tipo){
-    param* param_tmp=crearParam(tipo);
+    param* parametro=crearParam(tipo);
     if(lp->root == NULL){
-        lp->root=param_tmp;
+        lp->root=parametro;
     }else{
-        param* puntero= lp->root;
+        param* puntero = lp->root;
         while(puntero->next){
-            puntero= puntero->next;
+            puntero = puntero->next;
         }
-        puntero->next=param_tmp;
+        puntero->next = parametro;
     }
     lp->num++;
 }
 /* Borra toda la lista, libera la memoria */
 void borrarListParam(listParam* lp){
-   free(lp);
+	if(lp){
+    while(lp->root){
+      param* aux;
+      aux = lp->root;
+      lp->root = lp->root->next;
+      lp->num--;
+      free(aux);
+    }
+  }else{
+    printf("No existe la lista de parametros");
+  }
 }
-
 
 //Agrego funcion para eliminar elemento de la lista
 
 void EliminaParam(int n, listParam* lp){
-if (lp->root){
+		if (lp->root){
         if(n==0){
-            param* eliminado= lp->root;
-            lp->root= lp->root->next;
+            param* eliminado = lp->root;
+            lp->root = lp->root->next;
             borraParam(eliminado);
             lp->num--;
     }else if(n<lp->num){
@@ -76,8 +81,8 @@ if (lp->root){
         puntero->next = eliminado->next;
         borraParam(eliminado);
         lp->num--;
-}
-}
+      }
+    }
 }
 
 /* Cuenta el numero de parametros en la linea */
@@ -105,55 +110,152 @@ symbol* crearSymbol(char *id, int tipo, int dir, int tipoVar, listParam* params)
 
 }
 /* Borra symbol, libera la memoria */
-void borrarSymTab(symtab* st);
+void borrarSymbol(symbol* s){
+	if(s){
+    Symbol aux = s;
+    if (s->params)
+    	borrarListParam(s->params);
+    int posicion;
+    while (s->next){
+    	posicion = s->next->posicion;
+    	s->next->posicion = s->posicion;
+      s->posicion = posicion;
+    	s->next = s->next->next;
+    }
+    free(aux);
+  }else{
+  	printf("No existe el simbolo");
+  }
+}
 /* Retorna un apuntador a una variable symtab,
  * inicia contador en 0
  */
-symtab* crearSymTab(){
-
-
+symtab* crearSymTab(symbol* root, int num, symtab* next){
+  symtab* ts = malloc(sizeof(symtab));
+  ts->root = root;
+  ts->num = num;
+  ts->next = next;
 }
 /* Borra toda la lista, libera la memoria */
-void borrarSymTab(symtab* st);
+void borrarSymTab(symtab* st){
+	  if(st){
+      symbol* symbols = st->root;
+      symbol* aux;
+    	while(st->root != NULL){
+        aux = st->root;
+        st->root = st->next;
+        st->num--; //Preguntar si num es el tamaño de la tabla de símbolos
+      	borrarSymbol(aux); //borrarSymbol(borrarSymbol)
+      }
+  	}else{
+    	printf("No existe la tabla de simbolos");
+    }
+}
+
 /* inserta al final de la lista en caso de insertar incrementa num
  * rentorna la posicion donde insero en caso contrario retorna -1
  */
 int insertar(symtab* st, symbol* sym){
-symtab* symtab_tmp=crearParam(sym);
-    if(st->root == NULL){
-        st->root=symtab_tmp;
-    }else{
-        symtab* puntero= st->root;
-        while(puntero->next){
-            puntero= puntero->next;
-        }
-        puntero->next=symtab_tmp;
-    }
-    st->num++;
-
-
+  	if(st){
+    	if(st->num == 0){
+      	//Se inserta el primer simbolo
+        st->root = sym
+        st->num++
+      }else{
+        //Se inserta a partir del segundo simbolo
+        symbol *simbolo_actual = malloc(sizeof(symbol));
+        symbolo_actual = st->root;
+      	if (buscar(st, sym) == -1){
+          while(simbolo_actual){
+						if(simbolo_actual->next == NULL){
+              simbolo_actual->next = sym;
+            }else{
+              simbolo_actual = simbolo_actual->next;
+            }
+          }
+        }else
+        printf("Error: el simbolo ya existe");
+      }
+		}else
+      printf("Error: la tabla de simbolos no existe");
 }
 /* Busca en la tabla de simbolos mediante el id
  * En caso de encontrar el id retorna la posicion
  * En caso contrario retorna -1
  */
-int buscar(symtab* st, char* id);
+int buscar(symtab* st, char* id){
+  	if(st){
+      symbol *simbolo_actual = malloc(sizeof(symbol));
+      symbolo_actual = st->root;
+    	while (simbolo_actual->next != NULL){
+      		//printf("El id es: %c\n", &symbols.id);
+      		if (id == simbolo_actual->id){
+            return (simbolo_actual->posicion);
+          }else{
+            simbolo_actual = simbolo_actual->next;
+          }
+      }
+      return -1;	//El simbolo no existe
+  	}else
+  		printf("Error: la tabla de simbolos no existe")
+}
+
+
 /* Retorna el tipo de dato de un id
  * En caso no encontrarlo retorna -1
  */
-int getTipo(symtab* st, char* id);
-/* Retorna el tipo de Variable de un id
+int getTipo(symtab* st, char* id){
+  int v_encuentra=buscar(st,id);
+  if (v_encuentra==-1){
+      printf("No se puede retornar en tipo de dato");
+  } else {
+      return st->tipo;
+  }
+
+}
+
+/* Retorna el tipo de de variable  id
+ * En caso no encontrarlo retorna -1
+ */
+int getTipoVar(symtab* st, char* id){
+  int v_encuentra=buscar(st,id);
+  if (v_encuentra==-1){
+      printf("No se puede retornar en tipo de variable");
+  } else {
+      return st->var;
+  }
+}
+/* Retorna la direccion
  * En caso de no encontrarlo retorna -1
  */
-int getDir(symtab* st, char* ide;
+int getDir(symtab* st, char* id){
+	int v_encuentra=buscar(st,id);
+	if (v_encuentra==-1){
+    printf("No se puede retornar la direccion");
+	} else{
+    return st->dir;
+	}
+}
+
 /* Retorna la lista de parametros de un id
  * En caso de no encontrarlo retorna NULL
  */
-listParam* getListParam(symtab* st, char* id);
+listParam* getListParam(symtab* st, char* id){
+int v_encuentra=buscar(st,id);
+	if (v_encuentra==-1){
+    return st->
+  }
+}
 /* Retorna el numero de parametros de un id
  * En caso de no encontrarlo retorna -1
  */
-int getNumListParam(symtab* st, char* id);
+int getNumListParam(symtab* st, char* id){
+int v_encuentra=buscar(st,id);
+	if (v_encuentra==-1){
+}
+
+
+}
 //PRUEBA RAPIDA
 int main()
 {
