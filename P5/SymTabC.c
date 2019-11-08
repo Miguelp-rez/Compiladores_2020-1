@@ -3,17 +3,17 @@
 #include "SymTab.h"
 //FUNCIONES
 /* Retorna un apuntador a una variable Param */
-param*crearParam(int tipo){
+param* crearParam(int tipo){
      param* param_tmp= (param *) malloc(sizeof(param));
     if(param_tmp != NULL)
     {
         param_tmp->tipo = tipo;
-        param_tmp->next = NULL;  
+        param_tmp->next = NULL;
     }
     else
     {
-        printf("No hay memoria disponible");  //ERROR  
-    } 
+        printf("No hay memoria disponible");  //ERROR
+    }
  return param_tmp;
 }
 
@@ -28,12 +28,12 @@ listParam *crearLP(){
      listParam* LP_tmp= (listParam *) malloc(sizeof(listParam));
     if(LP_tmp != NULL)
     {
-        LP_tmp->root =NULL;  
+        LP_tmp->root =NULL;
     }
     else
     {
-        printf("No hay memoria disponible");  //ERROR  
-    } 
+        printf("No hay memoria disponible");  //ERROR
+    }
     return LP_tmp;
 }
 /* Agrega al final de la lista el parametro e incrementa num */
@@ -85,7 +85,75 @@ int getNumListParam(listParam *lp){
     return lp->num;
 }
 
+/* Retorna un apuntador a una variable symbol */
+symbol* crearSymbol(char *id, int tipo, int dir, int tipoVar, listParam* params){
+    symbol* sym_tmp= malloc(sizeof(symbol));
+    if(sym_tmp != NULL)
+    {
+        sym_tmp->id = id;
+        sym_tmp->tipo = tipo;
+        sym_tmp->dir = dir;
+        sym_tmp->tipoVar = tipoVar;
+        sym_tmp->params = params;
+        sym_tmp->next = NULL;
+    }
+    else
+    {
+        printf("No hay memoria disponible");  //ERROR
+    }
+ return sym_tmp;
 
+}
+/* Borra symbol, libera la memoria */
+void borrarSymTab(symtab* st);
+/* Retorna un apuntador a una variable symtab,
+ * inicia contador en 0
+ */
+symtab* crearSymTab(){
+
+
+}
+/* Borra toda la lista, libera la memoria */
+void borrarSymTab(symtab* st);
+/* inserta al final de la lista en caso de insertar incrementa num
+ * rentorna la posicion donde insero en caso contrario retorna -1
+ */
+int insertar(symtab* st, symbol* sym){
+symtab* symtab_tmp=crearParam(sym);
+    if(st->root == NULL){
+        st->root=symtab_tmp;
+    }else{
+        symtab* puntero= st->root;
+        while(puntero->next){
+            puntero= puntero->next;
+        }
+        puntero->next=symtab_tmp;
+    }
+    st->num++;
+
+
+}
+/* Busca en la tabla de simbolos mediante el id
+ * En caso de encontrar el id retorna la posicion
+ * En caso contrario retorna -1
+ */
+int buscar(symtab* st, char* id);
+/* Retorna el tipo de dato de un id
+ * En caso no encontrarlo retorna -1
+ */
+int getTipo(symtab* st, char* id);
+/* Retorna el tipo de Variable de un id
+ * En caso de no encontrarlo retorna -1
+ */
+int getDir(symtab* st, char* ide;
+/* Retorna la lista de parametros de un id
+ * En caso de no encontrarlo retorna NULL
+ */
+listParam* getListParam(symtab* st, char* id);
+/* Retorna el numero de parametros de un id
+ * En caso de no encontrarlo retorna -1
+ */
+int getNumListParam(symtab* st, char* id);
 //PRUEBA RAPIDA
 int main()
 {

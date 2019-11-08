@@ -29,7 +29,7 @@ void borrarListParam(listParam* lp);
 int getNumListParam(listParam* lp);
 
 
-/*
+
 typedef struct _symbol symbol;
 
 struct _symbol{
@@ -42,46 +42,47 @@ struct _symbol{
 };
 
 /* Retorna un apuntador a una variable symbol */
-//symbol *crearSymbol();
+symbol* crearSymbol(char id[32], int tipo, int dir, int tipoVar, listParam* params);
 /* Borra symbol, libera la memoria */
 
-//typedef struct _symtab symtab;
+typedef struct _symtab symtab;
 
-//struct _symtab{
- //   symbol* root;
- //   int num;
-    //symtab* next;
-/*};
+struct _symtab{
+    symbol* root;
+    int num;
+    symtab* next;
+};
 
 
 /* Retorna un apuntador a una variable symtab,
  * inicia contador en 0
  */
-//symtab* crearSymTab();
+symtab* crearSymTab();
 /* Borra toda la lista, libera la memoria */
-//void borrarSymTab(symtab* st);
+
 /* inserta al final de la lista en caso de insertar incrementa num
  * rentorna la posicion donde insero en caso contrario retorna -1
  */
-//int insertar(symtab* st, symbol* sym);
+int insertar(symtab* st, symbol* sym);
 /* Busca en la tabla de simbolos mediante el id
  * En caso de encontrar el id retorna la posicion
  * En caso contrario retorna -1
  */
-//int buscar(symtab* st, char* id);
+int buscar(symtab* st, char* id);
 /* Retorna el tipo de dato de un id
  * En caso no encontrarlo retorna -1
  */
-//int getTipo(symtab* st, char* id);
+int getTipo(symtab* st, char* id);
 /* Retorna el tipo de Variable de un id
  * En caso de no encontrarlo retorna -1
  */
-//int getDir(symtab* st, char* ide;
+int getDir(symtab* st, char* ide;
 /* Retorna la lista de parametros de un id
  * En caso de no encontrarlo retorna NULL
  */
-//listParam* getListParam(symtab* st, char* id);
+listParam* getListParam(symtab* st, char* id);
 /* Retorna el numero de parametros de un id
  * En caso de no encontrarlo retorna -1
  */
-//int getNumListParam(symtab* st, char* id);
+int getNumListParam(symtab* st, char* id);
+
