@@ -5,13 +5,11 @@
 /* Retorna un apuntador a una variable Param */
 param*crearParam(int tipo){
      param* param_tmp= (param *) malloc(sizeof(param));
-    if(param_tmp != NULL)
-    {
+    if(param_tmp != NULL){
         param_tmp->tipo = tipo;
-        param_tmp->next = NULL;  
+        param_tmp->next = NULL;
     }
-    else
-    {
+    else{
         printf("No hay memoria disponible");  //ERROR  
     } 
  return param_tmp;
@@ -25,15 +23,13 @@ void borraParam(param *p){
 
 /* Retorna un apuntador a una variable listParam */
 listParam *crearLP(){
-     listParam* LP_tmp= (listParam *) malloc(sizeof(listParam));
-    if(LP_tmp != NULL)
-    {
-        LP_tmp->root =NULL;  
+    listParam* LP_tmp= (listParam *) malloc(sizeof(listParam));
+    if(LP_tmp != NULL){
+        LP_tmp->root =NULL;
     }
-    else
-    {
-        printf("No hay memoria disponible");  //ERROR  
-    } 
+    else{
+        printf("No hay memoria disponible");  //ERROR
+    }
     return LP_tmp;
 }
 /* Agrega al final de la lista el parametro e incrementa num */
@@ -59,25 +55,25 @@ void borrarListParam(listParam* lp){
 //Agrego funcion para eliminar elemento de la lista
 
 void EliminaParam(int n, listParam* lp){
-if (lp->root){
-        if(n==0){
-            param* eliminado= lp->root;
-            lp->root= lp->root->next;
+    if (lp->root){
+            if(n==0){
+                param* eliminado= lp->root;
+                lp->root= lp->root->next;
+                borraParam(eliminado);
+                lp->num--;
+        }else if(n<lp->num){
+            param* puntero= lp->root;
+            int posicion=0;
+            while(posicion< (n-1)){
+                puntero= puntero->next;
+                posicion++;
+            }
+            param* eliminado= puntero->next;
+            puntero->next = eliminado->next;
             borraParam(eliminado);
             lp->num--;
-    }else if(n<lp->num){
-        param* puntero= lp->root;
-        int posicion=0;
-        while(posicion< (n-1)){
-            puntero= puntero->next;
-            posicion++;
         }
-        param* eliminado= puntero->next;
-        puntero->next = eliminado->next;
-        borraParam(eliminado);
-        lp->num--;
-}
-}
+    }
 }
 
 /* Cuenta el numero de parametros en la linea */
@@ -87,12 +83,10 @@ int getNumListParam(listParam *lp){
 
 
 //PRUEBA RAPIDA
-int main()
-{
+int main(){
     int n, opcion;
     int lp[100];
-    do
-    {
+    do{
         printf( "\n   1. Agrega.", 163 );
         printf( "\n   2. Elimina.", 163 );
         printf( "\n   3. Borra lista.", 163 );
