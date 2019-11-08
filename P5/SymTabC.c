@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "SymTab.h"
+#include <string.h>
 //FUNCIONES
 /* Retorna un apuntador a una variable Param */
 param* crearParam(int tipo){
@@ -15,56 +16,11 @@ param* crearParam(int tipo){
     return parametro;
 }
 
+
 /* Borra param, libera la memoria */
-void borraParam(param *p){
-   p->next=NULL;
-   free(p);
-}
-
-/* Retorna un apuntador a una variable listParam */
-listParam *crearLP(){
-     listParam* lista= malloc(sizeof(listParam));
-    if(lista != NULL){
-        lista->root =NULL;
-    }
-    else{
-        printf("No hay memoria disponible");  //ERROR
-    }
-    return lista;
-}
-/* Agrega al final de la lista el parametro e incrementa num */
-void add(listParam* lp, int tipo){
-    param* parametro=crearParam(tipo);
-    if(lp->root == NULL){
-        lp->root=parametro;
-    }else{
-        param* puntero = lp->root;
-        while(puntero->next){
-            puntero = puntero->next;
-        }
-        puntero->next = parametro;
-    }
-    lp->num++;
-}
-/* Borra toda la lista, libera la memoria */
-void borrarListParam(listParam* lp){
-	if(lp){
-    while(lp->root){
-      param* aux;
-      aux = lp->root;
-      lp->root = lp->root->next;
-      lp->num--;
-      free(aux);
-    }
-  }else{
-    printf("No existe la lista de parametros");
-  }
-}
-
-//Agrego funcion para eliminar elemento de la lista
-
-void EliminaParam(int n, listParam* lp){
-		if (lp->root){
+/*void borraParam(listParam* lp, param *p){
+//preguntar si sirve    
+    if (lp->root){
         if(n==0){
             param* eliminado = lp->root;
             lp->root = lp->root->next;
@@ -83,6 +39,47 @@ void EliminaParam(int n, listParam* lp){
         lp->num--;
       }
     }
+   p->next=NULL;
+   free(p);
+}*/
+
+/* Retorna un apuntador a una variable listParam */
+listParam *crearLP(){
+     listParam* lista = malloc(sizeof(listParam));
+    if(lista != NULL){
+        lista->root =NULL;
+    }
+    else{
+        printf("No hay memoria disponible");  //ERROR
+    }
+    return lista;
+}
+/* Agrega al final de la lista el parametro e incrementa num */
+void add(listParam* lp, int tipo){
+    param* parametro = crearParam(tipo);
+    if(lp->root == NULL){
+        lp->root = parametro;
+    }else{
+        param* puntero = lp->root;
+        while(puntero->next){
+            puntero = puntero->next;
+        }
+        puntero->next = parametro;
+    }
+    lp->num++;
+}
+/* Borra toda la lista, libera la memoria */
+void borrarListParam(listParam* lp){
+    if(lp){
+    while(lp->root){
+      param* aux = lp->root;
+      lp->root = lp->root->next;
+      free(aux);
+    }
+    free(lp);
+  }else{
+    printf("No existe la lista de parametros");
+  }
 }
 
 /* Cuenta el numero de parametros en la linea */
@@ -95,7 +92,7 @@ symbol* crearSymbol(char *id, int tipo, int dir, int tipoVar, listParam* params)
     symbol* sym_tmp= malloc(sizeof(symbol));
     if(sym_tmp != NULL)
     {
-        sym_tmp->id = id;
+        strcpy(sym_tmp->id, id);
         sym_tmp->tipo = tipo;
         sym_tmp->dir = dir;
         sym_tmp->tipoVar = tipoVar;
@@ -110,22 +107,34 @@ symbol* crearSymbol(char *id, int tipo, int dir, int tipoVar, listParam* params)
 
 }
 /* Borra symbol, libera la memoria */
-void borrarSymbol(symbol* s){
-	if(s){
-    Symbol aux = s;
-    if (s->params)
-    	borrarListParam(s->params);
-    int posicion;
-    while (s->next){
-    	posicion = s->next->posicion;
-    	s->next->posicion = s->posicion;
-      s->posicion = posicion;
-    	s->next = s->next->next;
+void borrarSymbol(symbol* s,symtab* st){
+	if(st){
+        if(s){
+            st->num--;
+            symbol* prev, current;
+            if(st->root == s){
+                st->root = st->root->next;
+                free(s);
+            }else{
+                current = st->root;
+                while(current->next != s){
+                    current = current->next;
+                }
+            }
+        }
     }
-    free(aux);
+        /*symbol* aux = s;
+        if (s->params)
+        	borrarListParam(s->params);
+        //int posicion;
+        while (s->next){
+        	st->num--;
+        	s->next = s->next->next;
+        }
+        free(aux);
   }else{
   	printf("No existe el simbolo");
-  }
+  }*/
 }
 /* Retorna un apuntador a una variable symtab,
  * inicia contador en 0
@@ -241,22 +250,13 @@ int getDir(symtab* st, char* id){
 /* Retorna la lista de parametros de un id
  * En caso de no encontrarlo retorna NULL
  */
-listParam* getListParam(symtab* st, char* id){
+/*listParam* getListParam(symtab* st, char* id){
 int v_encuentra=buscar(st,id);
 	if (v_encuentra==-1){
     return st->
   }
-}
-/* Retorna el numero de parametros de un id
- * En caso de no encontrarlo retorna -1
- */
-int getNumListParam(symtab* st, char* id){
-int v_encuentra=buscar(st,id);
-	if (v_encuentra==-1){
-}
+}*/
 
-
-}
 //PRUEBA RAPIDA
 int main()
 {

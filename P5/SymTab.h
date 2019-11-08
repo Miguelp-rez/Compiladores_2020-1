@@ -1,6 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-
+#ifndef  SYMTAB_H
+#define SYMTAB_H
 typedef struct _param param;
 
 struct _param{
@@ -58,7 +57,9 @@ struct _symtab{
  * inicia contador en 0
  */
 symtab* crearSymTab(symbol* root, int num, symtab* next);
+
 /* Borra toda la lista, libera la memoria */
+void borrarSymTab(symtab*);
 
 /* inserta al final de la lista en caso de insertar incrementa num
  * rentorna la posicion donde insero en caso contrario retorna -1
@@ -78,7 +79,7 @@ int getTipo(symtab* st, char* id);
  */
 int getTipoVar(symtab* st, char* id);
 
-int getDir(symtab* st, char* ide;
+int getDir(symtab* st, char* id);
 /* Retorna la lista de parametros de un id
  * En caso de no encontrarlo retorna NULL
  */
@@ -87,4 +88,4 @@ listParam* getListParam(symtab* st, char* id);
  * En caso de no encontrarlo retorna -1
  */
 int getNumListParam(symtab* st, char* id);
-
+#endif
