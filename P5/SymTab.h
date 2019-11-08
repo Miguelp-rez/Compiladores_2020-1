@@ -16,18 +16,18 @@ struct _listParam{
 
 /* Retorna un apuntador a una variable Param */
 param* crearParam(int tipo);
-/* Borra param, libera la memoria */
-void borraParam(param* p);
+
 /* Retorna un apuntador a una variable listParam */
 listParam* crearLP();
+
 /* Agrega al final de la lista el parametro e incrementa num */
 void add(listParam* lp, int tipo);
+
 /* Borra toda la lista, libera la memoria */
 void borrarListParam(listParam* lp);
+
 /* Cuenta el numero de parametros en la linea */
 int getNumListParam(listParam* lp);
-
-
 
 typedef struct _symbol symbol;
 
@@ -41,8 +41,7 @@ struct _symbol{
 };
 
 /* Retorna un apuntador a una variable symbol */
-symbol* crearSymbol(char id[32], int tipo, int dir, int tipoVar, listParam* params);
-/* Borra symbol, libera la memoria */
+symbol* crearSymbol(char id[32], int tipo, int dir, int tipoVar);
 
 typedef struct _symtab symtab;
 
@@ -87,5 +86,4 @@ listParam* getListParam(symtab* st, char* id);
 /* Retorna el numero de parametros de un id
  * En caso de no encontrarlo retorna -1
  */
-int getNumListParam(symtab* st, char* id);
 #endif
