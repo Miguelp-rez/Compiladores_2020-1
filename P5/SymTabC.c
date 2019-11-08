@@ -84,8 +84,7 @@ int getNumListParam(listParam *lp){
 /* Retorna un apuntador a una variable symbol */
 symbol* crearSymbol(char *id, int tipo, int dir, int tipoVar, listParam* params){
     symbol* sym_tmp= malloc(sizeof(symbol));
-    if(sym_tmp != NULL)
-    {
+    if(sym_tmp != NULL){
         sym_tmp->id = id;
         sym_tmp->tipo = tipo;
         sym_tmp->dir = dir;
@@ -93,8 +92,7 @@ symbol* crearSymbol(char *id, int tipo, int dir, int tipoVar, listParam* params)
         sym_tmp->params = params;
         sym_tmp->next = NULL;
     }
-    else
-    {
+    else{
         printf("No hay memoria disponible");  //ERROR
     }
  return sym_tmp;

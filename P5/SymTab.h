@@ -28,8 +28,6 @@ void borrarListParam(listParam* lp);
 /* Cuenta el numero de parametros en la linea */
 int getNumListParam(listParam* lp);
 
-
-
 typedef struct _symbol symbol;
 
 struct _symbol{
@@ -43,7 +41,7 @@ struct _symbol{
 
 /* Retorna un apuntador a una variable symbol */
 symbol* crearSymbol(char id[32], int tipo, int dir, int tipoVar, listParam* params);
-/* Borra symbol, libera la memoria */
+
 
 typedef struct _symtab symtab;
 
@@ -53,6 +51,8 @@ struct _symtab{
     symtab* next;
 };
 
+/* Borra symbol, libera la memoria */
+void borrarSymTab(symtab* st);
 
 /* Retorna un apuntador a una variable symtab,
  * inicia contador en 0
