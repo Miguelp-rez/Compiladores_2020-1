@@ -55,14 +55,14 @@ struct _symtab{
 /* Retorna un apuntador a una variable symtab,
  * inicia contador en 0
  */
-symtab* crearSymTab(symbol* root, int num, symtab* next);
+symtab* crearSymTab();
 
 /* Borra toda la lista, libera la memoria */
 void borrarSymTab(symtab*);
 
-/* inserta al final de la lista en caso de insertar incrementa num
- * rentorna la posicion donde insero en caso contrario retorna -1
- */ 
+/* Inserta al final de la lista, en caso de insertar incrementa num
+ * y retorna la posicion donde inserto. En caso contrario retorna -1
+*/
 int insertar(symtab* st, symbol* sym);
 /* Busca en la tabla de simbolos mediante el id
  * En caso de encontrar el id retorna la posicion

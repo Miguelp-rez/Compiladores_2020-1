@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "SymTab.h"
 #include <string.h>
+#include "SymTab.h"
+
 //FUNCIONES
 /* Retorna un apuntador a una variable Param */
 param* crearParam(int tipo){
@@ -84,11 +85,11 @@ symbol* crearSymbol(char *id, int tipo, int dir, int tipoVar){
 /* Retorna un apuntador a una variable symtab,
  * inicia contador en 0
  */
-symtab* crearSymTab(symbol* root, int num, symtab* next){
+symtab* crearSymTab(){
   symtab* ts = malloc(sizeof(symtab));
-  ts->root = root;
-  ts->num = num;
-  ts->next = next;
+  ts->root = NULL;
+  ts->num = 0;
+  ts->next = NULL;
 }
 
 /* Borra toda la lista, libera la memoria */
@@ -108,54 +109,56 @@ void borrarSymTab(symtab* st){
     }
 }
 
-/* inserta al final de la lista en caso de
- *  incrementa num
- * rentorna la posicion donde insero en caso contrario retorna -1
- */
+/* Inserta al final de la lista, en caso de insertar incrementa num
+ * y retorna la posicion donde inserto. En caso contrario retorna -1
+*/
 /*int insertar(symtab* st, symbol* sym){
-  	if(st){
-    	if(st->num == 0){
-      	//Se inserta el primer simbolo
-        st->root = sym;
-        st->num++;
-      }else{
-        //Se inserta a partir del segundo simbolo
-        symbol* simbolo_actual = malloc(sizeof(symbol));
-        simbolo_actual = st->root;
-      	if (buscar(st, sym) == -1){
-          while(simbolo_actual){
-						if(simbolo_actual->next == NULL){
-              simbolo_actual->next = sym;
-            }else{
-              simbolo_actual = simbolo_actual->next;
-            }
-          }
-        }else
-        printf("Error: el simbolo ya existe");
-      }
-		}else
-      printf("Error: la tabla de simbolos no existe");
+    if(st){
+
+        if(st->num == 0){
+            //Se inserta el primer simbolo
+            st->root = sym;
+            st->num++;
+        }else{
+            //Se inserta a partir del segundo simbolo
+            symbol* simbolo_actual = malloc(sizeof(symbol));
+            simbolo_actual = st->root;
+            if (buscar(st, sym) == -1){
+                while(simbolo_actual){
+                    if(simbolo_actual->next == NULL){
+                        simbolo_actual->next = sym;
+                }else
+                  simbolo_actual = simbolo_actual->next;
+              }
+            }else
+                printf("Error: el simbolo ya existe");
+        }
+	}else
+        printf("Error: la tabla de simbolos no existe");
 }*/
+
 /* Busca en la tabla de simbolos mediante el id
  * En caso de encontrar el id retorna la posicion
  * En caso contrario retorna -1
  */
-/*int buscar(symtab* st, char* id){
-  	if(st){
-      symbol *simbolo_actual = malloc(sizeof(symbol));
-      symbolo_actual = st->root;
-    	while (simbolo_actual->next != NULL){
-      		//printf("El id es: %c\n", &symbols.id);
-      		if (id == simbolo_actual->id){
-            return (simbolo_actual->posicion);
-          }else{
-            simbolo_actual = simbolo_actual->next;
-          }
-      }
-      return -1;	//El simbolo no existe
+int buscar(symtab* st, char* id){
+    if(st){
+        int posicion = 0;
+        if(st->root == NULL){
+            return -1; //La tabla esta vacia
+        }
+        symbol* simbolo_actual = st->root;
+        while (simbolo_actual != NULL){
+            posicion++;
+            if (id == simbolo_actual->id)
+                return posicion;
+            else
+                simbolo_actual = simbolo_actual->next;
+        }
+        return -1;	//El simbolo no existe
   	}else
-  		printf("Error: la tabla de simbolos no existe")
-}*/
+  		printf("Error: la tabla de simbolos no existe");
+}
 
 
 /* Retorna el tipo de dato de un id
