@@ -114,16 +114,20 @@ void borrarSymTab(symtab* st){
 */
 int insertar(symtab* st, symbol* sym){
     if(st){
-        if(buscar(st, sym->id) == -1){
+        int posicion = buscar(st, sym->id);
+        if(posicion == -1){
             st->num++;
             symbol* simbolo_actual = st->root;
             while(simbolo_actual->next != NULL){
                 simbolo_actual = simbolo_actual->next;
             }
             simbolo_actual->next = sym;
+            return posicion;
         }
-        else
+        else{
             printf("Error: el simbolo ya existe");
+            return -1;
+        }
 	}else
         printf("Error: la tabla de simbolos no existe");
 }
@@ -151,10 +155,10 @@ int buscar(symtab* st, char* id){
   		printf("Error: la tabla de simbolos no existe");
 }
 
-
 /* Retorna el tipo de dato de un id
  * En caso no encontrarlo retorna -1
  */
+
 /*int getTipo(symtab* st, char* id){
   int v_encuentra=buscar(st,id);
   if (v_encuentra==-1){

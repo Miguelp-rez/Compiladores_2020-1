@@ -64,26 +64,35 @@ void borrarSymTab(symtab*);
  * y retorna la posicion donde inserto. En caso contrario retorna -1
 */
 int insertar(symtab* st, symbol* sym);
+
 /* Busca en la tabla de simbolos mediante el id
  * En caso de encontrar el id retorna la posicion
  * En caso contrario retorna -1
  */
 int buscar(symtab* st, char* id);
+
 /* Retorna el tipo de dato de un id
  * En caso no encontrarlo retorna -1
  */
 int getTipo(symtab* st, char* id);
+
 /* Retorna el tipo de Variable de un id
  * En caso de no encontrarlo retorna -1
  */
 int getTipoVar(symtab* st, char* id);
 
+/* Retorna la direccion de un id
+ * En caso de no encontrarlo retorna -1
+*/
 int getDir(symtab* st, char* id);
+
 /* Retorna la lista de parametros de un id
  * En caso de no encontrarlo retorna NULL
  */
 listParam* getListParam(symtab* st, char* id);
+
 /* Retorna el numero de parametros de un id
  * En caso de no encontrarlo retorna -1
  */
+int getNumParam(symtab *st, char *id);
 #endif
