@@ -41,7 +41,7 @@ struct _symbol{
 };
 
 /* Retorna un apuntador a una variable symbol */
-symbol* crearSymbol(char id[32], int tipo, int dir, int tipoVar);
+symbol* crearSymbol(char *id, int tipo, int dir, int tipoVar);
 
 typedef struct _symtab symtab;
 

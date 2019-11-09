@@ -21,7 +21,8 @@ param* crearParam(int tipo){
 listParam *crearLP(){
     listParam* lista = malloc(sizeof(listParam));
     if(lista != NULL){
-        lista->root =NULL;
+        lista->root = NULL;
+        lista->num = 0;
     }
     else{
         printf("No hay memoria disponible");  //ERROR
@@ -86,10 +87,11 @@ symbol* crearSymbol(char *id, int tipo, int dir, int tipoVar){
  * inicia contador en 0
  */
 symtab* crearSymTab(){
-  symtab* ts = malloc(sizeof(symtab));
-  ts->root = NULL;
-  ts->num = 0;
-  ts->next = NULL;
+  symtab* st = malloc(sizeof(symtab));
+  st->root = NULL;
+  st->num = 0;
+  st->next = NULL;
+  return st;
 }
 
 /* Borra toda la lista, libera la memoria */
@@ -221,7 +223,7 @@ listParam* getListParam(symtab* st, char* id){
     int posicion = buscar(st, id);
     if (posicion == -1){
         printf("Lista de parametros no encontrada");
-        return -1;
+        return NULL;
     }else{
         symbol* simbolo_actual = st->root;
         while(posicion != 1){
@@ -250,42 +252,32 @@ int getNumParam(symtab *st, char *id){
     }
 }
 
+void imprimirTabla(symtab *st){
+    int nodos = 1;
+    symbol* simbolo_actual = st->root;
+    while(nodos != (st->num)+1){
+        printf("Simbolo #%i\n", nodos);
+        printf("ID:%s\n", simbolo_actual->id);
+        printf("Tipo:%i\n", simbolo_actual->tipo);
+        printf("Dir:%i\n", simbolo_actual->dir);
+        printf("Tipo de variable:%i\n", simbolo_actual->tipoVar);
+        printf("Numero de parametros:%i\n\n", getNumListParam(simbolo_actual->params));
+        simbolo_actual = simbolo_actual->next;
+        nodos++;
+    }
+}
+
 //PRUEBA RAPIDA
 int main()
 {
-    int n, opcion;
-    int lp[100];
-    /*do
-    {
-        printf( "\n   1. Agrega.");
-        printf( "\n   2. Elimina.");
-        printf( "\n   3. Borra lista.");
-        printf( "\n   4. numero de elem." );
-        printf( "\n   5.-salir ");
-
-        scanf( "%d", &opcion );
-
-
-        switch ( opcion )
-        {
-            case 1: printf( "\n   Introduzca un n%cmero entero: ", 163 );
-                    scanf( "%d", &n );
-                    add(lp,n);
-                    break;
-            case 2: printf( "\n   Introduzca un n%cmero entero: ", 163 );
-                    scanf( "%d", &n );
-                   EliminaParam(n, lp);
-                    break;
-            case 3: printf( "\n   Introduzca un n%cmero entero: ", 163 );
-                    borrarListParam(lp);
-                    break;
-            case 4: printf("Num elementos %i", getNumListParam(lp));
-                    break;
-
-         }
-
-
-    } while ( opcion != 5 );*/
-
+    int exito;
+    symtab* st = crearSymTab();
+    symbol* simbolo = crearSymbol("prueba", 1, 10, 1);
+    exito = insertar(st, simbolo);
+    if(exito != -1)
+        imprimirTabla(st);
+    else
+        printf("Error al insertar\n");
+    borrarSymTab(st);
     return 0;
 }
