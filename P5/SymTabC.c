@@ -29,6 +29,7 @@ listParam *crearLP(){
     }
     return lista;
 }
+
 /* Agrega al final de la lista el parametro e incrementa num */
 void add(listParam* lp, int tipo){
     param* parametro = crearParam(tipo);
@@ -253,17 +254,34 @@ int getNumParam(symtab *st, char *id){
 }
 
 void imprimirTabla(symtab *st){
-    int nodos = 1;
+    int simbolos = 1; //contador de simbolos
+    int parametros = 1; //contador de parametros
+    int num_params;
     symbol* simbolo_actual = st->root;
-    while(nodos != (st->num)+1){
-        printf("Simbolo #%i\n", nodos);
+    listParam* lista;
+    param* param_actual;
+    while(simbolos != (st->num)+1){  //del primer al ultimo nodo
+        printf("Simbolo #%i\n", simbolos);
+        //se usa id para probar funciones get, puede ser directo
         printf("ID:%s\n", simbolo_actual->id);
-        printf("Tipo:%i\n", simbolo_actual->tipo);
-        printf("Dir:%i\n", simbolo_actual->dir);
-        printf("Tipo de variable:%i\n", simbolo_actual->tipoVar);
-        printf("Numero de parametros:%i\n\n", getNumListParam(simbolo_actual->params));
+        printf("Tipo:%i\n", getTipo(st, simbolo_actual->id));
+        printf("Dir:%i\n", getDir(st, simbolo_actual->id));
+        printf("Tipo de variable:%i\n", getTipoVar(st, simbolo_actual->id));
+        lista = getListParam(st, simbolo_actual->id);
+        num_params = getNumListParam(lista);
+        printf("Numero de parametros:%i\n", num_params);
+        if(lista != NULL){
+            param_actual = lista->root;
+            while(parametros != num_params+1){  //del primer al ultimo parametro
+                printf("\tParametro #%i\n", parametros);
+                printf("\tTipo:%i\n", param_actual->tipo);
+                param_actual = param_actual->next;
+                parametros++;
+            }
+        }
+        printf("\n");
         simbolo_actual = simbolo_actual->next;
-        nodos++;
+        simbolos++;
     }
 }
 
@@ -272,12 +290,30 @@ int main()
 {
     int exito;
     symtab* st = crearSymTab();
-    symbol* simbolo = crearSymbol("prueba", 1, 10, 1);
+    symbol* simbolo;
+    param* parametro;
+    //insercion de simbolo sin parametros, debe funcionar
+    simbolo = crearSymbol("prueba", 1, 10, 1);
     exito = insertar(st, simbolo);
-    if(exito != -1)
-        imprimirTabla(st);
-    else
+    if(exito == -1)
         printf("Error al insertar\n");
+
+    //insercion de simbolo sin parametros con id repetido, debe fallar
+    simbolo = crearSymbol("prueba", 1, 10, 1);
+    exito = insertar(st, simbolo);
+    if(exito == -1)
+        printf("Error al insertar\n");
+
+    //insercion de simbolo con parametros
+    simbolo = crearSymbol("prueba_param", 1, 10, 1);
+    add(simbolo->params, 10);
+    add(simbolo->params, 11);
+    add(simbolo->params, 12);
+    exito = insertar(st, simbolo);
+    if(exito == -1)
+        printf("Error al insertar\n");
+
+    imprimirTabla(st);
     borrarSymTab(st);
     return 0;
 }
