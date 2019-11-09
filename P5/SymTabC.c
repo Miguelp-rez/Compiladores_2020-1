@@ -117,12 +117,17 @@ int insertar(symtab* st, symbol* sym){
         int posicion = buscar(st, sym->id);
         if(posicion == -1){
             st->num++;
-            symbol* simbolo_actual = st->root;
-            while(simbolo_actual->next != NULL){
-                simbolo_actual = simbolo_actual->next;
+            if(st->root == NULL){
+                st->root = sym; //es el primer simbolo
             }
-            simbolo_actual->next = sym;
-            return posicion;
+            else{
+                symbol* simbolo_actual = st->root;
+                while(simbolo_actual->next != NULL){
+                    simbolo_actual = simbolo_actual->next;
+                }
+                simbolo_actual->next = sym;                
+            }
+            return (st->num);
         }
         else{
             printf("Error: el simbolo ya existe");
