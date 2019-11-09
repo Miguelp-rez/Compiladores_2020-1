@@ -12,7 +12,7 @@ param* crearParam(int tipo){
         parametro->next = NULL;
     }
     else{
-        printf("No hay memoria disponible");  //ERROR
+        printf("No hay memoria disponible\n");  //ERROR
     }
     return parametro;
 }
@@ -25,7 +25,7 @@ listParam *crearLP(){
         lista->num = 0;
     }
     else{
-        printf("No hay memoria disponible");  //ERROR
+        printf("No hay memoria disponible\n");  //ERROR
     }
     return lista;
 }
@@ -55,7 +55,7 @@ void borrarListParam(listParam* lp){
         }
         free(lp);
   }else{
-    printf("No existe la lista de parametros");
+    printf("No existe la lista de parametros\n");
   }
 }
 
@@ -78,7 +78,7 @@ symbol* crearSymbol(char *id, int tipo, int dir, int tipoVar){
     }
     else
     {
-        printf("No hay memoria disponible");  //ERROR
+        printf("No hay memoria disponible\n");  //ERROR
     }
  return sym_tmp;
 
@@ -108,7 +108,7 @@ void borrarSymTab(symtab* st){
         free(st);
     }
     else{
-        printf("No existe la tabla de simbolos");
+        printf("No existe la tabla de simbolos\n");
     }
 }
 
@@ -133,11 +133,11 @@ int insertar(symtab* st, symbol* sym){
             return (st->num);
         }
         else{
-            printf("Error: el simbolo ya existe");
+            printf("Error: el simbolo ya existe en la posicion: %i\n", posicion);
             return -1;
         }
 	}else
-        printf("Error: la tabla de simbolos no existe");
+        printf("Error: la tabla de simbolos no existe\n");
 }
 
 /* Busca en la tabla de simbolos mediante el id
@@ -153,14 +153,14 @@ int buscar(symtab* st, char* id){
         symbol* simbolo_actual = st->root;
         while (simbolo_actual != NULL){
             posicion++;
-            if (id == simbolo_actual->id)
+            if (strcmp(id, simbolo_actual->id) == 0)
                 return posicion;
             else
                 simbolo_actual = simbolo_actual->next;
         }
         return -1;	//El simbolo no existe
   	}else
-  		printf("Error: la tabla de simbolos no existe");
+  		printf("Error: la tabla de simbolos no existe\n");
 }
 
 /* Retorna el tipo de dato de un id
@@ -169,7 +169,7 @@ int buscar(symtab* st, char* id){
 int getTipo(symtab* st, char* id){
     int posicion = buscar(st, id);
     if (posicion == -1){
-        printf("Tipo de dato no encontrado");
+        printf("Tipo de dato no encontrado\n");
         return -1;
     }else{
         symbol* simbolo_actual = st->root;
@@ -187,7 +187,7 @@ int getTipo(symtab* st, char* id){
 int getTipoVar(symtab* st, char* id){
     int posicion = buscar(st, id);
     if (posicion == -1){
-        printf("Tipo de variable no encontrado");
+        printf("Tipo de variable no encontrado\n");
         return -1;
     }else{
         symbol* simbolo_actual = st->root;
@@ -205,7 +205,7 @@ int getTipoVar(symtab* st, char* id){
 int getDir(symtab* st, char* id){
     int posicion = buscar(st, id);
     if (posicion == -1){
-        printf("Direccion no encontrada");
+        printf("Direccion no encontrada\n");
         return -1;
     }else{
         symbol* simbolo_actual = st->root;
@@ -223,7 +223,7 @@ int getDir(symtab* st, char* id){
 listParam* getListParam(symtab* st, char* id){
     int posicion = buscar(st, id);
     if (posicion == -1){
-        printf("Lista de parametros no encontrada");
+        printf("Lista de parametros no encontrada\n");
         return NULL;
     }else{
         symbol* simbolo_actual = st->root;
@@ -241,7 +241,7 @@ listParam* getListParam(symtab* st, char* id){
 int getNumParam(symtab *st, char *id){
     int posicion = buscar(st, id);
     if (posicion == -1){
-        printf("Numero de parametros no encontrados");
+        printf("Numero de parametros no encontrados\n");
         return -1;
     }else{
         symbol* simbolo_actual = st->root;
