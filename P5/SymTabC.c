@@ -112,30 +112,21 @@ void borrarSymTab(symtab* st){
 /* Inserta al final de la lista, en caso de insertar incrementa num
  * y retorna la posicion donde inserto. En caso contrario retorna -1
 */
-/*int insertar(symtab* st, symbol* sym){
+int insertar(symtab* st, symbol* sym){
     if(st){
-
-        if(st->num == 0){
-            //Se inserta el primer simbolo
-            st->root = sym;
+        if(buscar(st, sym->id) == -1){
             st->num++;
-        }else{
-            //Se inserta a partir del segundo simbolo
-            symbol* simbolo_actual = malloc(sizeof(symbol));
-            simbolo_actual = st->root;
-            if (buscar(st, sym) == -1){
-                while(simbolo_actual){
-                    if(simbolo_actual->next == NULL){
-                        simbolo_actual->next = sym;
-                }else
-                  simbolo_actual = simbolo_actual->next;
-              }
-            }else
-                printf("Error: el simbolo ya existe");
+            symbol* simbolo_actual = st->root;
+            while(simbolo_actual->next != NULL){
+                simbolo_actual = simbolo_actual->next;
+            }
+            simbolo_actual->next = sym;
         }
+        else
+            printf("Error: el simbolo ya existe");
 	}else
         printf("Error: la tabla de simbolos no existe");
-}*/
+}
 
 /* Busca en la tabla de simbolos mediante el id
  * En caso de encontrar el id retorna la posicion
