@@ -178,38 +178,77 @@ int getTipo(symtab* st, char* id){
     }
 }
 
-/* Retorna el tipo de de variable  id
+/* Retorna el tipo de variable de un id
  * En caso no encontrarlo retorna -1
  */
-/*int getTipoVar(symtab* st, char* id){
-  int v_encuentra=buscar(st,id);
-  if (v_encuentra==-1){
-      printf("No se puede retornar en tipo de variable");
-  } else {
-      return st->var;
-  }
-}*/
+int getTipoVar(symtab* st, char* id){
+    int posicion = buscar(st, id);
+    if (posicion == -1){
+        printf("Tipo de variable no encontrado");
+        return -1;
+    }else{
+        symbol* simbolo_actual = st->root;
+        while(posicion != 1){
+            posicion--;
+            simbolo_actual = simbolo_actual->next;
+        }
+        return (simbolo_actual->tipoVar);
+    }
+}
+
 /* Retorna la direccion
  * En caso de no encontrarlo retorna -1
  */
-/*int getDir(symtab* st, char* id){
-	int v_encuentra=buscar(st,id);
-	if (v_encuentra==-1){
-    printf("No se puede retornar la direccion");
-	} else{
-    return st->dir;
-	}
-}*/
+int getDir(symtab* st, char* id){
+    int posicion = buscar(st, id);
+    if (posicion == -1){
+        printf("Tipo de variable no encontrado");
+        return -1;
+    }else{
+        symbol* simbolo_actual = st->root;
+        while(posicion != 1){
+            posicion--;
+            simbolo_actual = simbolo_actual->next;
+        }
+        return (simbolo_actual->dir);
+    }
+}
 
 /* Retorna la lista de parametros de un id
  * En caso de no encontrarlo retorna NULL
  */
-/*listParam* getListParam(symtab* st, char* id){
-int v_encuentra=buscar(st,id);
-	if (v_encuentra==-1){
-    return st->
-  }
-}*/
+listParam* getListParam(symtab* st, char* id){
+    int posicion = buscar(st, id);
+    if (posicion == -1){
+        printf("Tipo de variable no encontrado");
+        return -1;
+    }else{
+        symbol* simbolo_actual = st->root;
+        while(posicion != 1){
+            posicion--;
+            simbolo_actual = simbolo_actual->next;
+        }
+        return (simbolo_actual->params);
+    }
+}
+
+/* Retorna el numero de parametros de un id
+ * En caso de no encontrarlo retorna -1
+ */
+int getNumParam(symtab *st, char *id){
+    int posicion = buscar(st, id);
+    if (posicion == -1){
+        printf("Tipo de variable no encontrado");
+        return -1;
+    }else{
+        symbol* simbolo_actual = st->root;
+        while(posicion != 1){
+            posicion--;
+            simbolo_actual = simbolo_actual->next;
+        }
+        return (simbolo_actual->params->num);
+    }
+}
 
 //PRUEBA RAPIDA
 int main()
