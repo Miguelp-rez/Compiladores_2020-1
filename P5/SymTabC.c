@@ -286,12 +286,12 @@ void imprimirTabla(symtab *st){
 }
 
 //PRUEBA RAPIDA
-int main()
-{
+int main(){
     int exito;
     symtab* st = crearSymTab();
     symbol* simbolo;
     param* parametro;
+    
     //insercion de simbolo sin parametros, debe funcionar
     simbolo = crearSymbol("prueba", 1, 10, 1);
     exito = insertar(st, simbolo);
