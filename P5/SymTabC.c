@@ -202,7 +202,7 @@ int getTipoVar(symtab* st, char* id){
 int getDir(symtab* st, char* id){
     int posicion = buscar(st, id);
     if (posicion == -1){
-        printf("Tipo de variable no encontrado");
+        printf("Direccion no encontrada");
         return -1;
     }else{
         symbol* simbolo_actual = st->root;
@@ -220,7 +220,7 @@ int getDir(symtab* st, char* id){
 listParam* getListParam(symtab* st, char* id){
     int posicion = buscar(st, id);
     if (posicion == -1){
-        printf("Tipo de variable no encontrado");
+        printf("Lista de parametros no encontrada");
         return -1;
     }else{
         symbol* simbolo_actual = st->root;
@@ -238,7 +238,7 @@ listParam* getListParam(symtab* st, char* id){
 int getNumParam(symtab *st, char *id){
     int posicion = buscar(st, id);
     if (posicion == -1){
-        printf("Tipo de variable no encontrado");
+        printf("Numero de parametros no encontrados");
         return -1;
     }else{
         symbol* simbolo_actual = st->root;
