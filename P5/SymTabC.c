@@ -163,16 +163,20 @@ int buscar(symtab* st, char* id){
 /* Retorna el tipo de dato de un id
  * En caso no encontrarlo retorna -1
  */
-
-/*int getTipo(symtab* st, char* id){
-  int v_encuentra=buscar(st,id);
-  if (v_encuentra==-1){
-      printf("No se puede retornar en tipo de dato");
-  } else {
-      return st->tipo;
-  }
-
-}*/
+int getTipo(symtab* st, char* id){
+    int posicion = buscar(st, id);
+    if (posicion == -1){
+        printf("Tipo de dato no encontrado");
+        return -1;
+    }else{
+        symbol* simbolo_actual = st->root;
+        while(posicion != 1){
+            posicion--;
+            simbolo_actual = simbolo_actual->next;
+        }
+        return (simbolo_actual->tipo);
+    }
+}
 
 /* Retorna el tipo de de variable  id
  * En caso no encontrarlo retorna -1
