@@ -6,8 +6,25 @@
 #include "TypeTab.h"
 
 /* Retorna un apuntador a una variable type */
-type *crearTipo(){
 
+/*AGREGAR FUNCIONES QUE FALTAN*/
+
+type *crearTipo(int id, char* nombre, tipoBase tb){
+    type* tipo = malloc(sizeof(type));
+    if(tipo != NULL){
+        //se deben definir los tipos
+        tipo->id = id;
+        strcpy(tipo->nombre, nombre);
+        tipo->tb = tb;
+        //se deben definir los tamanos de los tipos
+        tipo->tamBytes = 0; //depende del tipo (consultar tipo base)
+        tipo->numElem = 0; //depende de si es arreglo o no
+        tipo->next = NULL;
+    }
+    else{
+        printf("No hay memoria disponible\n");  //ERROR
+    }
+    return tipo;
 }
 
 /* Borra type, libera memoria */

@@ -31,7 +31,7 @@ struct _typetab{
 };
 
 /* Retorna un apuntador a una variable type */
-type *crearTipo();
+type *crearTipo(int id, char* nombre, tipoBase tb);
 
 /* Borra type, libera memoria */
 void borrarType(type *t);
