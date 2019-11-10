@@ -80,7 +80,7 @@ type *crearTipoNativo(int id, char* nombre, tipoBase* tb, int size){
 
 /* Borra la tabla de tipos, libera memoria */
 void borrarTypeTab(typetab *tt){
-	if(t){
+	if(tt){
     type* aux;
     while(tt->root != NULL){
       aux = tt->root;
@@ -97,9 +97,9 @@ void borrarTypeTab(typetab *tt){
 /* Inserta al final de la lista en caso de insertar incrementa num
  * Retorna la posicion donde inserto en caso contrario retorna -1
  */
-int insertarTipo(typetab *st, type *t){
+int insertarTipo(typetab *tt, type *t){
 if(tt){
-        int posicion = buscarTipo(tt, t->nombre);
+        int posicion = -1;//buscarTipo(tt, t->nombre); //Falta programar esta funcion
         if(posicion == -1){
             tt->num++;
             if(tt->root == NULL){
