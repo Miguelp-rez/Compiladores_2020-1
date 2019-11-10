@@ -51,7 +51,7 @@ void borrarType(type *t);
 /* Inserta al final de la lista en caso de insertar incrementa num
  * Retorna la posicion donde inserto en caso contrario retorna -1
  */
-int insertarTipo(typetab *st, type *t);
+int insertarTipo(typetab *tt, type *t);
 
 /* Retorna el tipo base de un tipo
  * En caso de no encontrarlo retorna NULL
