@@ -1,7 +1,15 @@
+/*
+ * Compiladores Practica 5
+ * Programado por:
+ * Lopez Martinez Andres
+ * Morales Tellez Carlos Gamaliel
+ * Perez Quiroz Miguel Angel
+ * Sanchez Dias Maria Beatriz
+ * Fecha: 09/11/19
+*/
+
 #ifndef  TYPETAB_H
 #define TYPETAB_H
-#include "SymTab.h"
-#include <stdbool.h>
 
 typedef struct _type type;
 typedef struct _tipoBase tipoBase;

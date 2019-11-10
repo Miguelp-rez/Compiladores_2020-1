@@ -7,17 +7,8 @@
  * Sanchez Dias Maria Beatriz
  * Fecha: 09/11/19
 */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-#include "SymTab.h"
-#include "TypeTab.h"
 
-/* Retorna un apuntador a una variable type */
-
-/*AGREGAR FUNCIONES QUE FALTAN*/
-
+/* Retorna un apuntador a una variable tipo */
 tipo *crearTipoPrimitivo(int id){
     tipo* base_type = malloc(sizeof(tipo));
     if(base_type){
@@ -28,6 +19,7 @@ tipo *crearTipoPrimitivo(int id){
     return base_type;
 }
 
+/* Retorna un apuntador a una variable tipo */
 tipo *crearTipoStruct(symtab* estructura){
     tipo* base_type = malloc(sizeof(tipo));
     if(base_type){
@@ -38,6 +30,7 @@ tipo *crearTipoStruct(symtab* estructura){
     return base_type;
 }
 
+/* Retorna un apuntador a una variable tipoBase */
 tipoBase *crearArqueTipo(bool is_struct, tipo* base_type){
     tipoBase* nuevo = malloc(sizeof(tipoBase));
     if(nuevo){
@@ -222,13 +215,3 @@ if(tt){
    }
     return NULL;
  }
-
-
-
-int main(){
-    tipo *tipo_base = crearTipoPrimitivo(0);
-    tipoBase *arquetipo = crearArqueTipo(false, tipo_base);
-    type *nuevoTipo = crearTipoNativo(0, "entero", arquetipo, 4);
-
-    return 0;
-}

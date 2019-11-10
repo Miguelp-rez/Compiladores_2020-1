@@ -8,11 +8,6 @@
  * Fecha: 09/11/19
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "SymTab.h"
-
 //FUNCIONES
 /* Retorna un apuntador a una variable Param */
 param* crearParam(int tipo){
@@ -293,37 +288,4 @@ void imprimirTabla(symtab *st){
         simbolo_actual = simbolo_actual->next;
         simbolos++;
     }
-}
-
-//PRUEBA RAPIDA
-int main(){
-    int exito;
-    symtab* st = crearSymTab();
-    symbol* simbolo;
-    param* parametro;
-
-    //insercion de simbolo sin parametros, debe funcionar
-    simbolo = crearSymbol("prueba", 1, 10, 1);
-    exito = insertar(st, simbolo);
-    if(exito == -1)
-        printf("Error al insertar\n");
-
-    //insercion de simbolo sin parametros con id repetido, debe fallar
-    simbolo = crearSymbol("prueba", 1, 10, 1);
-    exito = insertar(st, simbolo);
-    if(exito == -1)
-        printf("Error al insertar\n");
-
-    //insercion de simbolo con parametros
-    simbolo = crearSymbol("prueba_param", 1, 10, 1);
-    add(simbolo->params, 10);
-    add(simbolo->params, 11);
-    add(simbolo->params, 12);
-    exito = insertar(st, simbolo);
-    if(exito == -1)
-        printf("Error al insertar\n");
-
-    imprimirTabla(st);
-    borrarSymTab(st);
-    return 0;
 }

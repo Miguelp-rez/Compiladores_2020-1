@@ -8,10 +8,6 @@
  * Fecha: 09/11/19
 */
 
-#include "TypeTab.h"
-#include <stdio.h>
-#include <stdlib.h>
-
 typedef struct _typestack typestack;
 
 struct _typestack{
@@ -86,8 +82,4 @@ typetab* sacarTypeTab(typestack *ptt){
     }else{
         printf("La pila de tabla de simbolos no existe");
     }
-}
-
-int main(){
-    return 0;
 }

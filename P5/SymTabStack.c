@@ -8,10 +8,6 @@
  * Fecha: 09/11/19
 */
 
-#include "SymTab.h"
-#include <stdio.h>
-#include <stdlib.h>
-
 typedef struct _symstack symstack;
 
 struct _symstack{
@@ -84,8 +80,4 @@ void sacarSymTab(symstack *pts){
     }else{
         printf("La pila de tabla de simbolos no existe");
     }
-}
-
-int main(){
-    return 0;
 }

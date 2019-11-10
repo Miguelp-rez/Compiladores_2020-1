@@ -7,6 +7,7 @@
  * Sanchez Dias Maria Beatriz
  * Fecha: 09/11/19
 */
+
 #ifndef  SYMTAB_H
 #define SYMTAB_H
 typedef struct _param param;
