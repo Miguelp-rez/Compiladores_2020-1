@@ -152,7 +152,8 @@ if(tt){
    if(tt){
    	if(tt->root){
        type* aux = tt->root;
-       for(int i=0;i<id; i++)
+       int i;
+       for(i=0;i<id; i++)
          aux = aux->next;
        if(aux->tb)
          return aux->tb;
@@ -167,8 +168,9 @@ if(tt){
  int getTam(typetab *tt, int id){
  	if(tt->root){
    	type* aux = tt->root;
-     //Recorre la lista hasta que encuentre el id
-   	for(int i=0;i<id; i++)
+    //Recorre la lista hasta que encuentre el id
+    int i;
+   	for(i=0;i<id; i++)
      	aux = aux->next;
    	if(aux->tamBytes)
      	return aux->tamBytes;
@@ -184,7 +186,8 @@ if(tt){
    	if(tt->root){
        type* aux = tt->root;
        //Recorre la lista hasta que encuentre el id
-       for(int i=0;i<id; i++)
+       int i;
+       for(i=0;i<id; i++)
          aux = aux->next;
        if(aux->numElem)
          return aux->numElem;
@@ -202,7 +205,8 @@ if(tt){
      if(tt->root){
    		type* aux = tt->root;
      	//Recorre la lista hasta que encuentre el id
-   		for(int i=0;i<id; i++)
+        int i;
+   		for(i=0;i<id; i++)
      		aux = aux->next;
      	return aux->nombre;
    	}
