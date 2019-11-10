@@ -4,7 +4,7 @@
  * Lopez Martinez Andres
  * Morales Tellez Carlos Gamaliel
  * Perez Quiroz Miguel Angel
- * Sanchez Dias Maria Beatriz
+ * Sanchez Diaz Maria Beatriz
  * Fecha: 09/11/19
 */
 

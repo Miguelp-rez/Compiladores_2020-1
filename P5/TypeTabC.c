@@ -4,7 +4,7 @@
  * Lopez Martinez Andres
  * Morales Tellez Carlos Gamaliel
  * Perez Quiroz Miguel Angel
- * Sanchez Dias Maria Beatriz
+ * Sanchez Diaz Maria Beatriz
  * Fecha: 09/11/19
 */
 
@@ -46,13 +46,11 @@ tipoBase *crearArqueTipo(bool is_struct, tipo* base_type){
 type *crearTipoArray(int id, char* nombre, tipoBase* tb, int size, int num_elem){
     type* tipo = malloc(sizeof(type));
     if(tipo != NULL){
-        //se deben definir los tipos
         tipo->id = id;
         strcpy(tipo->nombre, nombre);
         tipo->tb = tb;
-        //se deben definir los tamanos de los tipos
-        tipo->tamBytes = size; //depende del tipo (consultar tipo base)
-        tipo->numElem = num_elem; //depende de si es arreglo o no
+        tipo->tamBytes = size;
+        tipo->numElem = num_elem;
         tipo->next = NULL;
     }
     else{
@@ -65,13 +63,11 @@ type *crearTipoArray(int id, char* nombre, tipoBase* tb, int size, int num_elem)
 type *crearTipoNativo(int id, char* nombre, tipoBase* tb, int size){
     type* tipo = malloc(sizeof(type));
     if(tipo != NULL){
-        //se deben definir los tipos
         tipo->id = id;
         strcpy(tipo->nombre, nombre);
         tipo->tb = tb;
-        //se deben definir los tamanos de los tipos
-        tipo->tamBytes = size; //depende del tipo (consultar tipo base)
-        tipo->numElem = 0; //depende de si es arreglo o no
+        tipo->tamBytes = size;
+        tipo->numElem = 0;
         tipo->next = NULL;
     }
     else{
@@ -79,7 +75,6 @@ type *crearTipoNativo(int id, char* nombre, tipoBase* tb, int size){
     }
     return tipo;
 }
-
 
 /*Crea una lista de tipos*/
 typetab* crearTypeTab(){
@@ -89,6 +84,7 @@ typetab* crearTypeTab(){
     tt->next = NULL;
     return tt;
 }
+
 /* Borra la tabla de tipos, libera memoria */
 void borrarTypeTab(typetab *tt){
     if(tt){
@@ -153,9 +149,6 @@ if(tt){
         return -1;
 }
 
-/* Retorna el tipo base de un tipo
- * En caso de no encontrarlo retorna NULL
- */
  /* Retorna el tipo base de un tipo
   * En caso de no encontrarlo retorna NULL
   */
@@ -211,7 +204,7 @@ if(tt){
  /* Retorna el nombre de un tipo
   * En caso de no encontrarlo retorna NULL
   */
- char* getNombre(typetab *tt, int id){
+char* getNombre(typetab *tt, int id){
     if(tt){
      if(tt->root){
         type* aux = tt->root;
@@ -223,4 +216,36 @@ if(tt){
     }
    }
     return NULL;
- }
+}
+
+void imprimirTabla(typetab *tt){
+    int tipos = 1; //contador de tipos
+    int parametros = 1; //contador de parametros
+    int num_params;
+    symbol* simbolo_actual = st->root;
+    listParam* lista;
+    param* param_actual;
+    while(simbolos != (st->num)+1){  //del primer al ultimo nodo
+        printf("Simbolo #%i\n", simbolos);
+        //se usa id para probar funciones get, puede ser directo
+        printf("ID:%s\n", simbolo_actual->id);
+        printf("Tipo:%i\n", getTipo(st, simbolo_actual->id));
+        printf("Dir:%i\n", getDir(st, simbolo_actual->id));
+        printf("Tipo de variable:%i\n", getTipoVar(st, simbolo_actual->id));
+        lista = getListParam(st, simbolo_actual->id);
+        num_params = getNumListParam(lista);
+        printf("Numero de parametros:%i\n", num_params);
+        if(lista != NULL){
+            param_actual = lista->root;
+            while(parametros != num_params+1){  //del primer al ultimo parametro
+                printf("\tParametro #%i\n", parametros);
+                printf("\tTipo:%i\n", param_actual->tipo);
+                param_actual = param_actual->next;
+                parametros++;
+            }
+        }
+        printf("\n");
+        simbolo_actual = simbolo_actual->next;
+        simbolos++;
+    }
+}
