@@ -10,37 +10,7 @@
 
 #ifndef  TYPETAB_H
 #define TYPETAB_H
-
-typedef struct _type type;
-typedef struct _tipoBase tipoBase;
-typedef union _tipo tipo;
-
-union _tipo{
-    int type;   // Tipo simple
-    symtab *estructura;  // Tipo estructura
-};
-
-struct _tipoBase{
-    bool est;   // Si es verdadero es estructura si no es tipo simple
-    tipo *t;
-};
-
-struct _type{
-    int id;
-    char nombre[10];    // Se puede sustituir por un entero tambien
-    tipoBase *tb;
-    int tamBytes;
-    int numElem;
-    type *next;
-};
-
-typedef struct _typetab typetab;
-
-struct _typetab{
-    type *root;
-    int num;
-    typetab* next;
-};
+#include "Global.h"
 
 /* Retorna un apuntador a una variable type */
 tipo *crearTipoPrimitivo(int id);

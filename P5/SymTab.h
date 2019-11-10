@@ -10,19 +10,7 @@
 
 #ifndef  SYMTAB_H
 #define SYMTAB_H
-typedef struct _param param;
-
-struct _param{
-    int tipo;
-    param* next;
-};
-
-typedef struct _listParam listParam;
-
-struct _listParam{
-    param* root;
-    int num;
-};
+#include "Global.h"
 
 /* Retorna un apuntador a una variable Param */
 param* crearParam(int tipo);
@@ -39,28 +27,8 @@ void borrarListParam(listParam* lp);
 /* Cuenta el numero de parametros en la linea */
 int getNumListParam(listParam* lp);
 
-typedef struct _symbol symbol;
-
-struct _symbol{
-    char id[32];
-    int tipo;
-    int dir;
-    int tipoVar;
-    listParam* params;
-    symbol* next;
-};
-
 /* Retorna un apuntador a una variable symbol */
 symbol* crearSymbol(char *id, int tipo, int dir, int tipoVar);
-
-typedef struct _symtab symtab;
-
-struct _symtab{
-    symbol* root;
-    int num;
-    symtab* next;
-};
-
 
 /* Retorna un apuntador a una variable symtab,
  * inicia contador en 0
