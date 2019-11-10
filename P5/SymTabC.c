@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "Global.h"
 #include "SymTab.h"
 
 //FUNCIONES

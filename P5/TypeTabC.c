@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "SymTab.h"
+#include "Global.h"
 #include "TypeTab.h"
 
 /* Retorna un apuntador a una variable type */
