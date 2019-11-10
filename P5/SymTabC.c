@@ -269,7 +269,7 @@ void imprimirTablaSym(symtab *st){
     listParam* lista;
     param* param_actual;
 
-    printf("##TABLA DE SIMBOLOS##\n");
+    printf("###TABLA DE SIMBOLOS###\n");
 
     while(simbolos != (st->num)+1){  //del primer al ultimo nodo
         printf("Simbolo #%i\n", simbolos);

@@ -92,6 +92,8 @@ void borrarTypeTab(typetab *tt){
     while(tt->root != NULL){
       aux = tt->root;
       tt->root = tt->root->next;
+      free(aux->tb->t);
+      free(aux->tb);
       free(aux);
     }
     free(tt);
@@ -187,18 +189,17 @@ int insertarTipo(typetab *tt, type *t){
   */
  int getNumElem(typetab *tt, int id){
     if(tt){
-    if(tt->root){
-       type* aux = tt->root;
-       //Recorre la lista hasta que encuentre el id
-       int i;
-       for(i=0;i<id; i++)
-         aux = aux->next;
-       if(aux->numElem)
-         return aux->numElem;
-     }
-     return -1;
-   }
-   return -1;
+        if(tt->root){
+            type* aux = tt->root;
+            //Recorre la lista hasta que encuentre el id
+            int i;
+            for(i=0;i<id; i++)
+                aux = aux->next;
+            return aux->numElem;
+        }
+        return -1;
+    }
+    return -1;
  }
 
  /* Retorna el nombre de un tipo
