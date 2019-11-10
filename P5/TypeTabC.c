@@ -202,9 +202,9 @@ int insertarTipo(typetab *tt, type *t){
     return -1;
  }
 
- /* Retorna el nombre de un tipo
-  * En caso de no encontrarlo retorna NULL
-  */
+/* Imprime toda la tabla de tipos,
+ * distingue entre estructuras, arrays y tipos nativos
+*/
 char* getNombre(typetab *tt, int id){
     if(tt){
      if(tt->root){
@@ -218,6 +218,7 @@ char* getNombre(typetab *tt, int id){
    }
     return NULL;
 }
+
 
 void imprimirTablaType(typetab *tt){
     int tipos = 1; //contador de tipos

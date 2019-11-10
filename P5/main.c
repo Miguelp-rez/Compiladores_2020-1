@@ -84,9 +84,12 @@ int main(){
     tipo_base = crearTipoStruct(st2);
     arquetipo = crearArqueTipo(true, tipo_base);
     nuevoTipo = crearTipoNativo(2, "struct", arquetipo, 20);
-    borrarSymTab(st2);
+    exito = insertarTipo(tt, nuevoTipo);
+    if(exito == -1)
+        printf("Error al insertar\n");
 
     imprimirTablaType(tt);
+    borrarSymTab(st2);
     borrarTypeTab(tt);
 
     //PRUEBA DE PILA DE TABLAS DE TIPOS
