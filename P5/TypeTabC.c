@@ -93,13 +93,32 @@ void borrarTypeTab(typetab *tt){
   }
 }
 
+int buscarTipo(typetab* tt, char* nombre){
+    if(tt){
+        int posicion = 0;
+        if(tt->root == NULL){
+            return -1; //La tabla esta vacia
+        }
+        type* tipo_actual = tt->root;
+        while (tipo_actual != NULL){
+            posicion++;
+            if (strcmp(nombre, tipo_actual->nombre) == 0)
+                return posicion;
+            else
+                tipo_actual = tipo_actual->next;
+        }
+        return -1;	//El simbolo no existe
+  	}else
+  		printf("Error: la tabla de tipos no existe\n");
+      return -1;
+}
 
 /* Inserta al final de la lista en caso de insertar incrementa num
  * Retorna la posicion donde inserto en caso contrario retorna -1
  */
 int insertarTipo(typetab *tt, type *t){
 if(tt){
-        int posicion = -1;//buscarTipo(tt, t->nombre); //Falta programar esta funcion
+        int posicion = buscarTipo(tt, t->nombre); //Falta programar esta funcion
         if(posicion == -1){
             tt->num++;
             if(tt->root == NULL){
@@ -115,11 +134,12 @@ if(tt){
             return (tt->num);
         }
         else{
-            printf("No guardar nada: %i\n");
+            printf("No guardar nada\n");
             return -1;
         }
 	}else
         printf("Error: la tabla de tipos no existe\n");
+        return -1;
 }
 
 /* Retorna el tipo base de un tipo
@@ -139,6 +159,7 @@ if(tt){
      }
      return NULL;
    }
+   return NULL;
  }
  /* Retorna el numero de bytes de un tipo
   * En caso de no encontrarlo retorna -1
@@ -170,6 +191,7 @@ if(tt){
      }
      return -1;
    }
+   return -1;
  }
 
  /* Retorna el nombre de un tipo
@@ -182,11 +204,10 @@ if(tt){
      	//Recorre la lista hasta que encuentre el id
    		for(int i=0;i<id; i++)
      		aux = aux->next;
-   		if(aux->nombre)
-     		return aux->nombre;
+     	return aux->nombre;
    	}
    }
- 	return -1;
+ 	return NULL;
  }
 
 
