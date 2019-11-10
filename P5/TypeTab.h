@@ -11,19 +11,19 @@ union _tipo{
 
 struct _tipoBase{
     bool est;   // Si es verdadero es estructura si no es tipo simple
-    tipo t;
+    tipo *t;
 };
 
 struct _type{
     int id;
     char nombre[10];    // Se puede sustituir por un entero tambien
-    tipoBase tb;
+    tipoBase *tb;
     int tamBytes;
     int numElem;
     type *next;
 };
 
-typedef struct _typetam typetab;
+typedef struct _typetab typetab;
 
 struct _typetab{
     type *root;
@@ -31,7 +31,15 @@ struct _typetab{
 };
 
 /* Retorna un apuntador a una variable type */
-type *crearTipo(int id, char* nombre, tipoBase tb);
+tipo *crearTipoPrimitivo(int id);
+
+tipo *crearTipoStruct(symtab* estructura);
+
+tipoBase *crearArqueTipo(bool is_struct, tipo* base_type);
+
+type *crearTipoArray(int id, char* nombre, tipoBase* tb, int size, int num_elem);
+
+type *crearTipoNativo(int id, char* nombre, tipoBase* tb, int size);
 
 /* Borra type, libera memoria */
 void borrarType(type *t);
@@ -44,7 +52,7 @@ int insertarTipo(typetab *st, type *t);
 /* Retorna el tipo base de un tipo
  * En caso de no encontrarlo retorna NULL
  */
-tipoBase getTipoBase(typetab *tt, int id);
+tipoBase* getTipoBase(typetab *tt, int id);
 
 /* Retorna el numero de bytes de in tipo
  * En caso de no encontrarlo retorna -1
