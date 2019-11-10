@@ -19,7 +19,7 @@ struct _typestack{
 typestack *crearTypeStack();
 void borrarTypeStack(typestack *ptt);
 void insertarTypeTab(typestack *ptt, typetab *type_tab);
-typetab* getCima(typestack *ptt);
+typetab* getCimaType(typestack *ptt);
 typetab* sacarTypeTab(typestack *ptt);
 
 typestack *crearTypeStack(){
@@ -47,7 +47,7 @@ void borrarTypeStack(typestack *ptt){
   }
 }
 
-typetab* getCima(typestack *ptt){
+typetab* getCimaType(typestack *ptt){
     typetab *aux = ptt->root;
     return aux;
 }
@@ -57,7 +57,7 @@ void insertarTypeTab(typestack *ptt, typetab *type_tab){
         if (ptt->root == NULL){     //La pila esta vacia
             ptt->root = type_tab;
         }else{                      //La pila no esta vacia
-            typetab *aux = getCima(ptt);
+            typetab *aux = getCimaType(ptt);
             type_tab->next = aux;
             ptt->root = type_tab;
         }
@@ -72,7 +72,7 @@ typetab* sacarTypeTab(typestack *ptt){
         if (ptt->root == NULL){     //La pila esta vacia
             printf("ERROR: La pila de tabla de simbolos esta vacia");
         }else{                      //La pila no esta vacia
-            typetab *cima = getCima(ptt);
+            typetab *cima = getCimaType(ptt);
             typetab *aux = cima;
             ptt->root = cima->next;
             free(aux);
