@@ -1,13 +1,3 @@
-/*
- * Compiladores Practica 5
- * Programado por:
- * Lopez Martinez Andres
- * Morales Tellez Carlos Gamaliel
- * Perez Quiroz Miguel Angel
- * Sanchez Dias Maria Beatriz
- * Fecha: 09/11/19
-*/
-
 #ifndef  TYPETAB_H
 #define TYPETAB_H
 #include "SymTab.h"
@@ -55,6 +45,9 @@ type *crearTipoArray(int id, char* nombre, tipoBase* tb, int size, int num_elem)
 
 type *crearTipoNativo(int id, char* nombre, tipoBase* tb, int size);
 
+/*Crea tabla de tipos*/
+typetab* crearTypeTab();
+
 /* Borra type, libera memoria */
 void borrarType(type *t);
 
@@ -71,15 +64,15 @@ tipoBase* getTipoBase(typetab *tt, int id);
 /* Retorna el numero de bytes de in tipo
  * En caso de no encontrarlo retorna -1
  */
-int getTam(typetab *tt, int id);
+int getTam(typetab* tt, int id);
 
 /* Retorna el numero de elementos de un tipo
  * En caso de no encontrarlo retorna -1
  */
-int getNumElem(typetab *tt, int id);
+int getNumElem(typetab* tt, int id);
 
 /* Retorna el nombre de un tipo
  * En caso de no encontrarlo retorna NULL
  */
-char* getNombre(typetab *tt, int id);
+char* getNombre(typetab* tt, int id);
 #endif
