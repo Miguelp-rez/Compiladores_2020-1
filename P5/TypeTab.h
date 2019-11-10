@@ -1,5 +1,8 @@
 #ifndef  TYPETAB_H
 #define TYPETAB_H
+#include "SymTab.h"
+#include <stdbool.h>
+
 typedef struct _type type;
 typedef struct _tipoBase tipoBase;
 typedef union _tipo tipo;
@@ -28,6 +31,7 @@ typedef struct _typetab typetab;
 struct _typetab{
     type *root;
     int num;
+    typetab* next;
 };
 
 /* Retorna un apuntador a una variable type */
