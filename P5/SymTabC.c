@@ -1,3 +1,13 @@
+/*
+ * Compiladores Practica 5
+ * Programado por:
+ * Lopez Martinez Andres
+ * Morales Tellez Carlos Gamaliel
+ * Perez Quiroz Miguel Angel
+ * Sanchez Dias Maria Beatriz
+ * Fecha: 09/11/19
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -291,7 +301,7 @@ int main(){
     symtab* st = crearSymTab();
     symbol* simbolo;
     param* parametro;
-    
+
     //insercion de simbolo sin parametros, debe funcionar
     simbolo = crearSymbol("prueba", 1, 10, 1);
     exito = insertar(st, simbolo);
