@@ -24,6 +24,7 @@ symstack *crearSymStack(){
     }else{
         printf("No hay memoria disponible");
     }
+    return nuevaPTS;
 }
 
 void borrarSymStack(symstack *pts){
@@ -42,11 +43,6 @@ void borrarSymStack(symstack *pts){
 
 symtab* getCima(symstack *pts){
     symtab *aux = pts->root;
-    int size = pts->num;
-    int i;
-    for(i=0; i<size; i++){
-        aux = aux->next;
-    }
     return aux;
 }
 
@@ -56,7 +52,8 @@ void insertarSymTab(symstack *pts, symtab *sym_tab){
             pts->root = sym_tab;
         }else{                      //La pila no esta vacia
             symtab *aux = getCima(pts);
-            aux->next = sym_tab;
+            sym_tab->next = aux;
+            pts->root = sym_tab;
         }
         pts->num++;
     }else{
@@ -70,18 +67,12 @@ symtab* sacarSymTab(symstack *pts){
             printf("ERROR: La pila de tabla de simbolos esta vacia");
         }else{                      //La pila no esta vacia
             symtab *cima = getCima(pts);
-            symtab *aux;
-            int size = pts->num;
-            int i;
-            for(i=0; i<size-1; i++){
-                aux = aux->next;
-            }
-            aux->next = NULL;
+            symtab *aux = cima;
+            pts->root = cima->next;
             free(aux);
             return(cima);
-    return aux;
         }
-        pts->num++;
+        pts->num--;
     }else{
         printf("La pila de tabla de simbolos no existe");
     }
