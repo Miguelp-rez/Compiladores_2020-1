@@ -57,5 +57,5 @@ int getNumElem(typetab* tt, int id);
  */
 char* getNombre(typetab* tt, int id);
 
-void imprimirTabla(typetab *tt);
+void imprimirTablaType(typetab *tt);
 #endif

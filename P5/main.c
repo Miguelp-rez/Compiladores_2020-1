@@ -20,9 +20,9 @@
 #include "TypeTabStack.c"
 
 int main(){
-    
-    int exito;
-    symstack* sts = crearSymStack();
+
+    int exito; 
+    //PRUEBA DE TABLA DE SIMBOLOS
     symtab* st = crearSymTab();
     symbol* simbolo;
     param* parametro;
@@ -37,7 +37,7 @@ int main(){
     simbolo = crearSymbol("prueba", 1, 10, 1);
     exito = insertar(st, simbolo);
     if(exito == -1)
-        printf("Error al insertar\n");
+        printf("Error al insertar repetido\n");
 
     //insercion de simbolo con parametros
     simbolo = crearSymbol("prueba_param", 1, 10, 1);
@@ -48,16 +48,30 @@ int main(){
     if(exito == -1)
         printf("Error al insertar\n");
 
-    imprimirTabla(st);
+    imprimirTablaSym(st);
+
+    //PRUEBA DE PILA DE TABLAS DE SIMBOLOS
+    symstack* sts = crearSymStack();
     insertarSymTab(sts,st);
     st = getCimaSym(sts);
     sacarSymTab(sts);
     borrarSymStack(sts);
     
-
+    //PRUEBA DE TABLA DE TIPOS
     tipo *tipo_base = crearTipoPrimitivo(0);
     tipoBase *arquetipo = crearArqueTipo(false, tipo_base);
     type *nuevoTipo = crearTipoNativo(0, "entero", arquetipo, 4);
+    typetab* tt = crearTypeTab();
+
+    //insercion de tipo int
+    exito = insertarTipo(tt, nuevoTipo);
+    if(exito == -1)
+        printf("Error al insertar\n");
+
+    imprimirTablaType(tt);
+    borrarTypeTab(tt);
+    
+    //PRUEBA DE PILA DE TABLAS DE TIPOS
 
   return 0;
 }

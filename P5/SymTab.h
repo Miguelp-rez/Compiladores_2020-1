@@ -73,4 +73,9 @@ listParam* getListParam(symtab* st, char* id);
  * En caso de no encontrarlo retorna -1
  */
 int getNumParam(symtab *st, char *id);
+
+/* Imprime toda la tabla de simbolos,
+ * si contiene parametros los imprime tambien
+*/
+void imprimirTablaSym(symtab *st);
 #endif

@@ -124,8 +124,8 @@ int buscarTipo(typetab* tt, char* nombre){
  * Retorna la posicion donde inserto en caso contrario retorna -1
  */
 int insertarTipo(typetab *tt, type *t){
-if(tt){
-        int posicion = buscarTipo(tt, t->nombre); //Falta programar esta funcion
+    if(tt){
+        int posicion = buscarTipo(tt, t->nombre);
         if(posicion == -1){
             tt->num++;
             if(tt->root == NULL){
@@ -218,34 +218,30 @@ char* getNombre(typetab *tt, int id){
     return NULL;
 }
 
-void imprimirTabla(typetab *tt){
+void imprimirTablaType(typetab *tt){
     int tipos = 1; //contador de tipos
-    int parametros = 1; //contador de parametros
-    int num_params;
-    symbol* simbolo_actual = st->root;
-    listParam* lista;
-    param* param_actual;
-    while(simbolos != (st->num)+1){  //del primer al ultimo nodo
-        printf("Simbolo #%i\n", simbolos);
+    type* tipo_actual = tt->root;
+    tipoBase* tb;
+
+    printf("###TABLA DE TIPOS###\n");
+
+    while(tipos != (tt->num)+1){  //del primer al ultimo nodo
+        printf("Tipo #%i\n", tipos);
         //se usa id para probar funciones get, puede ser directo
-        printf("ID:%s\n", simbolo_actual->id);
-        printf("Tipo:%i\n", getTipo(st, simbolo_actual->id));
-        printf("Dir:%i\n", getDir(st, simbolo_actual->id));
-        printf("Tipo de variable:%i\n", getTipoVar(st, simbolo_actual->id));
-        lista = getListParam(st, simbolo_actual->id);
-        num_params = getNumListParam(lista);
-        printf("Numero de parametros:%i\n", num_params);
-        if(lista != NULL){
-            param_actual = lista->root;
-            while(parametros != num_params+1){  //del primer al ultimo parametro
-                printf("\tParametro #%i\n", parametros);
-                printf("\tTipo:%i\n", param_actual->tipo);
-                param_actual = param_actual->next;
-                parametros++;
-            }
+        printf("ID:%i\n", tipo_actual->id);
+        printf("Nombre:%s\n", getNombre(tt, tipo_actual->id));
+        tb = getTipoBase(tt, tipo_actual->id);
+        if(tb->est){ //El tipo base es una tabla de simbolos
+            printf("El tipo base es una tabla de simbolos\n");
         }
+        else{ //El tipo base es un tipo nativo
+            printf("El tipo base es de tipo nativo:%i\n", tb->t->type);
+        }
+        printf("Tamano en bytes:%i\n", getTam(tt, tipo_actual->id));
+        printf("Numero de elementos:%i\n", getNumElem(tt, tipo_actual->id));
         printf("\n");
-        simbolo_actual = simbolo_actual->next;
-        simbolos++;
+
+        tipo_actual = tipo_actual->next;
+        tipos++;
     }
 }

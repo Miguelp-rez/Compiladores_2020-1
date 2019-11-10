@@ -258,13 +258,19 @@ int getNumParam(symtab *st, char *id){
     }
 }
 
-void imprimirTabla(symtab *st){
+/* Imprime toda la tabla de simbolos,
+ * si contiene parametros los imprime tambien
+*/
+void imprimirTablaSym(symtab *st){
     int simbolos = 1; //contador de simbolos
     int parametros = 1; //contador de parametros
     int num_params;
     symbol* simbolo_actual = st->root;
     listParam* lista;
     param* param_actual;
+
+    printf("##TABLA DE SIMBOLOS##\n");
+
     while(simbolos != (st->num)+1){  //del primer al ultimo nodo
         printf("Simbolo #%i\n", simbolos);
         //se usa id para probar funciones get, puede ser directo
@@ -284,6 +290,7 @@ void imprimirTabla(symtab *st){
                 parametros++;
             }
         }
+
         printf("\n");
         simbolo_actual = simbolo_actual->next;
         simbolos++;

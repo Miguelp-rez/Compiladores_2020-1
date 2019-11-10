@@ -2,7 +2,6 @@
 
 #ifndef GLOBAL_H
 #define GLOBAL_H
-#include <stdbool.h>
 
 typedef struct _param param;
 struct _param{
