@@ -1,14 +1,14 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-#include "Global.h"
-#include "TypeTab.h"
+/*
+ * Compiladores Practica 5
+ * Programado por:
+ * Lopez Martinez Andres
+ * Morales Tellez Carlos Gamaliel
+ * Perez Quiroz Miguel Angel
+ * Sanchez Dias Maria Beatriz
+ * Fecha: 09/11/19
+*/
 
-/* Retorna un apuntador a una variable type */
-
-/*AGREGAR FUNCIONES QUE FALTAN*/
-
+/* Retorna un apuntador a una variable tipo */
 tipo *crearTipoPrimitivo(int id){
     tipo* base_type = malloc(sizeof(tipo));
     if(base_type){
@@ -19,6 +19,7 @@ tipo *crearTipoPrimitivo(int id){
     return base_type;
 }
 
+/* Retorna un apuntador a una variable tipo */
 tipo *crearTipoStruct(symtab* estructura){
     tipo* base_type = malloc(sizeof(tipo));
     if(base_type){
@@ -29,6 +30,7 @@ tipo *crearTipoStruct(symtab* estructura){
     return base_type;
 }
 
+/* Retorna un apuntador a una variable tipoBase */
 tipoBase *crearArqueTipo(bool is_struct, tipo* base_type){
     tipoBase* nuevo = malloc(sizeof(tipoBase));
     if(nuevo){
@@ -78,9 +80,18 @@ type *crearTipoNativo(int id, char* nombre, tipoBase* tb, int size){
     return tipo;
 }
 
+
+/*Crea una lista de tipos*/
+typetab* crearTypeTab(){
+    typetab* tt= malloc(sizeof(typetab));
+    tt->root=NULL;
+    tt->num=0;
+    tt->next = NULL;
+    return tt;
+}
 /* Borra la tabla de tipos, libera memoria */
 void borrarTypeTab(typetab *tt){
-	if(tt){
+    if(tt){
     type* aux;
     while(tt->root != NULL){
       aux = tt->root;
@@ -107,9 +118,9 @@ int buscarTipo(typetab* tt, char* nombre){
             else
                 tipo_actual = tipo_actual->next;
         }
-        return -1;	//El simbolo no existe
-  	}else
-  		printf("Error: la tabla de tipos no existe\n");
+        return -1;  //El simbolo no existe
+    }else
+        printf("Error: la tabla de tipos no existe\n");
       return -1;
 }
 
@@ -137,7 +148,7 @@ if(tt){
             printf("No guardar nada\n");
             return -1;
         }
-	}else
+    }else
         printf("Error: la tabla de tipos no existe\n");
         return -1;
 }
@@ -150,7 +161,7 @@ if(tt){
   */
  tipoBase* getTipoBase(typetab *tt, int id){
    if(tt){
-   	if(tt->root){
+    if(tt->root){
        type* aux = tt->root;
        int i;
        for(i=0;i<id; i++)
@@ -166,24 +177,24 @@ if(tt){
   * En caso de no encontrarlo retorna -1
   */
  int getTam(typetab *tt, int id){
- 	if(tt->root){
-   	type* aux = tt->root;
+    if(tt->root){
+    type* aux = tt->root;
     //Recorre la lista hasta que encuentre el id
     int i;
-   	for(i=0;i<id; i++)
-     	aux = aux->next;
-   	if(aux->tamBytes)
-     	return aux->tamBytes;
+    for(i=0;i<id; i++)
+        aux = aux->next;
+    if(aux->tamBytes)
+        return aux->tamBytes;
    }
- 	return -1;
+    return -1;
  }
 
  /* Retorna el numero de elementos de un tipo
   * En caso de no encontrarlo retorna -1
   */
  int getNumElem(typetab *tt, int id){
- 	if(tt){
-   	if(tt->root){
+    if(tt){
+    if(tt->root){
        type* aux = tt->root;
        //Recorre la lista hasta que encuentre el id
        int i;
@@ -201,25 +212,15 @@ if(tt){
   * En caso de no encontrarlo retorna NULL
   */
  char* getNombre(typetab *tt, int id){
- 	if(tt){
+    if(tt){
      if(tt->root){
-   		type* aux = tt->root;
-     	//Recorre la lista hasta que encuentre el id
+        type* aux = tt->root;
+        //Recorre la lista hasta que encuentre el id
         int i;
-   		for(i=0;i<id; i++)
-     		aux = aux->next;
-     	return aux->nombre;
-   	}
+        for(i=0;i<id; i++)
+            aux = aux->next;
+        return aux->nombre;
+    }
    }
- 	return NULL;
+    return NULL;
  }
-
-
-
-int main(){
-    tipo *tipo_base = crearTipoPrimitivo(0);
-    tipoBase *arquetipo = crearArqueTipo(false, tipo_base);
-    type *nuevoTipo = crearTipoNativo(0, "entero", arquetipo, 4);
-
-    return 0;
-}

@@ -1,6 +1,12 @@
-#include "Global.h"
-#include <stdio.h>
-#include <stdlib.h>
+/*
+ * Compiladores Practica 5
+ * Programado por:
+ * Lopez Martinez Andres
+ * Morales Tellez Carlos Gamaliel
+ * Perez Quiroz Miguel Angel
+ * Sanchez Dias Maria Beatriz
+ * Fecha: 09/11/19
+*/
 
 typedef struct _symstack symstack;
 
@@ -13,7 +19,7 @@ struct _symstack{
 symstack *crearSymStack();
 void borrarSymStack(symstack *pts);
 void insertarSymTab(symstack *pts, symtab *sym_tab);
-symtab* getCima(symstack *pts);
+symtab* getCimaSym(symstack *pts);
 void sacarSymTab(symstack *pts);
 
 symstack *crearSymStack(){
@@ -41,7 +47,7 @@ void borrarSymStack(symstack *pts){
   }
 }
 
-symtab* getCima(symstack *pts){
+symtab* getCimaSym(symstack *pts){
     symtab *aux = pts->root;
     return aux;
 }
@@ -51,7 +57,7 @@ void insertarSymTab(symstack *pts, symtab *sym_tab){
         if (pts->root == NULL){     //La pila esta vacia
             pts->root = sym_tab;
         }else{                      //La pila no esta vacia
-            symtab *aux = getCima(pts);
+            symtab *aux = getCimaSym(pts);
             sym_tab->next = aux;
             pts->root = sym_tab;
         }
@@ -66,7 +72,7 @@ void sacarSymTab(symstack *pts){
         if (pts->root == NULL){     //La pila esta vacia
             printf("ERROR: La pila de tabla de simbolos esta vacia");
         }else{                      //La pila no esta vacia
-            symtab *aux = getCima(pts);
+            symtab *aux = getCimaSym(pts);
             pts->root = aux->next;
             free(aux);
             pts->num--;
@@ -74,8 +80,4 @@ void sacarSymTab(symstack *pts){
     }else{
         printf("La pila de tabla de simbolos no existe");
     }
-}
-
-int main(){
-    return 0;
 }
