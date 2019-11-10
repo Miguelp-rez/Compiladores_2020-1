@@ -37,7 +37,7 @@ void borrarSymStack(symstack *pts){
         }
         free(pts);
   }else{
-    printf("No existe la lista de parametros\n");
+    printf("No existe la pila de tabla de simbolos\n");
   }
 }
 
@@ -66,12 +66,11 @@ void sacarSymTab(symstack *pts){
         if (pts->root == NULL){     //La pila esta vacia
             printf("ERROR: La pila de tabla de simbolos esta vacia");
         }else{                      //La pila no esta vacia
-            symtab *cima = getCima(pts);
-            symtab *aux = cima;
-            pts->root = cima->next;
+            symtab *aux = getCima(pts);
+            pts->root = aux->next;
             free(aux);
+            pts->num--;
         }
-        pts->num--;
     }else{
         printf("La pila de tabla de simbolos no existe");
     }
