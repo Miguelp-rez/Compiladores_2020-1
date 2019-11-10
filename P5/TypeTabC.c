@@ -80,6 +80,15 @@ type *crearTipoNativo(int id, char* nombre, tipoBase* tb, int size){
     return tipo;
 }
 
+
+/*Crea una lista de tipos*/
+typetab* crearTypeTab(){
+    typetab* tt= malloc(sizeof(typetab));
+    tt->root=NULL;
+    tt->num=0;
+    tt->next = NULL;
+    return tt;
+}
 /* Borra la tabla de tipos, libera memoria */
 void borrarTypeTab(typetab *tt){
     if(tt){
