@@ -20,7 +20,9 @@
 #include "TypeTabStack.c"
 
 int main(){
+    
     int exito;
+    symstack* sts = crearSymStack();
     symtab* st = crearSymTab();
     symbol* simbolo;
     param* parametro;
@@ -47,7 +49,11 @@ int main(){
         printf("Error al insertar\n");
 
     imprimirTabla(st);
-    borrarSymTab(st);
+    insertarSymTab(sts,st);
+    st = getCimaSym(sts);
+    sacarSymTab(sts);
+    borrarSymStack(sts);
+    
 
     tipo *tipo_base = crearTipoPrimitivo(0);
     tipoBase *arquetipo = crearArqueTipo(false, tipo_base);
