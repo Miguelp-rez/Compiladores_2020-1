@@ -78,50 +78,123 @@ type *crearTipoNativo(int id, char* nombre, tipoBase* tb, int size){
     return tipo;
 }
 
-/* Borra type, libera memoria */
-void borrarType(type *t){
-    printf("Hola");
+/* Borra la tabla de tipos, libera memoria */
+void borrarTypeTab(typetab *tt){
+	if(t){
+    type* aux;
+    while(tt->root != NULL){
+      aux = tt->root;
+      tt->root = tt->root->next;
+      free(aux);
+    }
+    free(tt);
+  } else {
+    printf("No existe la tabla de tipos");
+  }
 }
+
 
 /* Inserta al final de la lista en caso de insertar incrementa num
  * Retorna la posicion donde inserto en caso contrario retorna -1
  */
 int insertarTipo(typetab *st, type *t){
-    return 0;
+if(tt){
+        int posicion = buscarTipo(tt, t->nombre);
+        if(posicion == -1){
+            tt->num++;
+            if(tt->root == NULL){
+                tt->root = t; //es el primer simbolo
+            }
+            else{
+                type* tipo_actual = tt->root;
+                while(tipo_actual->next != NULL){
+                    tipo_actual = tipo_actual->next;
+                }
+                tipo_actual->next = t;
+            }
+            return (tt->num);
+        }
+        else{
+            printf("No guardar nada: %i\n");
+            return -1;
+        }
+	}else
+        printf("Error: la tabla de tipos no existe\n");
 }
 
 /* Retorna el tipo base de un tipo
  * En caso de no encontrarlo retorna NULL
  */
-tipoBase* getTipoBase(typetab *tt, int id){
-    return NULL;
-}
+ /* Retorna el tipo base de un tipo
+  * En caso de no encontrarlo retorna NULL
+  */
+ tipoBase* getTipoBase(typetab *tt, int id){
+   if(tt){
+   	if(tt->root){
+       type* aux = tt->root;
+       for(int i=0;i<id; i++)
+         aux = aux->next;
+       if(aux->tb)
+         return aux->tb;
+     }
+     return NULL;
+   }
+ }
+ /* Retorna el numero de bytes de un tipo
+  * En caso de no encontrarlo retorna -1
+  */
+ int getTam(typetab *tt, int id){
+ 	if(tt->root){
+   	type* aux = tt->root;
+     //Recorre la lista hasta que encuentre el id
+   	for(int i=0;i<id; i++)
+     	aux = aux->next;
+   	if(aux->tamBytes)
+     	return aux->tamBytes;
+   }
+ 	return -1;
+ }
 
-/* Retorna el numero de bytes de in tipo
- * En caso de no encontrarlo retorna -1
- */
-int getTam(typetab *tt, int id){
-    return 0;
-}
+ /* Retorna el numero de elementos de un tipo
+  * En caso de no encontrarlo retorna -1
+  */
+ int getNumElem(typetab *tt, int id){
+ 	if(tt){
+   	if(tt->root){
+       type* aux = tt->root;
+       //Recorre la lista hasta que encuentre el id
+       for(int i=0;i<id; i++)
+         aux = aux->next;
+       if(aux->numElem)
+         return aux->numElem;
+     }
+     return -1;
+   }
+ }
 
-/* Retorna el numero de elementos de un tipo
- * En caso de no encontrarlo retorna -1
- */
-int getNumElem(typetab *tt, int id){
-    return 0;
-}
+ /* Retorna el nombre de un tipo
+  * En caso de no encontrarlo retorna NULL
+  */
+ char* getNombre(typetab *tt, int id){
+ 	if(tt){
+     if(tt->root){
+   		type* aux = tt->root;
+     	//Recorre la lista hasta que encuentre el id
+   		for(int i=0;i<id; i++)
+     		aux = aux->next;
+   		if(aux->nombre)
+     		return aux->nombre;
+   	}
+   }
+ 	return -1;
+ }
 
-/* Retorna el nombre de un tipo
- * En caso de no encontrarlo retorna NULL
- */
-char* getNombre(typetab *tt, int id){
-    return NULL;
-}
+
 
 int main(){
     tipo *tipo_base = crearTipoPrimitivo(0);
     tipoBase *arquetipo = crearArqueTipo(false, tipo_base);
-    type *nuevoTipo = crearTipoNativo(0, "entero", arquetipo, 4); 
-    
+    type *nuevoTipo = crearTipoNativo(0, "entero", arquetipo, 4);
+
     return 0;
 }
