@@ -43,7 +43,7 @@ void borrarTypeStack(typestack *ptt){
         }
         free(ptt);
   }else{
-    printf("No existe la lista de parametros\n");
+    printf("No existe la pila de tabla de tipos\n");
   }
 }
 
@@ -73,12 +73,12 @@ typetab* sacarTypeTab(typestack *ptt){
             printf("ERROR: La pila de tabla de simbolos esta vacia");
         }else{                      //La pila no esta vacia
             typetab *cima = getCimaType(ptt);
-            typetab *aux = cima;
+            //typetab *aux = cima;
             ptt->root = cima->next;
-            free(aux);
+            ptt->num--;
+            //free(aux);
             return(cima);
         }
-        ptt->num--;
     }else{
         printf("La pila de tabla de simbolos no existe");
     }
