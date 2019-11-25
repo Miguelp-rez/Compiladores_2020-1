@@ -25,6 +25,6 @@ void elimina_quad(quad *q);
 code* crea_code();
 void elimina_code(code *c);
 void agregar_cuadrupla(code *c, char *op, char *arg1, char *arg2, char *res);
-code* imprime(code *c);
-
+//code* imprime(code *c);
+void imprime(code *c);
 #endif

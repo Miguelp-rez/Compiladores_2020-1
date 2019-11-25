@@ -5,12 +5,12 @@
 
 
 quad *crea_quad(char* op , char* arg1, char *arg2, char *res){
-	quad* q = malloc(sizeof(q));
+	quad* q = malloc(sizeof(quad));
 	if(q != NULL){
-        q->op = op;
-		q->arg1 = arg1;
-		q->arg2 = arg2;
-		q->res = res;
+    	q->op = op;
+			q->arg1 = arg1;
+			q->arg2 = arg2;
+			q->res = res;
     }
     else{
         printf("No hay memoria disponible\n");  //ERROR
@@ -56,20 +56,29 @@ void elimina_code(code *c){
 	free(c);
 	elimina_quad(c->root);
 }
-
-code* imprime(code *c){
-    printf("\t***CUADRUPLAS***\n");
-    printf("OP\tARG1\tARG2\tRES\n");
-    for(int i = 0; i < c->num_instrucciones; i++){
-        printf("%s\t%s\t%s\t%s\n",c->root[i].op, c->root[i].arg1, c->root[i].arg2, c->root[i].res);
-    }
+//code* imprime(code *c){
+void imprime(code *c){
+    for(int i = 0; i < c->num_instrucciones; i++)
+        printf("%s\t%s\t%s\t%s\n",
+						c->root[i].op,
+						c->root[i].arg1,
+						c->root[i].arg2,
+						c->root[i].res);
 }
 
 
 int main(int argc, char const *argv[])
 {
-	code* cod= crea_code();
-	agregar_cuadrupla(cod, "-", "a", "b", "t0" );
+	printf("\t***CUADRUPLAS***\n");
+	printf("OP\tARG1\tARG2\tRES\n");
+	code* cod = crea_code();
+	code* cod2 = crea_code();
+	code* cod3 = crea_code();
+	agregar_cuadrupla(cod, "-","a","b","t0");
+	agregar_cuadrupla(cod2,"+","a","b","t1");
+	agregar_cuadrupla(cod3,"*","a","b","t3");
 	imprime(cod);
+	imprime(cod2);
+	imprime(cod3);
 	return 0;
 }
