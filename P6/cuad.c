@@ -41,7 +41,6 @@ void agregar_cuadrupla(code* c, char *op, char* arg1, char *arg2, char* res){
     c->num_instrucciones++;
 }
 
-
 code* crea_code(){
 	code* c= malloc(sizeof(code));
     if(c != NULL){
