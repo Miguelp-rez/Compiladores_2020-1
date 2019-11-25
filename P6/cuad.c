@@ -1,9 +1,18 @@
+/*
+ * Compiladores Practica 6
+ * Programado por:
+ * Lopez Martinez Andres
+ * Morales Tellez Carlos Gamaliel
+ * Perez Quiroz Miguel Angel
+ * Sanchez Diaz Maria Beatriz
+ * Fecha: 24/11/19
+*/
+
 #include "cuad.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
+/*Comentarios de funciones en cuad.h*/
 quad *crea_quad(char* op , char* arg1, char *arg2, char *res){
 	quad* q = malloc(sizeof(quad));
 	if(q != NULL){
@@ -32,7 +41,6 @@ void agregar_cuadrupla(code* c, char *op, char* arg1, char *arg2, char* res){
     c->num_instrucciones++;
 }
 
-
 code* crea_code(){
 	code* c= malloc(sizeof(code));
     if(c != NULL){
@@ -54,9 +62,9 @@ void elimina_quad(quad *q){
 
 void elimina_code(code *c){
 	elimina_quad(c->root);
-	free(c);
+  free(c);
 }
-//code* imprime(code *c){
+
 void imprime(code *c){
     quad *aux = c->root;
 	while(aux){
@@ -69,16 +77,14 @@ void imprime(code *c){
 	}
 }
 
-
 int main(int argc, char const *argv[])
 {
 	printf("\t***CUADRUPLAS***\n");
 	printf("OP\tARG1\tARG2\tRES\n");
 	code* cod = crea_code();
 	agregar_cuadrupla(cod, "-","a","b","t0");
-	agregar_cuadrupla(cod, "-","a","b","t0");
-	agregar_cuadrupla(cod, "-","a","b","t0");
+	agregar_cuadrupla(cod,"+","a","b","t1");
+	agregar_cuadrupla(cod,"*","a","b","t3");
 	imprime(cod);
-	//elimina_code(cod);
 	return 0;
 }
