@@ -54,7 +54,7 @@ code* crea_code(){
 }
 
 void elimina_quad(quad *q){
-	while(q){
+	if(q->next){
 		elimina_quad(q->next);
 	}
 	free(q);
@@ -66,12 +66,15 @@ void elimina_code(code *c){
 }
 
 void imprime(code *c){
-    for(int i = 0; i < c->num_instrucciones; i++)
-        printf("%s\t%s\t%s\t%s\n",
-						c->root[i].op,
-						c->root[i].arg1,
-						c->root[i].arg2,
-						c->root[i].res);
+  quad *aux = c->root;
+  while(aux){
+    printf("%s\t%s\t%s\t%s\n",
+      aux->op,
+      aux->arg1,
+      aux->arg2,
+      aux->res);
+      aux = aux->next;
+  }
 }
 
 int main(int argc, char const *argv[])
@@ -83,5 +86,6 @@ int main(int argc, char const *argv[])
 	agregar_cuadrupla(cod,"+","a","b","t1");
 	agregar_cuadrupla(cod,"*","a","b","t3");
 	imprime(cod);
+  elimina_code(cod);
 	return 0;
 }
