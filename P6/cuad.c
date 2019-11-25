@@ -1,3 +1,12 @@
+/*
+ * Compiladores Practica 6
+ * Programado por:
+ * Lopez Martinez Andres
+ * Morales Tellez Carlos Gamaliel
+ * Perez Quiroz Miguel Angel
+ * Sanchez Diaz Maria Beatriz
+ * Fecha: 24/11/19
+*/
 #include "cuad.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -56,7 +65,7 @@ void elimina_code(code *c){
 	free(c);
 	elimina_quad(c->root);
 }
-//code* imprime(code *c){
+
 void imprime(code *c){
     for(int i = 0; i < c->num_instrucciones; i++)
         printf("%s\t%s\t%s\t%s\n",
