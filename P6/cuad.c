@@ -1,9 +1,18 @@
+/*
+ * Compiladores Practica 6
+ * Programado por:
+ * Lopez Martinez Andres
+ * Morales Tellez Carlos Gamaliel
+ * Perez Quiroz Miguel Angel
+ * Sanchez Diaz Maria Beatriz
+ * Fecha: 24/11/19
+*/
+
 #include "cuad.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
+/*Comentarios de funciones en cuad.h*/
 quad *crea_quad(char* op , char* arg1, char *arg2, char *res){
 	quad* q = malloc(sizeof(quad));
 	if(q != NULL){
@@ -53,10 +62,10 @@ void elimina_quad(quad *q){
 }
 
 void elimina_code(code *c){
-	free(c);
 	elimina_quad(c->root);
+  free(c);
 }
-//code* imprime(code *c){
+
 void imprime(code *c){
     for(int i = 0; i < c->num_instrucciones; i++)
         printf("%s\t%s\t%s\t%s\n",
@@ -65,7 +74,6 @@ void imprime(code *c){
 						c->root[i].arg2,
 						c->root[i].res);
 }
-
 
 int main(int argc, char const *argv[])
 {
