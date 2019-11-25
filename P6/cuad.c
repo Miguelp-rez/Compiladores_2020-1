@@ -75,6 +75,7 @@ void imprime(code *c){
       aux->res);
       aux = aux->next;
   }
+
 }
 
 int main(int argc, char const *argv[])
