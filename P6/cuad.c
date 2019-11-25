@@ -79,13 +79,9 @@ int main(int argc, char const *argv[])
 	printf("\t***CUADRUPLAS***\n");
 	printf("OP\tARG1\tARG2\tRES\n");
 	code* cod = crea_code();
-	code* cod2 = crea_code();
-	code* cod3 = crea_code();
 	agregar_cuadrupla(cod, "-","a","b","t0");
-	agregar_cuadrupla(cod2,"+","a","b","t1");
-	agregar_cuadrupla(cod3,"*","a","b","t3");
+	agregar_cuadrupla(cod,"+","a","b","t1");
+	agregar_cuadrupla(cod,"*","a","b","t3");
 	imprime(cod);
-	imprime(cod2);
-	imprime(cod3);
 	return 0;
 }

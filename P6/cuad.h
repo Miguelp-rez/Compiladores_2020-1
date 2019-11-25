@@ -43,7 +43,6 @@ void elimina_code(code *c);
 
 //se agrega una cuadrupla a la estructura code
 void agregar_cuadrupla(code *c, char *op, char *arg1, char *arg2, char *res);
-<<<<<<< HEAD
 
 //se imprime el codigo
 void imprime(code *c);
