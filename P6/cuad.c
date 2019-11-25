@@ -61,7 +61,9 @@ void elimina_quad(quad *q){
 }
 
 void elimina_code(code *c){
-	elimina_quad(c->root);
+  if(c->root){
+    elimina_quad(c->root);
+  }
   free(c);
 }
 
