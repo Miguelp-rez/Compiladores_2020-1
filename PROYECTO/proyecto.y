@@ -6,33 +6,22 @@
   extern int yylineno;
 
   /*falta declarar todas las funciones*/
-  int dir =0;
+  int dir = 0;
 %}
 
 %union{  /*yylval*/
-
-  struct{  /*Enteros y flotantes*/
+  struct{
     int tipo;
     union{
       int ival;
       float fval;
-    }valor;
-  }num;
-
-  struct{  /*Cadenas y caracteres*/
-    int tipo;
-    union{
+      double dval;
       char *sval;
-      char cval;
     }valor;
-  }cad;
-
-/*faltan estructuras de tipos, expresiones, etc*/
-
+  }terminal;
 }
 
-%token<num> NUM
-%token<cad> CADENA
+%token<terminal> TERMINAL
 %token SL
 %token ID
 %token PC PUNTO COMA
