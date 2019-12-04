@@ -193,7 +193,8 @@ expresion:
                                             $$.valor.fval = $1.valor.fval % $3.valor.fval;
                                         }                                        
                                      }
-                                     //printf("E-> E%E\n");}
+                                     //printf("E-> E%E\n");
+}
 | LPAR expresion RPAR {$$ = $2;
                                 //printf("E-> (E)\n");
 }
