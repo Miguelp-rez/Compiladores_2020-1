@@ -1,4 +1,3 @@
- 
 %{
 #include <stdio.h>
 #include <string.h>
@@ -19,32 +18,31 @@ dreal [0-9]+("."[0-9]+)?([Ee][+-]?[0-9]+)?
 car '([^\']*)'
 
 %%
-
         
-"func" {
+"func"  {
             yylval.line = yylineno;
             return FUNC;
         }
         
-"si" {
+"si"    {
             yylval.line = yylineno;
             return SI;
         }
         
 "verdadero" {
-            yylval.line = yylineno;
-            return VERDADERO;
-        }
+                yylval.line = yylineno;
+                return VERDADERO;
+            }
    
 "falso" {
             yylval.line = yylineno;
             return FALSO;
         }
     
-"mientras" {
-            yylval.line = yylineno;
-            return MIENTRAS;
-        }
+"mientras"  {
+                yylval.line = yylineno;
+                return MIENTRAS;
+            }
 
 
 {id}    { 
@@ -55,40 +53,40 @@ car '([^\']*)'
             return ID;
         }
 
-"sin"    {  
+"sin"   {  
             yylval.line = yylineno;
             return SIN;
         }
         
-{car}    {
+{car}   {
             //printf("caracter\n");
-                yylval.line = yylineno;
-                yylval.num.tipo = 1;                
-                strcpy(yylval.num.sval, yytext);
-                yylval.num.ival = atoi(yytext);
-                return CAR;
+            yylval.line = yylineno;
+            yylval.num.tipo = 1;                
+            strcpy(yylval.num.sval, yytext);
+            yylval.num.ival = atoi(yytext);
+            return CAR;
         }
         
 
-{ent}    {   
-                //printf("entero\n");
-                yylval.line = yylineno;
-                yylval.num.tipo = 2;                
-                strcpy(yylval.num.sval, yytext);
-                yylval.num.ival = atoi(yytext);
-                return NUM;
-            }
+{ent}   {   
+            //printf("entero\n");
+            yylval.line = yylineno;
+            yylval.num.tipo = 2;                
+            strcpy(yylval.num.sval, yytext);
+            yylval.num.ival = atoi(yytext);
+            return NUM;
+        }
 
 {real}  {   
-                //printf("flotante\n");
-                yylval.line = yylineno;
-                yylval.num.tipo = 4;                
-                strcpy(yylval.num.sval, yytext);
-                yylval.num.dval = atof(yytext);
-                return NUM;
-            }
+            //printf("flotante\n");
+            yylval.line = yylineno;
+            yylval.num.tipo = 4;                
+            strcpy(yylval.num.sval, yytext);
+            yylval.num.dval = atof(yytext);
+            return NUM;
+        }
             
-{dreal}  {   
+{dreal}     {   
                 //printf("flotante\n");
                 yylval.line = yylineno;
                 yylval.num.tipo = 3;                
@@ -96,8 +94,6 @@ car '([^\']*)'
                 yylval.num.dval = atof(yytext);
                 return NUM;
             }
-
-
             
 "+" {
         //printf("+\n");
@@ -141,11 +137,11 @@ car '([^\']*)'
         return RPAR;
     }
     
-":=" {
-        //printf("=\n");
-        yylval.line = yylineno;
-        return ASIG;
-    }
+":="    {
+            //printf("=\n");
+            yylval.line = yylineno;
+            return ASIG;
+        }
     
 "," {
         //printf(",\n"); 
@@ -167,106 +163,96 @@ car '([^\']*)'
 "]" {
         yylval.line = yylineno;
         return RCOR;
-   }
+    }
    
-"oo" {
-        yylval.line = yylineno;
-        return OO;
-   }
+"oo"    {
+            yylval.line = yylineno;
+            return OO;
+        }
 
-"yy" {
-        yylval.line = yylineno;
-        return YY;
-   }
+"yy"    {
+            yylval.line = yylineno;
+            return YY;
+        }
    
-"no" {
-        yylval.line = yylineno;
-        return NO;
-   }
+"no"    {
+            yylval.line = yylineno;
+            return NO;
+        }
    
 ">" {
         yylval.line = yylineno;
         return MA;
-   }
+    }
    
 "<" {
         yylval.line = yylineno;
         return M;
-   }
+    }
    
-">=" {
-        yylval.line = yylineno;
-        return MAEQ;
-   }
+">="    {
+            yylval.line = yylineno;
+            return MAEQ;
+        }
    
-"<=" {
-        yylval.line = yylineno;
-        return MEQ;
-   }
+"<="    {
+            yylval.line = yylineno;
+            return MEQ;
+        }
    
-"==" {
-        yylval.line = yylineno;
-        return EQEQ;
-   }
+"=="    {
+            yylval.line = yylineno;
+            return EQEQ;
+        }
     
-"<>" {
-        yylval.line = yylineno;
-        return MMA;
-   }
-   
-
+"<>"    {
+            yylval.line = yylineno;
+            return MMA;
+        }
     
 [ \n\t]+ {}
 
-
 <comen1>{
-\n {/*Ignora saltos de linea∗*/}
-[^*\n]*       {/* come todo lo que no sea '*' */}
-"*"+[^*>\n]*  {/* come '*'s no seguidos por '>' */}
-(.)*("*>")(.)*("*>") {printf("Ha ocurrido un error léxico en la linea : %i\nEl caracter de error es %s\n", yylineno, yytext); }
-<<EOF>> {printf("Ha ocurrido un error léxico: el comentario no finaliza\n"); exit(1);}
 "*>" {BEGIN(INITIAL);}
-
+<<EOF>> {printf("Ha ocurrido un error léxico: el comentario no finaliza\n"); exit(1);}
+.|\n {/*Ignora todo lo que no es *>*/}
 }
 
 <comen2>{
+. {/*Ignora todo lo que no sea un salto de linea*/}
 \n {BEGIN (INITIAL);}
 }
-
 
 <INITIAL>{
 "<*"  {BEGIN(comen1);}
 "--"  {BEGIN(comen2);}
 }
 
-
+"*>" {printf("Ha ocurrido un error léxico en la linea : %i\nEl caracter de error es %s\n", yylineno, yytext); }
 . {printf("Ha ocurrido un error léxico en la linea : %i\nEl caracter de error es %s\n", yylineno, yytext); }
-
 
 %%
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv){
     FILE *f, *o;
     f=fopen(argv[1], "r");
     yyin= f;
-
-     if (yyin == NULL)    {      
-     printf("El fichero %s no se puede abrir\n", argv[1]);      
-     exit (-1);    
+    if (yyin == NULL){      
+        printf("El fichero %s no se puede abrir\n", argv[1]);      
+        exit (-1);    
     }
     else{
-      o= fopen("salidaP4.txt","w");
-      int token=yylex();
-      fprintf(o, "<%i %s>\n", token, value);
-      while(token!=0){  
-        token=yylex();  
-        fprintf(o, "<%i %s>", token, value);
+        o= fopen("salidaP4.txt","w");
+        int token=yylex();
+        fprintf(o, "<%i %s>\n", token, value);
+        while(token!=0){ 
+            token=yylex();  
+            fprintf(o, "<%i %s>", token, value);
         }
         fprintf(o, "%i", token);
         printf("Se genero archivo de salidaṔ4.txt'\n");   
         fclose(yyin);
         fclose(yyout);
         return 0;    
-        }
-  }
+    }
+}
