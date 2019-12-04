@@ -12,39 +12,62 @@
 %option noyywrap
 
 digito [0-9]
-ent {digito}+
+ent_def {digito}+
 exp [Ee][+-]?{ent}
-real ({ent}.?{ent}{exp}|{ent}?.{ent}{exp}?|{ent}.{ent}?{exp}?)[Ff]
-dreal {ent}.?{ent}{exp}|{ent}?.{ent}{exp}?|{ent}.{ent}?{exp}?
+real_def ({ent}.?{ent}{exp}|{ent}?.{ent}{exp}?|{ent}.{ent}?{exp}?)[Ff]
+dreal_def {ent}.?{ent}{exp}|{ent}?.{ent}{exp}?|{ent}.{ent}?{exp}?
 letra [a-zA-Z]
 id (_|{letra})((_|{letra}|{digito})){0,31}
-base ent|real|dreal|car|sin
-car '([^'])'
+
+car_def '([^'])'
 cadena \"([^"]*)\"
+
+registro [Rr][Ee][Gg][Ii][Ss][Tt][Rr][Oo]
+inicio [Ii][Nn][Ii][Cc][Ii][Oo]
+fin [Ff][Ii][Nn]
+ent [Ee][Nn][Tt]
+real [Rr][Ee][Aa][Ll]
+dreal [Dd][Rr][Ee][Aa][Ll]
+car [Cc][Aa][Rr]
+sin [Ss][Ii][Nn]
+base {ent}|{real}|{dreal}|{car}|{sin}
+func [Ff][Uu][Nn][Cc]
+si [Ss][Ii]
+entonces [Ee][Nn][Tt][Oo][Nn][Cc][Ee][Ss]
+sino [Ss][Ii][Nn][Oo]
+mientras [Mm][Ii][Ee][Nn][Tt][Rr][Aa][Ss]
+hacer [Hh][Aa][Cc][Ee][Rr]
+mientrasq [Mm][Ii][Ee][Nn][Tt][Rr][Aa][Ss]" "[Qq][Uu][Ee]
+escribir [Ee][Ss][Cc][Rr][Ii][Bb][Ii][Rr]
+leer [Ll][Ee][Ee][Rr]
+devolver [Dd][Ee][Vv][Oo][Ll][Vv][Ee][Rr]
+terminar [Tt][Ee][Rr][Mm][Ii][Nn][Aa][Rr]
+verdadero [Vv][Ee][Rr][Dd][Aa][Dd][Ee][Rr][Oo]
+falso [Ff][Aa][Ll][Ss][Oo]
 
 %%
         
-"func"  {
+{func}  {
             yylval.line = yylineno;
             return FUNC;
         }
         
-"si"    {
+{si}    {
             yylval.line = yylineno;
             return SI;
         }
         
-"verdadero" {
+{verdadero} {
                 yylval.line = yylineno;
                 return VERDADERO;
             }
    
-"falso" {
+{falso} {
             yylval.line = yylineno;
             return FALSO;
         }
     
-"mientras"  {
+{mientras}  {
                 yylval.line = yylineno;
                 return MIENTRAS;
             }
@@ -57,12 +80,12 @@ cadena \"([^"]*)\"
             return ID;
         }
 
-"sin"   {  
+{sin}   {  
             yylval.line = yylineno;
             return SIN;
         }
         
-{car}   {
+{car_def}   {
             //printf("caracter\n");
             yylval.line = yylineno;
             yylval.num.tipo = 1;                
@@ -71,7 +94,7 @@ cadena \"([^"]*)\"
             return CAR;
         }   
 
-{ent}   {   
+{ent_def}   {   
             //printf("entero\n");
             yylval.line = yylineno;
             yylval.num.tipo = 2;                
@@ -80,7 +103,7 @@ cadena \"([^"]*)\"
             return NUM;
         }
 
-{real}  {   
+{real_def}  {   
             //printf("flotante\n");
             yylval.line = yylineno;
             yylval.num.tipo = 4;                
@@ -89,7 +112,7 @@ cadena \"([^"]*)\"
             return NUM;
         }
             
-{dreal}     {   
+{dreal_def}     {   
                 //printf("flotante\n");
                 yylval.line = yylineno;
                 yylval.num.tipo = 3;                
