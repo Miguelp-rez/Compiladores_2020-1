@@ -233,26 +233,44 @@ car '([^\']*)'
 
 %%
 
+//***MOVER A MAIN GLOBAL***
 int main(int argc, char **argv){
-    FILE *f, *o;
-    f=fopen(argv[1], "r");
-    yyin= f;
-    if (yyin == NULL){      
-        printf("El fichero %s no se puede abrir\n", argv[1]);      
-        exit (-1);    
+  
+  //validacion de cantidad de argumentos
+  if(argc < 2){
+    printf("Falta el nombre del archivo.\n");
+    exit(-1);
+  }
+
+  //validacion de archivo abierto
+  yyin = fopen(argv[1], "r");
+  if (yyin == NULL){      
+    printf("El archivo %s no se puede abrir\n", argv[1]);      
+    exit (-1);    
+  }
+
+  //validacion de archivo creado
+  yyout = fopen("salida.txt","w");
+  if (yyout == NULL){      
+    printf("El archivo salida.txt no se puede crear.\n");      
+    exit (-1);
+  }
+
+  //validacion de primer token
+  int token = yylex();
+  if(token == -1){
+    printf("No se pudo obtener el primer token.\n");      
+  }
+  else{
+    while(token!=0){  
+      printf("<%i, %s>\n", token, value);  
+      fprintf(yyout, "<%i, %s>\n", token, value);
+      token = yylex();
     }
-    else{
-        o= fopen("salidaP4.txt","w");
-        int token=yylex();
-        fprintf(o, "<%i %s>\n", token, value);
-        while(token!=0){ 
-            token=yylex();  
-            fprintf(o, "<%i %s>", token, value);
-        }
-        fprintf(o, "%i", token);
-        printf("Se genero archivo de salidaṔ4.txt'\n");   
-        fclose(yyin);
-        fclose(yyout);
-        return 0;    
-    }
+    printf("Se genera archivo: salida.txt\n");  
+  }
+
+  fclose(yyin);
+  fclose(yyout);
+  return 0;
 }
