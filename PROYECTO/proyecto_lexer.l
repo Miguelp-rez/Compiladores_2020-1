@@ -11,12 +11,16 @@
 %option yylineno
 %option noyywrap
 
-id [a-zA-Z_][a-zA-Z0-9_]*
-ent [0-9]+
-real [0-9]+("."[0-9]+)?([Ee][+-]?[0-9]+)?[fF]
-dreal [0-9]+("."[0-9]+)?([Ee][+-]?[0-9]+)?
-//car '([^'])'
-//cadena \"([^"]*)\"
+digito [0-9]
+ent {digito}+
+exp [Ee][+-]?{ent}
+real ({ent}.?{ent}{exp}|{ent}?.{ent}{exp}?|{ent}.{ent}?{exp}?)[Ff]
+dreal {ent}.?{ent}{exp}|{ent}?.{ent}{exp}?|{ent}.{ent}?{exp}?
+letra [a-zA-Z]
+id (_|{letra})((_|{letra}|{digito})){0,31}
+base ent|real|dreal|car|sin
+car '([^'])'
+cadena \"([^"]*)\"
 
 %%
         
