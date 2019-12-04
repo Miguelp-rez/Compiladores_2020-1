@@ -19,7 +19,7 @@
         }valor;
     }num;
 
-
+/*faltan estructuras de tipos, expresiones, etc*/
 
 }
 
@@ -56,6 +56,8 @@
 %start programa
 %%
 
+
+/*Estructura de la gramatica, falta agregar todas las reglas semanticas*/
 programa: declaraciones SL funciones {};
 
 declaraciones:
