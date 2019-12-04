@@ -9,21 +9,30 @@
   int dir =0;
 %}
 
-%union{
+%union{  /*yylval*/
 
-  struct{
-        int tipo;
-        union{
-            int ival;
-            float fval;
-        }valor;
-    }num;
+  struct{  /*Enteros y flotantes*/
+    int tipo;
+    union{
+      int ival;
+      float fval;
+    }valor;
+  }num;
+
+  struct{  /*Cadenas y caracteres*/
+    int tipo;
+    union{
+      char *sval;
+      char cval;
+    }valor;
+  }cad;
 
 /*faltan estructuras de tipos, expresiones, etc*/
 
 }
 
 %token<num> NUM
+%token<cad> CADENA
 %token SL
 %token ID
 %token PC PUNTO COMA

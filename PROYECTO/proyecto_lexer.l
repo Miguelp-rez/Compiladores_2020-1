@@ -15,7 +15,8 @@ id [a-zA-Z_][a-zA-Z0-9_]*
 ent [0-9]+
 real [0-9]+("."[0-9]+)?([Ee][+-]?[0-9]+)?[fF]
 dreal [0-9]+("."[0-9]+)?([Ee][+-]?[0-9]+)?
-car '([^\']*)'
+car '([^'])'
+cadena \"([^"]*)\"
 
 %%
         
@@ -44,7 +45,6 @@ car '([^\']*)'
                 return MIENTRAS;
             }
 
-
 {id}    { 
             //printf("id\n");            
             yylval.line = yylineno;            
@@ -65,8 +65,7 @@ car '([^\']*)'
             strcpy(yylval.num.sval, yytext);
             yylval.num.ival = atoi(yytext);
             return CAR;
-        }
-        
+        }   
 
 {ent}   {   
             //printf("entero\n");
@@ -82,7 +81,7 @@ car '([^\']*)'
             yylval.line = yylineno;
             yylval.num.tipo = 4;                
             strcpy(yylval.num.sval, yytext);
-            yylval.num.dval = atof(yytext);
+            yylval.num.fval = atof(yytext);
             return NUM;
         }
             
@@ -91,7 +90,7 @@ car '([^\']*)'
                 yylval.line = yylineno;
                 yylval.num.tipo = 3;                
                 strcpy(yylval.num.sval, yytext);
-                yylval.num.dval = atof(yytext);
+                yylval.num.fval = atof(yytext);
                 return NUM;
             }
             
