@@ -1,5 +1,15 @@
 %{
   #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
+  #include <stdbool.h>
+  #include "SymTab.h"
+  #include "TypeTab.h"
+  #include "SymTabC.c"
+  #include "TypeTabC.c"
+  #include "SymTabStack.c"
+  #include "TypeTabStack.c"
+
   void yyerror(char* msg);
   void yyaccept();
   extern int yylex();
@@ -56,14 +66,31 @@
 
 
 /*Estructura de la gramatica, falta agregar todas las reglas semanticas*/
-programa: declaraciones SL funciones {};
+programa: declaraciones SL funciones {
+  dir = 0;
+  //Se crea una nueva pila de tablas de tipos
+  typestack *StackTT = crearTypeStack();
+  //Se crea una nueva pila de tablas de símbolos
+  symstack *StackTS = crearSymStack();
+  //Se crea una nueva tabla de símbolos
+  symtab *ts = crearSymTab();
+  //Se crea una nueva tabla de tipos
+  typetab *tt = crearTypeTab();
+  //Acción semántica: StackTT.push(tt)
+  insertarTypeTab(StackTT, tt);
+  //Acción semántica: StackTS.push(ts)
+  insertarSymTab(StackTS,ts);
+  //¿Cuál es la tabla de cadenas?...
+
+
+};
 
 declaraciones:
   tipo lista_var SL declaraciones {}
 | tipo_registro lista_var SL declaraciones {}
 | /*epsilon*/ {};
 
-tipo: 
+tipo:
   base tipo_arreglo {}
 base:
   ENT {}
@@ -72,7 +99,7 @@ base:
 | CAR {}
 | SIN {};
 
-tipo_arreglo: 
+tipo_arreglo:
   RCOR NUM LCOR tipo_arreglo{}
 | /*epsilon*/ {}
 lista_var:
@@ -136,23 +163,23 @@ relacional:
 
 expresion:
   expresion MAS expresion {if($1.tipo == $3.tipo){
-                                        $$.tipo = $1.tipo;                            
-                                        if($1.tipo = 0){                                            
+                                        $$.tipo = $1.tipo;
+                                        if($1.tipo = 0){
                                             $$.valor.ival = $1.valor.ival + $3.valor.ival;
                                             printf("%d = %d + %d\n", $$.valor.ival, $1.valor.ival, $3.valor.ival);
                                         }else{
                                             $$.valor.fval = $1.valor.fval + $3.valor.fval;
-                                        }                                        
+                                        }
                                      }
                                      //printf("E-> E+E\n");
 }
 | expresion MENOR expresion {if($1.tipo == $3.tipo){
-                                            $$.tipo = $1.tipo;                            
+                                            $$.tipo = $1.tipo;
                                             if($1.tipo = 0){
                                                 $$.valor.ival = $1.valor.ival - $3.valor.ival;
                                             }else{
                                                 $$.valor.fval = $1.valor.fval - $3.valor.fval;
-                                            }                                                                                    
+                                            }
                                         }
                                         //printf("E-> E-E\n");
 }
@@ -162,24 +189,24 @@ expresion:
                                             $$.valor.ival = $1.valor.ival * $3.valor.ival;
                                         }else{
                                             $$.valor.fval = $1.valor.fval * $3.valor.fval;
-                                        }                                        
+                                        }
                                      }
                                      //printf("E-> E*E\n");
 }
 | expresion DIV expresion {if($1.tipo == $3.tipo){
                                         $$.tipo = $1.tipo;
-                                        if($1.tipo = 0){                                            
+                                        if($1.tipo = 0){
                                             if($3.valor.ival != 0)
                                                 $$.valor.ival = $1.valor.ival / $3.valor.ival;
                                             else
                                                 yyerror("No se puede hacer la división entre cero");
-                                        }else{                                                            
-                                            if($3.valor.fval != 0)                                            
-                                                $$.valor.fval = $1.valor.fval / $3.valor.fval;                                                                       
+                                        }else{
+                                            if($3.valor.fval != 0)
+                                                $$.valor.fval = $1.valor.fval / $3.valor.fval;
                                             else
                                                 yyerror("No se puede hacer la división entre cero");
 
-                                        }                                        
+                                        }
                                      }
                                      //printf("E-> E/E\n");
 }
@@ -189,7 +216,7 @@ expresion:
                                             $$.valor.ival = $1.valor.ival % $3.valor.ival;
                                         }else{
                                             $$.valor.fval = $1.valor.fval % $3.valor.fval;
-                                        }                                        
+                                        }
                                      }
                                      //printf("E-> E%E\n");
 }
