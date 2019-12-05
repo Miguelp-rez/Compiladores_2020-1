@@ -1,3 +1,13 @@
+/*
+ * Compiladores Proyecto final
+ * Programado por:
+ * Lopez Martinez Andres
+ * Morales Tellez Carlos Gamaliel
+ * Perez Quiroz Miguel Angel
+ * Sanchez Diaz Maria Beatriz
+ * Fecha: 04/12/19
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 

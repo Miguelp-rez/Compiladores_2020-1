@@ -1,3 +1,13 @@
+/*
+ * Compiladores Proyecto final
+ * Programado por:
+ * Lopez Martinez Andres
+ * Morales Tellez Carlos Gamaliel
+ * Perez Quiroz Miguel Angel
+ * Sanchez Diaz Maria Beatriz
+ * Fecha: 04/12/19
+*/
+
 %{
 #include <stdio.h>
 #include <string.h>
@@ -46,81 +56,81 @@ verdadero [Vv][Ee][Rr][Dd][Aa][Dd][Ee][Rr][Oo]
 falso [Ff][Aa][Ll][Ss][Oo]
 
 %%
-        
+
 {func}  {
             yylval.line = yylineno;
             return FUNC;
         }
-        
+
 {si}    {
             yylval.line = yylineno;
             return SI;
         }
-        
+
 {verdadero} {
                 yylval.line = yylineno;
                 return VERDADERO;
             }
-   
+
 {falso} {
             yylval.line = yylineno;
             return FALSO;
         }
-    
+
 {mientras}  {
                 yylval.line = yylineno;
                 return MIENTRAS;
             }
 
-{id}    { 
-            //printf("id\n");            
-            yylval.line = yylineno;            
+{id}    {
+            //printf("id\n");
+            yylval.line = yylineno;
             strcpy(yylval.sval, yytext);
             //printf("se hizo la copia \n");
             return ID;
         }
 
-{sin}   {  
+{sin}   {
             yylval.line = yylineno;
             return SIN;
         }
-        
+
 {car_def}   {
             //printf("caracter\n");
             yylval.line = yylineno;
-            yylval.num.tipo = 1;                
+            yylval.num.tipo = 1;
             strcpy(yylval.num.sval, yytext);
             yylval.num.ival = atoi(yytext);
             return CAR;
-        }   
+        }
 
-{ent_def}   {   
+{ent_def}   {
             //printf("entero\n");
             yylval.line = yylineno;
-            yylval.num.tipo = 2;                
+            yylval.num.tipo = 2;
             strcpy(yylval.num.sval, yytext);
             yylval.num.ival = atoi(yytext);
             return NUM;
         }
 
-{real_def}  {   
+{real_def}  {
             //printf("flotante\n");
             yylval.line = yylineno;
-            yylval.num.tipo = 4;                
+            yylval.num.tipo = 4;
             strcpy(yylval.num.sval, yytext);
             yylval.num.fval = atof(yytext);
             return NUM;
         }
-            
-{dreal_def}     {   
+
+{dreal_def}     {
                 //printf("flotante\n");
                 yylval.line = yylineno;
-                yylval.num.tipo = 3;                
+                yylval.num.tipo = 3;
                 strcpy(yylval.num.sval, yytext);
                 yylval.num.fval = atof(yytext);
                 return NUM;
             }
-            
+
 "+" {
         //printf("+\n");
         yylval.line = yylineno;
@@ -132,7 +142,7 @@ falso [Ff][Aa][Ll][Ss][Oo]
         yylval.line = yylineno;
         return MENOS;
     }
-    
+
 "*" {
         //printf("*\n");
         yylval.line = yylineno;
@@ -150,31 +160,31 @@ falso [Ff][Aa][Ll][Ss][Oo]
         yylval.line = yylineno;
         return MOD;
     }
-    
+
 "(" {
         //printf("(\n");
         yylval.line = yylineno;
         return LPAR;
     }
-    
+
 ")" {
         //printf(")\n");
         yylval.line = yylineno;
         return RPAR;
     }
-    
+
 ":="    {
             //printf("=\n");
             yylval.line = yylineno;
             return ASIG;
         }
-    
+
 "," {
-        //printf(",\n"); 
+        //printf(",\n");
         yylval.line = yylineno;
         return COMA;
     }
-    
+
 ";" {
         ///printf(";\n");
         yylval.line = yylineno;
@@ -190,7 +200,7 @@ falso [Ff][Aa][Ll][Ss][Oo]
         yylval.line = yylineno;
         return RCOR;
     }
-   
+
 "oo"    {
             yylval.line = yylineno;
             return OO;
@@ -200,42 +210,42 @@ falso [Ff][Aa][Ll][Ss][Oo]
             yylval.line = yylineno;
             return YY;
         }
-   
+
 "no"    {
             yylval.line = yylineno;
             return NO;
         }
-   
+
 ">" {
         yylval.line = yylineno;
         return MA;
     }
-   
+
 "<" {
         yylval.line = yylineno;
         return M;
     }
-   
+
 ">="    {
             yylval.line = yylineno;
             return MAEQ;
         }
-   
+
 "<="    {
             yylval.line = yylineno;
             return MEQ;
         }
-   
+
 "=="    {
             yylval.line = yylineno;
             return EQEQ;
         }
-    
+
 "<>"    {
             yylval.line = yylineno;
             return MMA;
         }
-    
+
 [ \n\t]+ {}
 
 <comen1>{
@@ -261,7 +271,7 @@ falso [Ff][Aa][Ll][Ss][Oo]
 
 //***MOVER A MAIN GLOBAL***
 int main(int argc, char **argv){
-  
+
   //validacion de cantidad de argumentos
   if(argc < 2){
     printf("Falta el nombre del archivo.\n");
@@ -270,30 +280,30 @@ int main(int argc, char **argv){
 
   //validacion de archivo abierto
   yyin = fopen(argv[1], "r");
-  if (yyin == NULL){      
-    printf("El archivo %s no se puede abrir\n", argv[1]);      
-    exit (-1);    
+  if (yyin == NULL){
+    printf("El archivo %s no se puede abrir\n", argv[1]);
+    exit (-1);
   }
 
   //validacion de archivo creado
   yyout = fopen("salida.txt","w");
-  if (yyout == NULL){      
-    printf("El archivo salida.txt no se puede crear.\n");      
+  if (yyout == NULL){
+    printf("El archivo salida.txt no se puede crear.\n");
     exit (-1);
   }
 
   //validacion de primer token
   int token = yylex();
   if(token == -1){
-    printf("No se pudo obtener el primer token.\n");      
+    printf("No se pudo obtener el primer token.\n");
   }
   else{
-    while(token!=0){  
-      printf("<%i, %s>\n", token, value);  
+    while(token!=0){
+      printf("<%i, %s>\n", token, value);
       fprintf(yyout, "<%i, %s>\n", token, value);
       token = yylex();
     }
-    printf("Se genera archivo: salida.txt\n");  
+    printf("Se genera archivo: salida.txt\n");
   }
 
   fclose(yyin);

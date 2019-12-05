@@ -1,5 +1,5 @@
 /*
- * Compiladores Practica 5
+ * Compiladores Proyecto final
  * Programado por:
  * Lopez Martinez Andres
  * Morales Tellez Carlos Gamaliel

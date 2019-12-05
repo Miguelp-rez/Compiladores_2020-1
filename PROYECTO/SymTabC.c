@@ -1,5 +1,5 @@
 /*
- * Compiladores Practica 5
+ * Compiladores Proyecto final
  * Programado por:
  * Lopez Martinez Andres
  * Morales Tellez Carlos Gamaliel
@@ -133,7 +133,7 @@ int insertar(symtab* st, symbol* sym){
                 while(simbolo_actual->next != NULL){
                     simbolo_actual = simbolo_actual->next;
                 }
-                simbolo_actual->next = sym;                
+                simbolo_actual->next = sym;
             }
             return (st->num);
         }
