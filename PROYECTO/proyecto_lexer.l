@@ -28,7 +28,7 @@ real_def ({ent}.?{ent}{exp}|{ent}?.{ent}{exp}?|{ent}.{ent}?{exp}?)[Ff]
 dreal_def {ent}.?{ent}{exp}|{ent}?.{ent}{exp}?|{ent}.{ent}?{exp}?
 
 letra [a-zA-Z]
-id (_|{letra})((_|{letra}|{digito})){0,31}
+id (_|{letra})(_|{letra}|{digito}){0,31}
 
 car_def '([^'])'
 cadena \"([^\"]*)\"
@@ -123,13 +123,6 @@ falso [Ff][Aa][Ll][Ss][Oo]
                 yylval.terminal.valor.sval = yytext;
                 return TERMINAL;
             }
-
-{id}    {
-            //printf("id\n");
-            yylval.terminal.tipo = 5;
-            yylval.terminal.valor.sval = yytext;
-            return TERMINAL;
-        }
 
 {func}  {
             return FUNC;
@@ -275,6 +268,13 @@ falso [Ff][Aa][Ll][Ss][Oo]
 
 "<>"    {
             return MMA;
+        }
+
+{id}    {
+            //printf("id\n");
+            yylval.terminal.tipo = 5;
+            yylval.terminal.valor.sval = yytext;
+            return TERMINAL;
         }
 
 [ \n\t]+ {}
