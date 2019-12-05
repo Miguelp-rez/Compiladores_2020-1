@@ -52,11 +52,12 @@
       char *sval;
     }valor;
   }terminal;
+  char sval[32];
 }
 
 %token<terminal> TERMINAL
 %token SL
-%token ID
+%token<sval> ID
 %token PC PUNTO COMA
 %token ENT REAL DREAL CAR SIN
 %token ENT_DEF REAL_DEF DREAL_DEF CAR_DEF
