@@ -108,7 +108,7 @@ falso [Ff][Aa][Ll][Ss][Oo]
             //printf("entero\n");
             yylval.line = yylineno;
             yylval.terminal.tipo = 2;
-            strcpy(yylval.terminal.valor.ival, yytext);
+            strcpy(yylval.terminal.valor.sval, yytext);
             yylval.terminal.valor.ival = atoi(yytext);
             return TERMINAL;
         }
@@ -116,8 +116,8 @@ falso [Ff][Aa][Ll][Ss][Oo]
 {real_def}  {
             //printf("flotante\n");
             yylval.line = yylineno;
-            yylval.terminal.tipo = 4;
-            strcpy(yylval.terminal.valor.fval, yytext);
+            yylval.terminal.tipo = 3;
+            strcpy(yylval.terminal.valor.sval, yytext);
             yylval.terminal.valor.fval = atoi(yytext);
             return TERMINAL;
         }
@@ -125,8 +125,8 @@ falso [Ff][Aa][Ll][Ss][Oo]
 {dreal_def}     {
                 //printf("dflotante\n");
                 yylval.line = yylineno;
-                yylval.terminal.tipo = 3;
-                strcpy(yylval.terminal.valor.dval, yytext);
+                yylval.terminal.tipo = 4;
+                strcpy(yylval.terminal.valor.sval, yytext);
                 yylval.terminal.valor.dval = atoi(yytext);
                 return TERMINAL;
             }
