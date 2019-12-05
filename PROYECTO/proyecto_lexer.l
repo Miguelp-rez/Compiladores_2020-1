@@ -30,8 +30,8 @@ dreal_def {ent}.?{ent}{exp}|{ent}?.{ent}{exp}?|{ent}.{ent}?{exp}?
 letra [a-zA-Z]
 id (_|{letra})((_|{letra}|{digito})){0,31}
 
-//car_def '([^'])'
-//cadena \"([^\"]*)\"
+car_def '([^'])'
+cadena \"([^\"]*)\"
 
 registro [Rr][Ee][Gg][Ii][Ss][Tt][Rr][Oo]
 inicio [Ii][Nn][Ii][Cc][Ii][Oo]
@@ -106,7 +106,7 @@ falso [Ff][Aa][Ll][Ss][Oo]
 {dreal_def} {
                 //printf("flotante\n");
                 yylval.terminal.tipo = 2;
-                yylval.terminal.valor.fval = atof(yytext);
+                yylval.terminal.valor.dval = atof(yytext);
                 return TERMINAL;
             }
 
