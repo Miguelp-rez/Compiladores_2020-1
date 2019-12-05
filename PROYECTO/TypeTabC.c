@@ -79,9 +79,37 @@ type *crearTipoNativo(int id, char* nombre, tipoBase* tb, int size){
 /*Crea una lista de tipos*/
 typetab* crearTypeTab(){
     typetab* tt= malloc(sizeof(typetab));
+    tipo *tipo_base;
+    tipoBase *arquetipo;
+    type *nuevoTipo;
+
     tt->root=NULL;
     tt->num=0;
     tt->next = NULL;
+
+    //Crear tipo entero
+    tipo_base = crearTipoPrimitivo(0);
+    arquetipo = crearArqueTipo(false, tipo_base);
+    nuevoTipo = crearTipoNativo(0, "ent", arquetipo, 4);
+    insertarTipo(tt, nuevoTipo);
+
+    //Crear tipo real
+    tipo_base = crearTipoPrimitivo(1);
+    arquetipo = crearArqueTipo(false, tipo_base);
+    nuevoTipo = crearTipoNativo(1, "real", arquetipo, 4);
+    insertarTipo(tt, nuevoTipo);
+
+    //Crear tipo doble
+    tipo_base = crearTipoPrimitivo(2);
+    arquetipo = crearArqueTipo(false, tipo_base);
+    nuevoTipo = crearTipoNativo(2, "dreal", arquetipo, 8);
+    insertarTipo(tt, nuevoTipo);
+
+    //Crear tipo caracter
+    tipo_base = crearTipoPrimitivo(3);
+    arquetipo = crearArqueTipo(false, tipo_base);
+    nuevoTipo = crearTipoNativo(3, "entero", arquetipo, 4);
+    insertarTipo(tt, nuevoTipo);
     return tt;
 }
 

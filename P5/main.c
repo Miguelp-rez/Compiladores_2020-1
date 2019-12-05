@@ -86,29 +86,17 @@ int main(){
 
     //PRUEBA DE TABLA DE TIPOS
     printf("---------------PRUEBA DE TABLA DE TIPOS---------------\n");
+    int size;
     tipo *tipo_base;
     tipoBase *arquetipo;
     type *nuevoTipo;
     typetab* tt = crearTypeTab();
 
-    //insercion de tipo int
-    printf("\n * Se inserta un tipo int valido\n");
-    printf("Resultado esperado: EXITO\n");
-    tipo_base = crearTipoPrimitivo(0);
-    arquetipo = crearArqueTipo(false, tipo_base);
-    nuevoTipo = crearTipoNativo(0, "entero", arquetipo, 4);
-    exito = insertarTipo(tt, nuevoTipo);
-    if(exito == -1)
-        printf("Error al insertar\n");
-    else
-        printf("EXITO\n");
-
     //insercion de tipo array
     printf("\n * Se inserta un tipo array valido\n");
-    printf("Resultado esperado: EXITO\n");
-    tipo_base = crearTipoPrimitivo(0);
-    arquetipo = crearArqueTipo(false, tipo_base);
-    nuevoTipo = crearTipoArray(1, "array", arquetipo, 8, 2);
+    arquetipo = getTipoBase(tt, 0);  //Entero
+    size = getTam(tt,0) * 2; //2 elementos
+    nuevoTipo = crearTipoArray(tt->num, "array", arquetipo, size, 2);
     exito = insertarTipo(tt, nuevoTipo);
     if(exito == -1)
         printf("Error al insertar\n");
@@ -117,12 +105,11 @@ int main(){
 
     //insercion de tipo struct
     printf("\n * Se inserta un tipo struct valido\n");
-    printf("Resultado esperado: EXITO\n");
     symtab* st2 = crearSymTab();
     typetab* tt2 = crearTypeTab();
     tipo_base = crearTipoStruct(st2);
     arquetipo = crearArqueTipo(true, tipo_base);
-    nuevoTipo = crearTipoNativo(2, "struct", arquetipo, 20);
+    nuevoTipo = crearTipoNativo(tt->num, "struct", arquetipo, 20);
     exito = insertarTipo(tt, nuevoTipo);
     if(exito == -1)
         printf("Error al insertar\n");
