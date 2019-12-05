@@ -26,11 +26,12 @@ ent_def {digito}+
 exp [Ee][+-]?{ent}
 real_def ({ent}.?{ent}{exp}|{ent}?.{ent}{exp}?|{ent}.{ent}?{exp}?)[Ff]
 dreal_def {ent}.?{ent}{exp}|{ent}?.{ent}{exp}?|{ent}.{ent}?{exp}?
+
 letra [a-zA-Z]
 id (_|{letra})((_|{letra}|{digito})){0,31}
 
-car_def '([^'])'
-cadena \"([^"]*)\"
+//car_def '([^'])'
+//cadena \"([^\"]*)\"
 
 registro [Rr][Ee][Gg][Ii][Ss][Tt][Rr][Oo]
 inicio [Ii][Nn][Ii][Cc][Ii][Oo]
@@ -40,7 +41,6 @@ real [Rr][Ee][Aa][Ll]
 dreal [Dd][Rr][Ee][Aa][Ll]
 car [Cc][Aa][Rr]
 sin [Ss][Ii][Nn]
-base {ent}|{real}|{dreal}|{car}|{sin}
 func [Ff][Uu][Nn][Cc]
 si [Ss][Ii]
 entonces [Ee][Nn][Tt][Oo][Nn][Cc][Ee][Ss]
@@ -57,192 +57,223 @@ falso [Ff][Aa][Ll][Ss][Oo]
 
 %%
 
-{func}  {
-            yylval.line = yylineno;
-            return FUNC;
-        }
-
-{si}    {
-            yylval.line = yylineno;
-            return SI;
-        }
-
-{verdadero} {
-                yylval.line = yylineno;
-                return VERDADERO;
+{registro}  {
+                return REGISTRO;
             }
 
-{falso} {
-            yylval.line = yylineno;
-            return FALSO;
+{inicio}    {
+                return INICIO;
+            }
+
+{fin}   {
+            return FIN;
         }
 
-{mientras}  {
-                yylval.line = yylineno;
-                return MIENTRAS;
+{ent}   {
+            return ENT;
+        }
+
+{real}  {
+            return REAL;
+        }
+
+{dreal} {
+            return DREAL;
+        }
+
+{car}   {
+            return CAR;
+        }
+
+{sin}   {
+            return SIN;
+        }
+
+{ent_def}   {
+                //printf("entero\n");
+                yylval.terminal.tipo = 0;
+                yylval.terminal.valor.ival = atoi(yytext);
+                return TERMINAL;
+            }
+
+{real_def}  {
+                //printf("flotante\n");
+                yylval.terminal.tipo = 1;
+                yylval.terminal.valor.fval = atof(yytext);
+                return TERMINAL;
+            }
+
+{dreal_def} {
+                //printf("flotante\n");
+                yylval.terminal.tipo = 2;
+                yylval.terminal.valor.fval = atof(yytext);
+                return TERMINAL;
+            }
+
+{car_def}   {
+                //printf("caracter\n");
+                yylval.terminal.tipo = 3;
+                yylval.terminal.valor.sval = yytext;
+                return TERMINAL;
+            }
+
+{cadena}    {
+                //printf("cadena\n");
+                yylval.terminal.tipo = 4;
+                yylval.terminal.valor.sval = yytext;
+                return TERMINAL;
             }
 
 {id}    {
             //printf("id\n");
-            yylval.line = yylineno;
-            strcpy(yylval.sval, yytext);
-            //printf("se hizo la copia \n");
-            return ID;
+            yylval.terminal.tipo = 5;
+            yylval.terminal.valor.sval = yytext;
+            return TERMINAL;
         }
 
-{sin}   {
-            yylval.line = yylineno;
-            return SIN;
+{func}  {
+            return FUNC;
         }
 
-{car_def}   {
-            //printf("caracter\n");
-            yylval.line = yylineno;
-            yylval.num.tipo = 1;
-            strcpy(yylval.num.sval, yytext);
-            yylval.num.ival = atoi(yytext);
-            return CAR;
+{si}    {
+            return SI;
         }
 
-{ent_def}   {
-            //printf("entero\n");
-            yylval.line = yylineno;
-            yylval.num.tipo = 2;
-            strcpy(yylval.num.sval, yytext);
-            yylval.num.ival = atoi(yytext);
-            return NUM;
-        }
-
-{real_def}  {
-            //printf("flotante\n");
-            yylval.line = yylineno;
-            yylval.num.tipo = 4;
-            strcpy(yylval.num.sval, yytext);
-            yylval.num.fval = atof(yytext);
-            return NUM;
-        }
-
-{dreal_def}     {
-                //printf("flotante\n");
-                yylval.line = yylineno;
-                yylval.num.tipo = 3;
-                strcpy(yylval.num.sval, yytext);
-                yylval.num.fval = atof(yytext);
-                return NUM;
+{entonces}  {
+                return ENTONCES;
             }
+
+{sino}  {
+            return SINO;
+        }
+
+{mientras}  {
+                return MIENTRAS;
+            }
+
+{hacer} {
+            return HACER;
+        }
+
+{mientrasq}  {
+                return MIENTRASQ;
+            }
+
+{escribir}  {
+                return ESCRIBIR;
+            }
+
+{leer}  {
+            return LEER;
+        }
+
+{devolver}  {
+                return DEVOLVER;
+            }
+
+{terminar}  {
+                return TERMINAR;
+            }
+
+{verdadero} {
+                return VERDADERO;
+            }
+
+{falso} {
+            return FALSO;
+        }
 
 "+" {
         //printf("+\n");
-        yylval.line = yylineno;
         return MAS;
     }
 
 "-" {
         //printf("+\n");
-        yylval.line = yylineno;
         return MENOS;
     }
 
 "*" {
         //printf("*\n");
-        yylval.line = yylineno;
         return MUL;
     }
 
 "/" {
         //printf("+\n");
-        yylval.line = yylineno;
         return DIV;
     }
 
 "%" {
         //printf("+\n");
-        yylval.line = yylineno;
         return MOD;
     }
 
 "(" {
         //printf("(\n");
-        yylval.line = yylineno;
         return LPAR;
     }
 
 ")" {
         //printf(")\n");
-        yylval.line = yylineno;
         return RPAR;
     }
 
 ":="    {
             //printf("=\n");
-            yylval.line = yylineno;
             return ASIG;
         }
 
 "," {
         //printf(",\n");
-        yylval.line = yylineno;
         return COMA;
     }
 
 ";" {
         ///printf(";\n");
-        yylval.line = yylineno;
         return PC;
     }
 
 "[" {
-        yylval.line = yylineno;
         return LCOR;
     }
 
 "]" {
-        yylval.line = yylineno;
         return RCOR;
     }
 
 "oo"    {
-            yylval.line = yylineno;
             return OO;
         }
 
 "yy"    {
-            yylval.line = yylineno;
             return YY;
         }
 
 "no"    {
-            yylval.line = yylineno;
             return NO;
         }
 
 ">" {
-        yylval.line = yylineno;
         return MA;
     }
 
 "<" {
-        yylval.line = yylineno;
         return M;
     }
 
 ">="    {
-            yylval.line = yylineno;
             return MAEQ;
         }
 
 "<="    {
-            yylval.line = yylineno;
             return MEQ;
         }
 
 "=="    {
-            yylval.line = yylineno;
             return EQEQ;
         }
 
 "<>"    {
-            yylval.line = yylineno;
             return MMA;
         }
 

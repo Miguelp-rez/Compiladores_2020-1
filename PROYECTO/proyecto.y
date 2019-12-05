@@ -25,10 +25,22 @@
   extern int yylex();
   extern int yylineno;
 
+  int base; /*Variable global*/
+
   /*falta declarar todas las funciones*/
   int dir = 0;
   /*Falta crear pila de direcciones*/
 %}
+
+/*
+  Tipos:
+  - Numero entero      = 0
+  - Numero real        = 1
+  - Numero real doble  = 2
+  - Caracter           = 3
+  - Cadena             = 4
+  - Identificador      = 5
+*/
 
 %union{  /*yylval*/
   struct{
@@ -47,6 +59,7 @@
 %token ID
 %token PC PUNTO COMA
 %token ENT REAL DREAL CAR SIN
+%token ENT_DEF REAL_DEF DREAL_DEF CAR_DEF
 %token FUNC
 %token SI
 %token ENTONCES
