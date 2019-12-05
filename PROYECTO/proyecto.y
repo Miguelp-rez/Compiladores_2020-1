@@ -17,6 +17,7 @@
 
   /*falta declarar todas las funciones*/
   int dir = 0;
+  /*Falta crear pila de direcciones*/
 %}
 
 %union{  /*yylval*/
@@ -89,6 +90,24 @@ declaraciones:
   tipo lista_var SL declaraciones {}
 | tipo_registro lista_var SL declaraciones {}
 | /*epsilon*/ {};
+
+tipo_registro:
+  registro SL inicio declaraciones SL fin {
+    //Se crea una nueva tabla de símbolos
+    symtab *ts = crearSymTab();
+    //Se crea una nueva tabla de tipos
+    typetab *tt = crearTypeTab();
+    //StackDir.push(dir) //FALTA PILA DE DIRECCIONES
+    dir = 0;
+    //insertarTypeTab(StackTT,tt); //No se ha declarado el stack ¿Qué debería ir aquí?
+    //insertarSymTab(StackTS,ts);
+    //dir = StackDir.pop() //FALTA PILA DE DIRECCIONES
+    //tt1 = StackTT.pop() //
+    //StackTS.getCima().setTT(tt1)
+    //ts1 = StackTS.pop()
+    //dir = StackDir.pop()
+    //type = StackTT.getCima().addTipo(”registro”,0, ts1)
+  }
 
 tipo:
   base tipo_arreglo {}
