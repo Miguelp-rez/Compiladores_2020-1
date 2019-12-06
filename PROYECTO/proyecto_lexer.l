@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "y.tab.h"
+#include "proyecto.tab.h"
 %}
 
 %x comen1
@@ -114,13 +114,15 @@ falso [Ff][Aa][Ll][Ss][Oo]
 
 {car_def}   {
                 //printf("caracter\n");
-                yylval.caracter.cval = yytext;
+                //MODIFICAR (comillas)
+                //yylval.caracter.cval = yytext;
                 return CARACTER;
             }
 
 {cadena}    {
                 //printf("cadena\n");
-                yylval.cadena.sval = yytext;
+                //MODIFICAR (comillas)
+                //yylval.cadena.sval = yytext;
                 return CADENA;
             }
 
@@ -213,7 +215,7 @@ falso [Ff][Aa][Ll][Ss][Oo]
 
 ":="    {
             //printf("=\n");
-            return ASIG;
+            return ASIGN;
         }
 
 "," {
@@ -273,7 +275,7 @@ falso [Ff][Aa][Ll][Ss][Oo]
 {id}    {
             //printf("id\n");
             strcpy(yylval.id.id, yytext);
-            return TERMINAL;
+            return ID;
         }
 
 [ \t\r]+ {/*IGNORAR*/}
@@ -300,45 +302,3 @@ falso [Ff][Aa][Ll][Ss][Oo]
 . {printf("Ha ocurrido un error léxico en la linea : %i\nEl caracter de error es %s\n", yylineno, yytext); }
 
 %%
-
-//***MOVER A MAIN GLOBAL***
-int main(int argc, char **argv){
-
-  //validacion de cantidad de argumentos
-  if(argc < 2){
-    printf("Falta el nombre del archivo.\n");
-    exit(-1);
-  }
-
-  //validacion de archivo abierto
-  yyin = fopen(argv[1], "r");
-  if (yyin == NULL){
-    printf("El archivo %s no se puede abrir\n", argv[1]);
-    exit (-1);
-  }
-
-  //validacion de archivo creado
-  yyout = fopen("salida.txt","w");
-  if (yyout == NULL){
-    printf("El archivo salida.txt no se puede crear.\n");
-    exit (-1);
-  }
-
-  //validacion de primer token
-  int token = yylex();
-  if(token == -1){
-    printf("No se pudo obtener el primer token.\n");
-  }
-  else{
-    while(token!=0){
-      printf("<%i, %s>\n", token, value);
-      fprintf(yyout, "<%i, %s>\n", token, value);
-      token = yylex();
-    }
-    printf("Se genera archivo: salida.txt\n");
-  }
-
-  fclose(yyin);
-  fclose(yyout);
-  return 0;
-}

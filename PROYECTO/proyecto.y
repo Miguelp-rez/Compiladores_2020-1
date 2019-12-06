@@ -64,9 +64,16 @@
     char id[32];
   }id;
 
-  struct{ /*Identificadores*/
+  struct{ /*Expresiones*/
     int tipo;
+    union{
+      int ival;
+      float fval;
+      double dval;
+      char *sval;
+    }valor;
   }expresion;
+
 }
 
 %token<num> NUM
@@ -274,9 +281,9 @@ expresion:
                                         $$.tipo = $1.tipo;
                                         if($1.tipo = 0){
                                             $$.valor.ival = $1.valor.ival % $3.valor.ival;
-                                        }else{
+                                        }/*else{
                                             $$.valor.fval = $1.valor.fval % $3.valor.fval;
-                                        }
+                                        }*/
                                      }
                                      //printf("E-> E%E\n");
 }
