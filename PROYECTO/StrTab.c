@@ -17,6 +17,7 @@ struct _strtab{
 //};
 
 struct _item{
+	char* tipo;
 	char* content;
 	item* next;
 };
@@ -62,7 +63,7 @@ void insertarItem(strtab *strTab, item *itemcc){
 	}
 }
 
-void insertarCadena(strtab *strTab, string cadena){
+void insertarCadena(strtab *strTab, char* cadena){
 	if(strTab){
 		item* nuevaCadena;
 		nuevaCadena->content = cadena;
@@ -80,15 +81,15 @@ void insertarCadena(strtab *strTab, string cadena){
 }
 
 
-symtab* sacarSymTab(symstack *pts){
+item* sacarCadena(strtab *srtTab){
     if(pts){    //Si existe la pila
-        if (pts->root == NULL){     //La pila esta vacia
-            printf("ERROR: La pila de tabla de simbolos esta vacia");
-        }else{                      //La pila no esta vacia
-            symtab *cima = getCimaSym(pts);
+        if (strTab->root == NULL){     //La pila esta vacia
+            printf("ERROR: La tabla de cadenas está vacía");
+        }else{                      //La pila no esta vacía
+            item *cima = getCimaStr(strTab);
             //symtab *aux = cima;
-            pts->root = cima->next;
-            pts->num--;
+            strTab->root = cima->next;
+            strTab->num--;
             //free(aux);
             return cima;
         }
