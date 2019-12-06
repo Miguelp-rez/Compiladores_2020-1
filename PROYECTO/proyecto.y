@@ -316,3 +316,37 @@ void yyerror(char *msg){
 void yyaccept(){
   printf("ACEPTA");
 }
+
+//DEFINIENDO FUNCIONES NECESARIAS max, amp, backpatch, newLabel, newTemp
+
+/*- int = 0
+  - float= 1
+  - double= 2
+  - char= 3
+*/
+int  max(int t1, int t2){
+    if(t1 == t2)
+        return t1;
+    else if(t1==3 && t2 == 0){    //float   int
+        return t2;
+    }else if( t1 == 0 && t2==3){  //int char
+        return t1;
+    }else if(t1==0 && t2 == 1){   //int  float
+        return t2;
+    }else if( t1 == 1 && t2==0){  //float int
+        return t1;
+    }else if(t1==0 && t2 == 2){   //int  double
+        return t2;
+    }else if(t1 == 2 && t2==0){  //double int
+        return t1;
+    }
+    else if(t1==1 && t2 == 2){  //float double
+        return t2;
+    }else if(t1 == 2 && t2==1){ //double float
+        return t1;
+    }
+    else{
+        yyerror("Error");
+        return -1;
+    }
+}
