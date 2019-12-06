@@ -1,11 +1,11 @@
 /*
- * Compiladores Practica 6
+ * Compiladores Proyecto final
  * Programado por:
  * Lopez Martinez Andres
  * Morales Tellez Carlos Gamaliel
  * Perez Quiroz Miguel Angel
  * Sanchez Diaz Maria Beatriz
- * Fecha: 24/11/19
+ * Fecha: 04/12/19
 */
 
 #include "cuad.h"
