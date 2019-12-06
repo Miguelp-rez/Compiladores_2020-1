@@ -43,18 +43,32 @@
 */
 
 %union{  /*yylval*/
-  struct{
+  struct{ /*Numero enteros, reales y reales dobles*/
     int tipo;
     union{
       int ival;
       float fval;
       double dval;
-      char *sval;
     }valor;
-  }terminal;
+  }num;
+
+  struct{ /*Caracteres*/
+    char cval;
+  }caracter;
+
+  struct{ /*Cadenas*/
+    char *sval;
+  }cadena;
+
+  struct{ /*Identificadores*/
+    char id[32];
+  }id;
 }
 
-%token<terminal> TERMINAL
+%token<num> NUM
+%token<caracter> CARACTER
+%token<cadena> CADENA
+%token<id> ID
 %token SL /*Salto de linea*/
 %token REGISTRO
 %token INICIO FIN

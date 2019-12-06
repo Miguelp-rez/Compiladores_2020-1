@@ -93,37 +93,35 @@ falso [Ff][Aa][Ll][Ss][Oo]
 
 {ent_def}   {
                 //printf("entero\n");
-                yylval.terminal.tipo = 0;
-                yylval.terminal.valor.ival = atoi(yytext);
-                return TERMINAL;
+                yylval.num.tipo = 0;
+                yylval.num.valor.ival = atoi(yytext);
+                return NUM;
             }
 
 {real_def}  {
                 //printf("flotante\n");
-                yylval.terminal.tipo = 1;
-                yylval.terminal.valor.fval = atof(yytext);
-                return TERMINAL;
+                yylval.num.tipo = 1;
+                yylval.num.valor.fval = atof(yytext);
+                return NUM;
             }
 
 {dreal_def} {
                 //printf("flotante\n");
-                yylval.terminal.tipo = 2;
-                yylval.terminal.valor.dval = atof(yytext);
-                return TERMINAL;
+                yylval.num.tipo = 2;
+                yylval.num.valor.dval = atof(yytext);
+                return NUM;
             }
 
 {car_def}   {
                 //printf("caracter\n");
-                yylval.terminal.tipo = 3;
-                yylval.terminal.valor.sval = yytext;
-                return TERMINAL;
+                yylval.caracter.cval = yytext;
+                return CARACTER;
             }
 
 {cadena}    {
                 //printf("cadena\n");
-                yylval.terminal.tipo = 4;
-                yylval.terminal.valor.sval = yytext;
-                return TERMINAL;
+                yylval.cadena.sval = yytext;
+                return CADENA;
             }
 
 {func}  {
@@ -274,8 +272,7 @@ falso [Ff][Aa][Ll][Ss][Oo]
 
 {id}    {
             //printf("id\n");
-            yylval.terminal.tipo = 5;
-            yylval.terminal.valor.sval = yytext;
+            strcpy(yylval.id.id, yytext);
             return TERMINAL;
         }
 
