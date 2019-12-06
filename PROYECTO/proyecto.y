@@ -15,10 +15,13 @@
   #include <stdbool.h>
   #include "SymTab.h"
   #include "TypeTab.h"
+  #include "cuad.h"
   #include "SymTabC.c"
   #include "TypeTabC.c"
   #include "SymTabStack.c"
   #include "TypeTabStack.c"
+  #include "cuad.c"
+
 
   void yyerror(char* msg);
   void yyaccept();
