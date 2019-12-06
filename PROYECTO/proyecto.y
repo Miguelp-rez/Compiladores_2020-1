@@ -63,6 +63,10 @@
   struct{ /*Identificadores*/
     char id[32];
   }id;
+
+  struct{ /*Identificadores*/
+    int tipo;
+  }expresion;
 }
 
 %token<num> NUM
@@ -98,6 +102,8 @@
 %left NO
 %nonassoc LPAR RPAR LCOR RCOR
 
+%type<expresion> expresion
+
 %start programa
 %%
 
@@ -127,7 +133,7 @@ declaraciones:
 | /*epsilon*/ {};
 
 tipo_registro:
-  registro SL inicio declaraciones SL fin {
+  REGISTRO SL INICIO declaraciones SL FIN {
     //Se crea una nueva tabla de símbolos
     symtab *ts = crearSymTab();
     //Se crea una nueva tabla de tipos
@@ -188,7 +194,7 @@ sentencias:
 
 sentencia:
   SI expresion_booleana ENTONCES SL sentencias SL FIN {}
-| SI expresion_booleada SL sentencias SL SINO SL sentencias SL FIN {}
+| SI expresion_booleana SL sentencias SL SINO SL sentencias SL FIN {}
 | MIENTRAS SL expresion_booleana HACER SL sentencias SL FIN {}
 | HACER SL sentencia SL MIENTRASQ expresion_booleana {}
 | ID ASIGN expresion {}
@@ -204,7 +210,7 @@ expresion_booleana:
 | NO expresion_booleana {}
 | relacional {}
 | VERDADERO {}
-| FALSE {};
+| FALSO {};
 
 relacional:
   relacional M relacional {}
@@ -227,7 +233,7 @@ expresion:
                                      }
                                      //printf("E-> E+E\n");
 }
-| expresion MENOR expresion {if($1.tipo == $3.tipo){
+| expresion MENOS expresion {if($1.tipo == $3.tipo){
                                             $$.tipo = $1.tipo;
                                             if($1.tipo = 0){
                                                 $$.valor.ival = $1.valor.ival - $3.valor.ival;
