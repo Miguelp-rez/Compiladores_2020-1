@@ -25,10 +25,11 @@
   extern int yylex();
   extern int yylineno;
 
-  int base; /*Variable global*/
+  int base_global; /*Variable global*/
 
   /*falta declarar todas las funciones*/
   int dir = 0;
+  int max(int t1, int t2);
   /*Falta crear pila de direcciones*/
 %}
 
@@ -66,6 +67,7 @@
 
   struct{ /*Expresiones*/
     int tipo;
+    int dir;
     union{
       int ival;
       float fval;
@@ -73,7 +75,6 @@
       char *sval;
     }valor;
   }expresion;
-
 }
 
 %token<num> NUM
@@ -158,17 +159,28 @@ tipo_registro:
   }
 
 tipo:
-  base tipo_arreglo {}
+  base tipo_arreglo {
+    base_global=base.tipo;  //base=base.tipo
+    tipo.tipo=tipo_arreglo.tipo; //tipo.tipo=tipo_arreglo.tipo
+  };
+
 base:
-  ENT {}
-| REAL {}
-| DREAL {}
-| CAR {}
-| SIN {};
+  ENT {base.tipo=0;}
+| REAL {base.tipo=1;}
+| DREAL {base.tipo=2;}
+| CAR {base.tipo=3;}
+| SIN {base.tipo=4;};
 
 tipo_arreglo:
-  RCOR NUM LCOR tipo_arreglo{}
-| /*epsilon*/ {}
+  RCOR NUM LCOR tipo_arreglo{
+  //if($2.tipo==0 && $2.valor.ival>0){ 
+  //$$.tipo=StackTT.getCima().addTipo(”array”,$2.valor.ival,$4.tipo)
+  //}else{
+  //yyerror(”El ındice tiene que ser entero y mayor que cero”)
+  //}
+  }
+| /*epsilon*/ {tipo_arreglo.tipo=base_global};
+
 lista_var:
   lista_var COMA ID {}
 | ID {};
@@ -287,10 +299,11 @@ expresion:
                                      }
                                      //printf("E-> E%E\n");
 }
-| LPAR expresion RPAR {$$ = $2;
-                                //printf("E-> (E)\n");
-}
-| variable {}| NUM {} | CADENA {} | CARACTER {} | ID LPAR parametros RPAR {};
+| LPAR expresion RPAR {$$ = $2;}
+| variable {}
+| NUM {$$.tipo=$1.tipo;
+      $$.dir=$1.valor;} 
+| CADENA {} | CARACTER {} | ID LPAR parametros RPAR {};
 
 variable:
   ID arreglo {}
