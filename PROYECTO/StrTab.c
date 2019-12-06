@@ -22,9 +22,16 @@ struct _item{
 	item* next;
 };
 
+strtab* crearStrTab();
+void borrarStrTab(strtab*);
+item* getCimaStr(strtab*);
+void insertarItem(strtab*, item*);
+void insertarCadena(strtab*, char*);
+item* sacarItem(strtab*);
+
 strtab* crearStrTab(){
 	strtab *nuevaStrTab = malloc(sizeof(strtab));
-	if(strtab){
+	if(nuevaStrTab){
 		nuevaStrTab->root = NULL;
 		nuevaStrTab->num = 0;
 	}else{
@@ -33,9 +40,9 @@ strtab* crearStrTab(){
 	return nuevaStrTab;
 }
 
-void borarStrTab(strtab *strTab){
+void borrarStrTab(strtab *strTab){
 	if(strTab){
-		strTab* aux;
+		item* aux;
 		while(strTab->root){
 			aux = strTab->root;
 			strTab->root = strTab->root->next;
@@ -47,6 +54,10 @@ void borarStrTab(strtab *strTab){
 	}
 }
 
+item* getCimaStr(strtab *strTab){
+	item *aux = strTab->root;
+	return aux;
+}
 
 void insertarItem(strtab *strTab, item *itemcc){
 	if(strTab){
@@ -65,7 +76,7 @@ void insertarItem(strtab *strTab, item *itemcc){
 
 void insertarCadena(strtab *strTab, char* cadena){
 	if(strTab){
-		item* nuevaCadena;
+		item* nuevaCadena = malloc(sizeof(item));
 		nuevaCadena->content = cadena;
 		if(strlen(cadena) == 1){
 			nuevaCadena->tipo = "caracter";
@@ -74,26 +85,38 @@ void insertarCadena(strtab *strTab, char* cadena){
 		}else{
 			nuevaCadena->tipo = "vacio";
 		}
-		insertarItem(strTab,nuevaCadena);)
+		insertarItem(strTab,nuevaCadena);
 	}else{
-		printf("No existe la tabla de cadenas\n")
+		printf("No existe la tabla de cadenas\n");
 	}
 }
 
 
-item* sacarCadena(strtab *srtTab){
-    if(pts){    //Si existe la pila
-        if (strTab->root == NULL){     //La pila esta vacia
+item* sacarItem(strtab *strTab){
+    if(strTab){    //Si existe la tabla de cadenas
+        if (strTab->root == NULL){     //La tabla de cadenas esta vacia
             printf("ERROR: La tabla de cadenas está vacía");
-        }else{                      //La pila no esta vacía
+        }else{                      //La tabla de cadenas no esta vacía
             item *cima = getCimaStr(strTab);
-            //symtab *aux = cima;
             strTab->root = cima->next;
             strTab->num--;
-            //free(aux);
             return cima;
         }
     }else{
         printf("La pila de tabla de simbolos no existe");
     }
+}
+
+int main(){
+	strtab* nuevaTabla = crearStrTab();
+	insertarCadena(nuevaTabla,"Hola, mundo");
+	insertarCadena(nuevaTabla,"C");
+	insertarCadena(nuevaTabla,"");
+	item *vacio = sacarItem(nuevaTabla);
+	item *caracter = sacarItem(nuevaTabla);
+	item *cadena = sacarItem(nuevaTabla);
+	printf("%s: %s\n",cadena->tipo,cadena->content);
+	printf("%s: %s\n",caracter->tipo,caracter->content);
+	printf("%s: %s\n",vacio->tipo,vacio->content);
+	borrarStrTab(nuevaTabla);
 }
