@@ -27,7 +27,7 @@
 
   int base_global; /*Variable global*/
   int tipo_b;
-
+  int i_temp = 0;
   /*falta declarar todas las funciones*/
   int dir = 0;
   int max(int t1, int t2);
