@@ -139,9 +139,8 @@ programa: declaraciones SL funciones {
   insertarSymTab(StackTS,ts);
   //Se crea una nueva tabla de cadenas
   strtab* TC= crearStrTab();
-
-
-
+  //Se crea una nueva pila de direcciones
+  dirstack* StackDir crearDirStack()
 };
 
 declaraciones:
@@ -150,23 +149,35 @@ declaraciones:
 | /*epsilon*/ {};
 
 tipo_registro:
-  REGISTRO SL INICIO declaraciones SL FIN {
+  REGISTRO SL INICIO declaraciones{
     //Se crea una nueva tabla de símbolos
     symtab *ts = crearSymTab();
     //Se crea una nueva tabla de tipos
     typetab *tt = crearTypeTab();
-    //StackDir.push(dir) //FALTA PILA DE DIRECCIONES
+    //Se guarda la direccion en la Pila
+    insertarDireccion(StackDir,dir);
+    //Se reinicia la direccion
     dir = 0;
-    //insertarTypeTab(StackTT,tt); //No se ha declarado el stack ¿Qué debería ir aquí?
-    //insertarSymTab(StackTS,ts);
-    //dir = StackDir.pop() //FALTA PILA DE DIRECCIONES
-    //tt1 = StackTT.pop() //
-    //StackTS.getCima().setTT(tt1)
-    //ts1 = StackTS.pop()
-    //dir = StackDir.pop()
-    //type = StackTT.getCima().addTipo(”registro”,0, ts1)
-  }
-
+    //Se guarda la nueva tabla de tipos en la pila
+    insertarTypeTab(StackTT, tt);
+    //Se guarda la nueva tabla de simbolos en la pila
+    insertarSymTab(StackTS, ts);
+    }
+    SL FIN{
+    //Se recupera la direccion de la pila
+    dir = sacarDireccion(StackDir);
+    //Se recupera
+    tt1 = sacarTypeTab(StackTT);
+    //StackTS.getCima().setTT(tt1)  //Falta crear setTT()
+    ts1 = sacarSymTab(StackTS);
+    //Se recupera la direccion de la pila
+    dir = sacarDireccion(StackDir);
+    //Todo lo de abajo es: type = StackTT.getCima().addTipo(”registro”,0, ts1)
+    tipo_base = crearTipoStruct(ts1);
+    arquetipo = crearArqueTipo(true, tipo_base);
+    nuevoTipo = crearTipoNativo(tt->num, "struct", arquetipo, 20);
+    type = insertarTipo(tt, nuevoTipo) - 1;
+    }
 tipo:
 base tipo_arreglo {
     tipo_b=$1.tipo; 

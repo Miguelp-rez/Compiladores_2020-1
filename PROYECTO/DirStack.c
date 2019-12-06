@@ -31,7 +31,7 @@ void borrarDirStack(dirstack*);
 void insertarDir(dirstack*, direc*);
 void insertarDireccion(dirstack*,int);
 direc* getCimaDir(dirstack*);
-direc* sacarDireccion(dirstack*);
+int sacarDireccion(dirstack*);
 
 dirstack* crearDirStack(){
   dirstack* newDirStack = malloc(sizeof(dirstack));
@@ -86,7 +86,7 @@ void insertarDireccion(dirstack* pilaDir,int direccion){
 
 }
 
-direc* sacarDireccion(dirstack *pilaDir){
+int sacarDireccion(dirstack *pilaDir){
     if(pilaDir){    //Si existe la pila
         if (pilaDir->root == NULL){     //La pila esta vacia
             printf("ERROR: La pila de direcciones esta vacia");
@@ -94,7 +94,7 @@ direc* sacarDireccion(dirstack *pilaDir){
             direc *cima = getCimaDir(pilaDir);
             pilaDir->root = cima->next;
             pilaDir->num--;
-            return cima;
+            return cima->direccion;
         }
     }else{
         printf("La pila de tabla de simbolos no existe");

@@ -108,7 +108,13 @@ typetab* crearTypeTab(){
     //Crear tipo caracter
     tipo_base = crearTipoPrimitivo(3);
     arquetipo = crearArqueTipo(false, tipo_base);
-    nuevoTipo = crearTipoNativo(3, "entero", arquetipo, 4);
+    nuevoTipo = crearTipoNativo(3, "car", arquetipo, 4);
+    insertarTipo(tt, nuevoTipo);
+
+    //Crear tipo caracter
+    tipo_base = crearTipoPrimitivo(4);
+    arquetipo = crearArqueTipo(false, tipo_base);
+    nuevoTipo = crearTipoNativo(4, "void", arquetipo, 4);
     insertarTipo(tt, nuevoTipo);
     return tt;
 }
