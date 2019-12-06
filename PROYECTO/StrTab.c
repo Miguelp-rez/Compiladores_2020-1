@@ -107,6 +107,8 @@ item* sacarItem(strtab *strTab){
     }
 }
 
+// PRUEBA
+/*
 int main(){
 	strtab* nuevaTabla = crearStrTab();
 	insertarCadena(nuevaTabla,"Hola, mundo");
@@ -120,3 +122,4 @@ int main(){
 	printf("%s: %s\n",vacio->tipo,vacio->content);
 	borrarStrTab(nuevaTabla);
 }
+*/
