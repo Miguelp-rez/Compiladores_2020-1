@@ -13,6 +13,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include "proyecto.tab.h"
+
+char *copia;
+int i = 0;
+int tam;
+
 %}
 
 %x comen1
@@ -113,16 +118,23 @@ falso [Ff][Aa][Ll][Ss][Oo]
             }
 
 {car_def}   {
-                //printf("caracter\n");
-                //MODIFICAR (comillas)
-                //yylval.caracter.cval = yytext;
+                yylval.caracter.cval = yytext[1];
                 return CARACTER;
             }
 
 {cadena}    {
-                //printf("cadena\n");
-                //MODIFICAR (comillas)
-                //yylval.cadena.sval = yytext;
+                tam = strlen(yytext);
+                if(tam == 2){
+                    yylval.cadena.sval = "";
+                }
+                else if(tam > 2){
+                    copia = malloc(sizeof(char)*(tam-2));
+                    for(i = 0; i<tam-2; i++){
+                        copia[i] = yytext[i+1];
+                    }
+                    yylval.cadena.sval = copia;
+                    free(copia);
+                }
                 return CADENA;
             }
 
