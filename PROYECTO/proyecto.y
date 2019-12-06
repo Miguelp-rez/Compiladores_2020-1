@@ -26,10 +26,13 @@
   extern int yylineno;
 
   int base_global; /*Variable global*/
+  int tipo_b;
 
   /*falta declarar todas las funciones*/
   int dir = 0;
   int max(int t1, int t2);
+  void newTemp(char *dir);
+  void amp(char *dir, int t1, int t2, char* res);
   /*Falta crear pila de direcciones*/
 %}
 
@@ -111,6 +114,7 @@
 %nonassoc LPAR RPAR LCOR RCOR
 
 %type<expresion> expresion
+%type<num> tipo base tipo_arreglo variable
 
 %start programa
 %%
@@ -130,7 +134,9 @@ programa: declaraciones SL funciones {
   insertarTypeTab(StackTT, tt);
   //Acción semántica: StackTS.push(ts)
   insertarSymTab(StackTS,ts);
-  //¿Cuál es la tabla de cadenas?...
+  //Se crea una nueva tabla de cadenas
+  strtab* TC= crearStrTab();
+
 
 
 };
@@ -159,27 +165,27 @@ tipo_registro:
   }
 
 tipo:
-  base tipo_arreglo {
-    base_global=base.tipo;  //base=base.tipo
-    tipo.tipo=tipo_arreglo.tipo; //tipo.tipo=tipo_arreglo.tipo
+base tipo_arreglo {
+    tipo_b=$1.tipo; 
+    $$.tipo_=$2.tipo; //tipo.tipo=tipo_arreglo.tipo
   };
 
 base:
-  ENT {base.tipo=0;}
-| REAL {base.tipo=1;}
-| DREAL {base.tipo=2;}
-| CAR {base.tipo=3;}
-| SIN {base.tipo=4;};
+  ENT {$$.tipo=0;}
+| REAL {$$.tipo=1;}
+| DREAL {$$.tipo=2;}
+| CAR {$$.tipo=3;}
+| SIN {$$.tipo=4;};
 
 tipo_arreglo:
   RCOR NUM LCOR tipo_arreglo{
-  //if($2.tipo==0 && $2.valor.ival>0){ 
-  //$$.tipo=StackTT.getCima().addTipo(”array”,$2.valor.ival,$4.tipo)
-  //}else{
-  //yyerror(”El ındice tiene que ser entero y mayor que cero”)
-  //}
+  if($2.tipo==0 && $2.valor.ival>0){ 
+  $$.tipo=StackTT.getCima().addTipo(”array”,$2.valor.ival,$4.tipo)
+  }else{
+  yyerror(”El ındice tiene que ser entero y mayor que cero”)
   }
-| /*epsilon*/ {tipo_arreglo.tipo=base_global};
+  }
+| /*epsilon*/ {$$.tipo=tipo_b};
 
 lista_var:
   lista_var COMA ID {}
@@ -241,69 +247,63 @@ relacional:
 | expresion {};
 
 expresion:
-  expresion MAS expresion {if($1.tipo == $3.tipo){
-                                        $$.tipo = $1.tipo;
-                                        if($1.tipo = 0){
-                                            $$.valor.ival = $1.valor.ival + $3.valor.ival;
-                                            printf("%d = %d + %d\n", $$.valor.ival, $1.valor.ival, $3.valor.ival);
-                                        }else{
-                                            $$.valor.fval = $1.valor.fval + $3.valor.fval;
-                                        }
-                                     }
-                                     //printf("E-> E+E\n");
+  expresion MAS expresion {
+        $$.tipo = max($1.tipo, $3.tipo);        
+        newTemp($$.dir);
+        char dir1[20], dir2[20];   
+        amp($1.dir, $1.tipo, $$.tipo, dir1);
+        amp($3.dir, $3.tipo, $$.tipo, dir2);
+        agregar_cuadrupla(code, ”+”,dir1,dir2, expresion.dir);
+        //printf("E->E+E\n");
 }
-| expresion MENOS expresion {if($1.tipo == $3.tipo){
-                                            $$.tipo = $1.tipo;
-                                            if($1.tipo = 0){
-                                                $$.valor.ival = $1.valor.ival - $3.valor.ival;
-                                            }else{
-                                                $$.valor.fval = $1.valor.fval - $3.valor.fval;
-                                            }
-                                        }
-                                        //printf("E-> E-E\n");
+| expresion MENOS expresion {
+        $$.tipo = max($1.tipo, $3.tipo);        
+        newTemp($$.dir);
+        char dir1[20], dir2[20];   
+        amp($1.dir, $1.tipo, $$.tipo, dir1);
+        amp($3.dir, $3.tipo, $$.tipo, dir2);
+        agregar_cuadrupla(code, ”-”,dir1,dir2, expresion.dir);
+        //printf("E->E-E\n");
 }
-| expresion MUL expresion {if($1.tipo == $3.tipo){
-                                        $$.tipo = $1.tipo;
-                                        if($1.tipo = 0){
-                                            $$.valor.ival = $1.valor.ival * $3.valor.ival;
-                                        }else{
-                                            $$.valor.fval = $1.valor.fval * $3.valor.fval;
-                                        }
-                                     }
-                                     //printf("E-> E*E\n");
+| expresion MUL expresion {
+        $$.tipo = max($1.tipo, $3.tipo);        
+        newTemp($$.dir);
+        char dir1[20], dir2[20];   
+        amp($1.dir, $1.tipo, $$.tipo, dir1);
+        amp($3.dir, $3.tipo, $$.tipo, dir2);
+        agregar_cuadrupla(code, ”*”,dir1,dir2, expresion.dir);
+        //printf("E->E*E\n");
 }
-| expresion DIV expresion {if($1.tipo == $3.tipo){
-                                        $$.tipo = $1.tipo;
-                                        if($1.tipo = 0){
-                                            if($3.valor.ival != 0)
-                                                $$.valor.ival = $1.valor.ival / $3.valor.ival;
-                                            else
-                                                yyerror("No se puede hacer la división entre cero");
-                                        }else{
-                                            if($3.valor.fval != 0)
-                                                $$.valor.fval = $1.valor.fval / $3.valor.fval;
-                                            else
-                                                yyerror("No se puede hacer la división entre cero");
-
-                                        }
-                                     }
-                                     //printf("E-> E/E\n");
+| expresion DIV expresion {$$.tipo = max($1.tipo, $3.tipo);        
+        newTemp($$.dir);
+        char dir1[20], dir2[20];   
+        amp($1.dir, $1.tipo, $$.tipo, dir1);
+        amp($3.dir, $3.tipo, $$.tipo, dir2);
+        agregar_cuadrupla(code, ”/”,dir1,dir2, expresion.dir);
+        //printf("E->E/E\n");
 }
-| expresion MOD expresion {if($1.tipo == $3.tipo){
-                                        $$.tipo = $1.tipo;
-                                        if($1.tipo = 0){
-                                            $$.valor.ival = $1.valor.ival % $3.valor.ival;
-                                        }/*else{
-                                            $$.valor.fval = $1.valor.fval % $3.valor.fval;
-                                        }*/
-                                     }
-                                     //printf("E-> E%E\n");
+| expresion MOD expresion {$$.tipo = max($1.tipo, $3.tipo);        
+        newTemp($$.dir);
+        char dir1[20], dir2[20];   
+        amp($1.dir, $1.tipo, $$.tipo, dir1);
+        amp($3.dir, $3.tipo, $$.tipo, dir2);
+        agregar_cuadrupla(code, ”%”,dir1,dir2, expresion.dir);
+        //printf("E->E%E\n");
 }
-| LPAR expresion RPAR {$$ = $2;}
-| variable {}
+| LPAR expresion RPAR {$$.dir = $2.dir;
+$$.tipo=$2.tipo}
+| variable {
+  $$.dir=newTemp();
+  $$.tipo=$1.tipo;
+  //agregar_cuadrupla(code,"*",$1.base[$1.dir], "-", $$.dir);
+}
 | NUM {$$.tipo=$1.tipo;
-      $$.dir=$1.valor;} 
-| CADENA {} | CARACTER {} | ID LPAR parametros RPAR {};
+  $$.dir=$1.valor;} 
+| CADENA {$$.tipo=$1;
+  $$.dir=insertarCadena(TC, $1);} 
+| CARACTER {$$.tipo=$1;
+  $$.dir=insertarCadena(TC, $1);} 
+| ID LPAR parametros RPAR {};
 
 variable:
   ID arreglo {}
@@ -361,5 +361,49 @@ int  max(int t1, int t2){
     else{
         yyerror("Error");
         return -1;
+    }
+}
+
+void newTemp(char *dir){
+    char temp[20];
+    strcpy(temp , "t");
+    char num[19];
+    sprintf(num, "%d", i_temp); 
+    i_temp++;
+    strcat(temp,num);
+    strcpy(dir, temp);
+}
+
+/*- int = 0
+  - float= 1
+  - double= 2
+  - char= 3
+*/
+void *amp(char *dir, int t1, int t2, char* res){
+    if(t1 == t2){
+        strcpy(res, dir);
+    }else if((t1==3 && t2==0) || (t1== 0 && t2 == 3)){
+        char temp[20];
+        newTemp(temp);
+        fprintf(yyout, "%s = (int) %s\n", temp, dir);
+        strcpy(res, temp);
+    }else if((t1==0 && t2==1) || (t1== 1 && t2 == 0)){
+        char temp[20];
+        newTemp(temp);
+        fprintf(yyout, "%s = (float) %s\n", temp, dir);
+        strcpy(res, temp);
+    }else if((t1==0 && t2==2) || (t1== 2 && t2 == 0)){
+        char temp[20];
+        newTemp(temp);
+        fprintf(yyout, "%s = (double) %s\n", temp, dir);
+        strcpy(res, temp);
+    }else if((t1==1 && t2==2) || (t1== 2 && t2 == 1)){
+        char temp[20];
+        newTemp(temp);
+        fprintf(yyout, "%s = (double) %s\n", temp, dir);
+        strcpy(res, temp);
+    }
+    else{
+        yyerror("Tipos incompatibles");
     }
 }
