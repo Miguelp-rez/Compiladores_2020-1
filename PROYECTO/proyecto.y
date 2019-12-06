@@ -75,11 +75,6 @@
       char *sval;
     }valor;
   }expresion;
-
-  struct{ /*base*/
-    int tipo;
-  }base;
-
 }
 
 %token<num> NUM
