@@ -55,10 +55,11 @@
 }
 
 %token<terminal> TERMINAL
-%token SL
-%token PC PUNTO COMA
+%token SL /*Salto de linea*/
+%token REGISTRO
+%token INICIO FIN
 %token ENT REAL DREAL CAR SIN
-%token ENT_DEF REAL_DEF DREAL_DEF CAR_DEF
+%token PC PUNTO COMA
 %token FUNC
 %token SI
 %token ENTONCES
@@ -69,9 +70,9 @@
 %token ESCRIBIR
 %token LEER
 %token DEVOLVER
+%token TERMINAR
 %token VERDADERO
 %token FALSO
-
 
 /*precedencia de operadores*/
 %left ASIGN
@@ -81,12 +82,10 @@
 %left M MA MEQ MAEQ EQEQ MMA  /*operadores relacionales < > < >= == <> */
 %left MUL DIV MOD
 %left NO
-%nonassoc LPAR RPAR LCOR RCOR  INICIO FIN TERMINAR
-
+%nonassoc LPAR RPAR LCOR RCOR
 
 %start programa
 %%
-
 
 /*Estructura de la gramatica, falta agregar todas las reglas semanticas*/
 programa: declaraciones SL funciones {

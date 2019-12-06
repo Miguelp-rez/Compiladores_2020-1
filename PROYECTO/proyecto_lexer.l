@@ -57,6 +57,8 @@ falso [Ff][Aa][Ll][Ss][Oo]
 
 %%
 
+""
+
 {registro}  {
                 return REGISTRO;
             }
@@ -277,7 +279,9 @@ falso [Ff][Aa][Ll][Ss][Oo]
             return TERMINAL;
         }
 
-[ \n\t]+ {}
+[ \t\r]+ {/*IGNORAR*/}
+
+"\n" {return SL;}
 
 <comen1>{
 "*>" {BEGIN(INITIAL);}
