@@ -32,26 +32,20 @@ struct _symtab{
     symtab* next;
 };
 
-typedef union _tipo tipo;
-union _tipo{
-    int type;   // Tipo simple
-    symtab *estructura;  // Tipo estructura
-};
-
-typedef struct _tipoBase tipoBase;
-struct _tipoBase{
-    bool est;   // Si es verdadero es estructura si no es tipo simple
-    tipo *t;
+typedef struct _base base;
+struct _base{
+    int simple;   // Tipo simple
+    symtab *tabla;  // Tipo estructura
 };
 
 typedef struct _type type;
 struct _type{
     int id;
-    char nombre[10];    // Se puede sustituir por un entero tambien
-    tipoBase *tb;
+    char nombre[10];
     int tamBytes;
     int numElem;
     type *next;
+    base* tb;
 };
 
 typedef struct _typetab typetab;
