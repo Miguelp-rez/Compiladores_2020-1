@@ -86,21 +86,115 @@ void imprime(code *c){
 		FILE *codigo_intermedio = fopen("codigo_intermedio.txt","w");
 		quad *instruccion = c->root;
 		for(int i = 0 ; i < c->num_instrucciones ; i++){
-			//strcmp retorna 0 si son iguales los argumentos
                         printf("%s\t%s\t%s\t%s\n",
                                   instruccion->op,
                                   instruccion->arg1,
                                   instruccion->arg2,
                        	instruccion->res);
-			if(strcmp(instruccion->op, "=") == 0){
-						fprintf(codigo_intermedio, "%s = %s\n",instruccion->res,instruccion->arg1);
-						instruccion = instruccion->next;
-			}else if(strcmp(instruccion->op, PARAM) == 0){
-						fprintf(codigo_intermedio, "param %s\n",instruccion->arg1);
-						instruccion = instruccion->next;
+			//strcmp retorna 0 si son iguales los argumentos
+			if(strcmp(instruccion->op, ADICION) == 0){
+				if (instruccion->res && instruccion->arg1 && instruccion->arg2){
+					fprintf(codigo_intermedio,
+									"%s = %s + %s\n",
+									instruccion->res,
+									instruccion->arg1,
+									instruccion->arg2);
+				} else
+					printf("Instruccion mal formada.");
+			} else if(strcmp(instruccion->op, SUSTRACCION) == 0) {
+				if (instruccion->res && instruccion->arg1 && instruccion->arg2){
+					fprintf(codigo_intermedio,
+									"%s = %s - %s\n",
+									instruccion->res,
+									instruccion->arg1,
+									instruccion->arg2);
+				} else
+					printf("Instruccion mal formada.");
+
+			} else if(strcmp(instruccion->op, MULTIPLICACION) == 0) {
+				fprintf(codigo_intermedio,
+								"%s = %s * %s\n",
+								instruccion->res,
+								instruccion->arg1,
+								instruccion->arg2);
+			} else if(strcmp(instruccion->op, DIVISION) == 0) {
+				fprintf(codigo_intermedio,
+								"%s = %s / %s\n",
+								instruccion->res,
+								instruccion->arg1,
+								instruccion->arg2);
+			} else if(strcmp(instruccion->op, MODULO) == 0) {
+				fprintf(codigo_intermedio,
+								"%s = %s mod %s\n",
+								instruccion->res,
+								instruccion->arg1,
+								instruccion->arg2);
+			} else if(strcmp(instruccion->op, MENOR_QUE) == 0) {
+				fprintf(codigo_intermedio,
+								"%s = %s < %s\n",
+								instruccion->res,
+								instruccion->arg1,
+								instruccion->arg2);
+			} else if(strcmp(instruccion->op, MAYOR_QUE) == 0) {
+				fprintf(codigo_intermedio,
+								"%s = %s > %s\n",
+								instruccion->res,
+								instruccion->arg1,
+								instruccion->arg2);
+			} else if(strcmp(instruccion->op, MENOR_O_IGUAL) == 0) {
+				fprintf(codigo_intermedio,
+								"%s = %s <= %s\n",
+								instruccion->res,
+								instruccion->arg1,
+								instruccion->arg2);
+			} else if(strcmp(instruccion->op, MAYOR_O_IGUAL) == 0) {
+				fprintf(codigo_intermedio,
+								"%s = %s >= %s\n",
+								instruccion->res,
+								instruccion->arg1,
+								instruccion->arg2);
+			} else if(strcmp(instruccion->op, IGUAL) == 0) {
+				fprintf(codigo_intermedio,
+								"%s = %s == %s\n",
+								instruccion->res,
+								instruccion->arg1,
+								instruccion->arg2);
+			} else if(strcmp(instruccion->op, DIFERENTE) == 0) {
+				fprintf(codigo_intermedio,
+								"%s = %s != %s\n",
+								instruccion->res,
+								instruccion->arg1,
+								instruccion->arg2);
+			} else if(strcmp(instruccion->op, ASIGNACION) == 0) {
+				fprintf(codigo_intermedio,
+								"%s = %s\n",
+								instruccion->res,
+								instruccion->arg1);
+			} else if(strcmp(instruccion->op, OO) == 0) { //OR
+				fprintf(codigo_intermedio,
+								"%s = %s || %s\n",
+								instruccion->res,
+								instruccion->arg1,
+								instruccion->arg2);
+			} else if(strcmp(instruccion->op, YY) == 0) { //AND
+				fprintf(codigo_intermedio,
+								"%s = %s && %s\n",
+								instruccion->res,
+								instruccion->arg1,
+								instruccion->arg2);
+			} else if(strcmp(instruccion->op, PARAM) == 0) {
+				fprintf(codigo_intermedio,
+								"param %s\n",
+								instruccion->arg1);
+			} else if(strcmp(instruccion->op, CALL) == 0) {
+				fprintf(codigo_intermedio,
+								"%s = call %s\n",
+								instruccion->res,
+								instruccion->arg1);
 			} else {
-						printf("ERROR de existencia de operador\n");
+				printf("Error: El operador no existe");
 			}
+			instruccion = instruccion->next;
 		}
 }
 
@@ -111,7 +205,12 @@ int main(int argc, char const *argv[])
 	code* cod = crea_code();
 	agregar_cuadrupla(cod, "=","a",NULL,"t0");
 	agregar_cuadrupla(cod,"param","a",NULL,NULL);
-	//agregar_cuadrupla(cod,"*","a","b","t3");
+	agregar_cuadrupla(cod,"+","a","b","res");
+	//Instrucción mal formada
+	//agregar_cuadrupla(cod,"+","a",NULL,NULL);
+	agregar_cuadrupla(cod,"*","a","b","t1");
+	agregar_cuadrupla(cod,"call","L3",NULL,"t2");
+	agregar_cuadrupla(cod,"oo","a","b","t3");
 	imprime(cod);
   	elimina_code(cod);
 	return 0;

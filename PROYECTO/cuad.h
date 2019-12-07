@@ -23,16 +23,22 @@ static const char MODULO[] = "%";
 static const char MENOR_QUE[] = "<";
 static const char MAYOR_QUE[] = ">";
 static const char MENOR_O_IGUAL[] = "<=";
+static const char MAYOR_O_IGUAL[] = ">=";
 static const char IGUAL[] = "==";
 static const char DIFERENTE[] ="!=";
 
 //Constantes para operadores de asignacion
 static const char ASIGNACION[] =  "=";
 
+//Constantes para operadores lógicos
+static const char OO[] = "oo";
+static const char YY[] = "yy";
+
 //Constante para los parámetros de una función
 static const char PARAM[] = "param";
 
-
+//Constante para la llamada a una funcion
+static const char CALL[] = "call";
 
 //Estructura que almacenara las partes de la instruccion de tres direcciones
 typedef struct _quad quad;
