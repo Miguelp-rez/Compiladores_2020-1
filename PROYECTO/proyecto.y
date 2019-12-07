@@ -39,7 +39,7 @@
   void newTemp(char *dir);
   void amp(char *dir, int t1, int t2, char* res);
   /*Falta crear pila de direcciones*/
-
+  code* cod;
   typestack *StackTT;
   symstack *StackTS;
   strtab* TC;
@@ -163,6 +163,7 @@
 %type<tipo_arreglo> tipo_arreglo
 %type<variable> variable
 
+
 %start programa
 %%
 
@@ -246,7 +247,9 @@ tipo_arreglo:
 | /*epsilon*/ {$$.tipo=tipo_b;};
 
 lista_var:
-  lista_var COMA ID {}
+  lista_var COMA ID {
+   // if StackTS.getCima().ge
+  }
 | ID {};
 
 funciones:
@@ -306,21 +309,23 @@ relacional:
 
 expresion:
   expresion MAS expresion {
+       
         $$.tipo = max($1.tipo, $3.tipo);        
         newTemp($$.dir);
         char dir1[20], dir2[20];   
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
-       // agregar_cuadrupla(code, ”+”,dir1,dir2, expresion.dir);
+        agregar_cuadrupla(cod,"+",dir1,dir2,$$.dir);
         //printf("E->E+E\n");
 }
 | expresion MENOS expresion {
+
         $$.tipo = max($1.tipo, $3.tipo);        
         newTemp($$.dir);
         char dir1[20], dir2[20];   
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
-        //agregar_cuadrupla(code, ”-”,dir1,dir2, expresion.dir);*/
+        agregar_cuadrupla(cod,"-",dir1,dir2,$$.dir);
         //printf("E->E-E\n");
 }
 | expresion MUL expresion {
@@ -329,7 +334,7 @@ expresion:
         char dir1[20], dir2[20];   
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
-        //agregar_cuadrupla(code, ”*”,dir1,dir2, expresion.dir);*/
+        agregar_cuadrupla(cod,"*",dir1,dir2,$$.dir);
         //printf("E->E*E\n");
 }
 | expresion DIV expresion {$$.tipo = max($1.tipo, $3.tipo);        
@@ -337,7 +342,7 @@ expresion:
         char dir1[20], dir2[20];   
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
-       // agregar_cuadrupla(code, ”/”,dir1,dir2, expresion.dir);*/
+        agregar_cuadrupla(cod,"/",dir1,dir2,$$.dir);
         //printf("E->E/E\n");
 }
 | expresion MOD expresion {$$.tipo = max($1.tipo, $3.tipo);        
@@ -345,7 +350,7 @@ expresion:
         char dir1[20], dir2[20];   
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
-        //agregar_cuadrupla(code, ”%”,dir1,dir2, expresion.dir);*/
+        agregar_cuadrupla(cod,"%",dir1,dir2,$$.dir);
         //printf("E->E%E\n");
 }
 | LPAR expresion RPAR {$$ = $2;}
