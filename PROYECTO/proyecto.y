@@ -33,7 +33,9 @@
   int type_global;
   int tipo_b;
   int i_temp = 0;
-  /*falta declarar todas las funciones*/
+	//Contador de etiquetas
+	int labelCouter = 0;
+	/*falta declarar todas las funciones*/
   int dir = 0;
   int max(int t1, int t2);
   void newTemp(char *dir);
@@ -225,7 +227,7 @@ tipo_registro:
     }
 tipo:
 base tipo_arreglo {
-    tipo_b=$1.tipo; 
+    tipo_b=$1.tipo;
     $$.tipo=$2.tipo; //tipo.tipo=tipo_arreglo.tipo
   };
 
@@ -238,7 +240,7 @@ base:
 
 tipo_arreglo:
   RCOR NUM LCOR tipo_arreglo {
-    if($2.tipo==0 && $2.valor.ival>0){ 
+    if($2.tipo==0 && $2.valor.ival>0){
     //$$.tipo=StackTT.getCima().addTipo(”array”,$2.valor.ival,$4.tipo)
     }else{
       yyerror("El indice tiene que ser entero y mayor que cero");
@@ -309,10 +311,9 @@ relacional:
 
 expresion:
   expresion MAS expresion {
-       
-        $$.tipo = max($1.tipo, $3.tipo);        
+        $$.tipo = max($1.tipo, $3.tipo);
         newTemp($$.dir);
-        char dir1[20], dir2[20];   
+        char dir1[20], dir2[20];
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
         agregar_cuadrupla(cod,"+",dir1,dir2,$$.dir);
@@ -320,34 +321,34 @@ expresion:
 }
 | expresion MENOS expresion {
 
-        $$.tipo = max($1.tipo, $3.tipo);        
+        $$.tipo = max($1.tipo, $3.tipo);
         newTemp($$.dir);
-        char dir1[20], dir2[20];   
+        char dir1[20], dir2[20];
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
         agregar_cuadrupla(cod,"-",dir1,dir2,$$.dir);
         //printf("E->E-E\n");
 }
 | expresion MUL expresion {
-        $$.tipo = max($1.tipo, $3.tipo);        
+        $$.tipo = max($1.tipo, $3.tipo);
         newTemp($$.dir);
-        char dir1[20], dir2[20];   
+        char dir1[20], dir2[20];
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
         agregar_cuadrupla(cod,"*",dir1,dir2,$$.dir);
         //printf("E->E*E\n");
 }
-| expresion DIV expresion {$$.tipo = max($1.tipo, $3.tipo);        
+| expresion DIV expresion {$$.tipo = max($1.tipo, $3.tipo);
         newTemp($$.dir);
-        char dir1[20], dir2[20];   
+        char dir1[20], dir2[20];
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
         agregar_cuadrupla(cod,"/",dir1,dir2,$$.dir);
         //printf("E->E/E\n");
 }
-| expresion MOD expresion {$$.tipo = max($1.tipo, $3.tipo);        
+| expresion MOD expresion {$$.tipo = max($1.tipo, $3.tipo);
         newTemp($$.dir);
-        char dir1[20], dir2[20];   
+        char dir1[20], dir2[20];
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
         agregar_cuadrupla(cod,"%",dir1,dir2,$$.dir);
@@ -371,13 +372,13 @@ expresion:
   else{
     $$.dir, $1.valor.dval;
   }*/
-} 
+}
 | CADENA {$$.tipo = 4;
   //$$.dir = insertarCadena(TC, $1.sval);
-} 
+}
 | CARACTER {$$.tipo = 3;
   //$$.dir = insertarCadena(TC, $1.cval);
-} 
+}
 | ID LPAR parametros RPAR {};
 
 variable:
@@ -443,10 +444,21 @@ void newTemp(char *dir){
     char temp[20];
     strcpy(temp , "t");
     char num[19];
-    sprintf(num, "%d", i_temp); 
+    sprintf(num, "%d", i_temp);
     i_temp++;
     strcat(temp,num);
     strcpy(dir, temp);
+}
+
+char* newLabel(){
+		char* label = malloc(10*sizeof(char)); //Puede haber hasta 999999999 temp
+		strcpy(label,"L");
+		char* num[10];
+		//Se guarda en num el valor de labelCounter como un str
+		sprintf(num,"%d",labelCounter);
+		strcat(label,num);
+		labelCounter++;
+		return label;
 }
 
 /*- int = 0
