@@ -101,8 +101,8 @@ int main(){
 */
     //insercion de tipo struct
     //printf("\n * Se inserta un tipo struct valido\n");
-    symtab* st2 = crearSymTab();
-    typetab* tt2 = crearTypeTab();
+    //symtab* st2 = crearSymTab();
+    //typetab* tt2 = crearTypeTab();
     /*tipo_base = crearTipoStruct(st2);
     arquetipo = crearArqueTipo(true, tipo_base);
     nuevoTipo = crearTipoNativo(tt->num, "struct", arquetipo, 20);
@@ -113,7 +113,7 @@ int main(){
         printf("EXITO\n");
     */
     imprimirTablaType(tt);
-
+/*
     //PRUEBA DE PILA DE TABLAS DE TIPOS
     printf("---------------PRUEBA DE PILA TABLA DE TIPOS---------------\n");
     typestack *tts = crearTypeStack();
@@ -146,6 +146,6 @@ int main(){
     borrarTypeStack(tts);
     printf("\n * Se destruye la pila de TS\n");
     borrarSymStack(sts);
-
+*/
   return 0;
 }

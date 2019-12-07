@@ -23,27 +23,20 @@ type *crearType(char* nombre, base* tb, int numElem){
         //Se agrega el espacio en bytes para los diferentes tipos
         if(strcmp(nombre, "ent") == 0){
             nuevo_type->tamBytes = 4;
-            printf("entero");
         }else if(strcmp(nombre, "real") == 0){
             nuevo_type->tamBytes = 4;
-            printf("real");
         }else if(strcmp(nombre, "dreal") == 0){
             nuevo_type->tamBytes = 8;
-            printf("dreal");
         }else if(strcmp(nombre, "car") == 0){
             nuevo_type->tamBytes = 4;
-            printf("car");
         }else if(strcmp(nombre, "void") == 0){
             nuevo_type->tamBytes = 4;
-            printf("void");
         }else if(strcmp(nombre, "array") == 0){
             //Calcular tamBytes
             nuevo_type->tamBytes = 4;
-            printf("array");
         }else if(strcmp(nombre, "registro") == 0){
             //Calcular tamBytes
             nuevo_type->tamBytes = 4;
-            printf("registro");
         }else{
             printf("%s no existe", nombre);
         }
@@ -69,18 +62,28 @@ typetab* crearTypeTab(){
         //Se crea el tipo entero
         aux = crearType("ent", NULL, -1);
         posicion = insertarTipo(tt, aux);
+                printf("%i", posicion);
+
         //Se crea el tipo real
         aux = crearType("real", NULL, -1);
         posicion = insertarTipo(tt, aux);
+                printf("%i", posicion);
+
         //Se crea el tipo dreal
         aux = crearType("dreal", NULL, -1);
         posicion = insertarTipo(tt, aux);
+                printf("%i", posicion);
+
         //Se crea el tipo car
         aux = crearType("car", NULL, -1);
         posicion = insertarTipo(tt, aux);
+                printf("%i", posicion);
+
         //Se crea el tipo void
         aux = crearType("void", NULL, -1);
         posicion = insertarTipo(tt, aux);
+        printf("%i", aux->id);
+
         return tt;
     }else{
         printf("No hay memoria disponible");
@@ -115,7 +118,6 @@ int insertarTipo(typetab *tt, type *t){
             tt->root = t;
         }else{      //Se insertan los siguientes simbolos
             type* tipo_actual = tt->root;
-            printf("%s", tipo_actual->next);
             while(tipo_actual->next != NULL){
                 tipo_actual = tipo_actual->next;
             }
@@ -196,22 +198,21 @@ void imprimirTablaType(typetab *tt){
     printf("###TABLA DE TIPOS###\n");
     printf("ID \t\tName \t\tBase \t\tSize \t\tNum_elem\n");
 
-    while(tipos < tt->num){  //del primer al ultimo nodo
-        printf("Tipo #%i\n", tipos);
-        printf("%i \t\t", tipo_actual->id);
+    while(tipos < (tt->num)){  //del primer al ultimo nodo
+        printf("%i\t\t", tipo_actual->id);
         printf("%s\t\t", getNombre(tt, tipo_actual->id));
         base_actual = getTipoBase(tt, tipo_actual->id);
-        if(base_actual->tabla){ //El tipo base es una tabla de simbolos
-            printf("%d\t\t", base_actual->tabla);
+        if(base_actual){ //El tipo base es una tabla de simbolos
+            printf("Array\t\t");
         }
         else{ //El tipo base es un tipo nativo
-            printf("%d\t\t", base_actual->simple);;
+            printf("NULL\t\t");
         }
         printf("%i\t\t", getTam(tt, tipo_actual->id));
         printf("%i\t\t", getNumElem(tt, tipo_actual->id));
         printf("\n");
-
         tipo_actual = tipo_actual->next;
         tipos++;
+    
     }
 }
