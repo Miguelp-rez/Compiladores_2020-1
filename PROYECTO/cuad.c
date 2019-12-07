@@ -67,6 +67,7 @@ void elimina_code(code *c){
   free(c);
 }
 
+/*
 void imprime(code *c){
   quad *aux = c->root;
   while(aux){
@@ -78,17 +79,35 @@ void imprime(code *c){
       aux = aux->next;
   }
 
+}*/
+
+
+void imprime(code *c){
+		FILE *codigo_intermedio = fopen("codigo_intermedio.txt","w");
+		quad *instruccion = c->root;
+		for(int i = 0 ; i < c->num_instrucciones ; i++){
+			printf("%s\n",instruccion->op);
+			if(strcmp(instruccion->op, "=")){
+						fprintf(codigo_intermedio, "%s = %s\n",instruccion->res,instruccion->arg1);
+						break;
+			}else if(strcmp(instruccion->op, "param")){
+						fprintf(codigo_intermedio, "param %s\n",instruccion->arg1);
+			} else {
+						printf("ERROR de existencia de operador\n");
+			}
+			instruccion = instruccion->next;
+		}
 }
 
-/*int main(int argc, char const *argv[])
+int main(int argc, char const *argv[])
 {
 	printf("\t***CUADRUPLAS***\n");
 	printf("OP\tARG1\tARG2\tRES\n");
 	code* cod = crea_code();
-	agregar_cuadrupla(cod, "-","a","b","t0");
-	agregar_cuadrupla(cod,"+","a","b","t1");
-	agregar_cuadrupla(cod,"*","a","b","t3");
+	agregar_cuadrupla(cod, "=","a",NULL,"t0");
+	agregar_cuadrupla(cod,"param","a",NULL,NULL);
+	//agregar_cuadrupla(cod,"*","a","b","t3");
 	imprime(cod);
-  elimina_code(cod);
+  	elimina_code(cod);
 	return 0;
-}*/
+}
