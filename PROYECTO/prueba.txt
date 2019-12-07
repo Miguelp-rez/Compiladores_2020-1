@@ -1,2 +1,24 @@
-ent a,b
-a := 2
+--Prueba de compilador
+ent a
+real b,c
+dreal d
+car e,var1
+ent [5] arr_1  --Provocar errores por mismo id
+real [10] arr_2
+dreal [2] arr_3
+car [100] arr_4
+ent [2][3] arr_5
+registro
+inicio
+  car var1,var2
+  ent [5] arr_1
+fin struct1  <*Poner mas variables*>
+func tipo id(argumentos) inicio
+declaraciones sentencias
+fin
+func tipo id(argumentos) inicio
+declaraciones sentencias
+fin
+func tipo id(argumentos) inicio
+declaraciones sentencias
+fin
