@@ -1,5 +1,5 @@
 /*
- * Compiladores Proyecto final
+ * Compiladores Practica 5
  * Programado por:
  * Lopez Martinez Andres
  * Morales Tellez Carlos Gamaliel
@@ -13,15 +13,7 @@
 #include "Global.h"
 
 /* Retorna un apuntador a una variable type */
-tipo *crearTipoPrimitivo(int id);
-
-tipo *crearTipoStruct(symtab* estructura);
-
-tipoBase *crearArqueTipo(bool is_struct, tipo* base_type);
-
-type *crearTipoArray(int id, char* nombre, tipoBase* tb, int size, int num_elem);
-
-type *crearTipoNativo(int id, char* nombre, tipoBase* tb, int size);
+type *crearType(char*, base* tb, int);
 
 /* Borra type, libera memoria */
 void borrarType(type *t);
@@ -40,7 +32,7 @@ int insertarTipo(typetab *tt, type *t);
 /* Retorna el tipo base de un tipo
  * En caso de no encontrarlo retorna NULL
  */
-tipoBase* getTipoBase(typetab *tt, int id);
+base* getTipoBase(typetab *tt, int id);
 
 /* Retorna el numero de bytes de in tipo
  * En caso de no encontrarlo retorna -1
