@@ -1,2 +1,33 @@
-ent a,b
-a := 2
+--Prueba de compilador
+ent a --Provocar errores por variable sin tipo
+real b,c
+dreal d
+car e,var1
+ent [5] arr_1  --Provocar errores por mismo id
+real [10] arr_2 --Provocar errores por num != entero
+dreal [2] arr_3 --Provocar errores por num < 0
+car [100] arr_4
+ent [2][3] arr_5
+registro
+inicio
+  car var1,var2
+  ent [5] arr_1
+fin struct1  <*Poner mas variables*>
+func ent funcion1(ent param1) inicio
+  ent [2][2] var1
+  dreal var2
+  --sentencias
+  --sentencia
+fin
+func real [10] funcion2(ent [2] param1 real [5][2] param2) inicio
+  real [5][3][4] var1, var2, var3
+  car var4
+  --sentencias
+  --sentencia
+fin
+func sin funcion3(sin) inicio
+  ent var1, var2
+  --sentencias
+  --sentencia
+fin
+<*Provocar errores por comentarios que nunca finalizan*>

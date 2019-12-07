@@ -80,7 +80,7 @@ void imprime(code *c){
 
 }
 
-int main(int argc, char const *argv[])
+/*int main(int argc, char const *argv[])
 {
 	printf("\t***CUADRUPLAS***\n");
 	printf("OP\tARG1\tARG2\tRES\n");
@@ -91,4 +91,4 @@ int main(int argc, char const *argv[])
 	imprime(cod);
   elimina_code(cod);
 	return 0;
-}
+}*/

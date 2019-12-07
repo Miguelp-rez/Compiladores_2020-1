@@ -21,7 +21,8 @@
   #include "SymTabStack.c"
   #include "TypeTabStack.c"
   #include "cuad.c"
-
+  #include "DirStack.c"
+  #include "StrTab.c"
 
   void yyerror(char* msg);
   void yyaccept();
@@ -29,6 +30,7 @@
   extern int yylineno;
 
   int base_global; /*Variable global*/
+  int type_global;
   int tipo_b;
   int i_temp = 0;
   /*falta declarar todas las funciones*/
@@ -37,6 +39,20 @@
   void newTemp(char *dir);
   void amp(char *dir, int t1, int t2, char* res);
   /*Falta crear pila de direcciones*/
+  code* cod;
+  typestack *StackTT;
+  symstack *StackTS;
+  strtab* TC;
+  dirstack* StackDir;
+  symtab *ts;
+  symtab *ts1;
+  typetab *tt;
+  typetab *tt1;
+
+  tipo *tipo_base;
+  tipoBase *arquetipo;
+  type *nuevoTipo;
+
 %}
 
 /*
@@ -52,6 +68,7 @@
 %union{  /*yylval*/
   struct{ /*Numero enteros, reales y reales dobles*/
     int tipo;
+    char sval[20];
     union{
       int ival;
       float fval;
@@ -71,9 +88,27 @@
     char id[32];
   }id;
 
+  /*PARA ATRIBUTOS EN REGLAS SEMANTICAS*/
+
+  struct{ /*Tipo*/
+    int tipo;
+  }tipo;
+
+  struct{ /*Tipo registro*/
+    int tipo;
+  }tipo_registro;
+
+  struct{ /*Base*/
+    int tipo;
+  }base;
+
+  struct{ /*Tipo arreglo*/
+    int tipo;
+  }tipo_arreglo;
+
   struct{ /*Expresiones*/
     int tipo;
-    int dir;
+    char dir[20];
     union{
       int ival;
       float fval;
@@ -81,6 +116,11 @@
       char *sval;
     }valor;
   }expresion;
+
+  struct{ /*Variable*/
+    int tipo;
+  }variable;
+
 }
 
 %token<num> NUM
@@ -117,7 +157,12 @@
 %nonassoc LPAR RPAR LCOR RCOR
 
 %type<expresion> expresion
-%type<num> tipo base tipo_arreglo variable
+%type<tipo> tipo
+%type<tipo_registro> tipo_registro
+%type<base> base
+%type<tipo_arreglo> tipo_arreglo
+%type<variable> variable
+
 
 %start programa
 %%
@@ -126,21 +171,21 @@
 programa: declaraciones SL funciones {
   dir = 0;
   //Se crea una nueva pila de tablas de tipos
-  typestack *StackTT = crearTypeStack();
+  StackTT = crearTypeStack();
   //Se crea una nueva pila de tablas de símbolos
-  symstack *StackTS = crearSymStack();
+  StackTS = crearSymStack();
   //Se crea una nueva tabla de símbolos
-  symtab *ts = crearSymTab();
+  ts = crearSymTab();
   //Se crea una nueva tabla de tipos
-  typetab *tt = crearTypeTab();
+  tt = crearTypeTab();
   //Acción semántica: StackTT.push(tt)
   insertarTypeTab(StackTT, tt);
   //Acción semántica: StackTS.push(ts)
   insertarSymTab(StackTS,ts);
   //Se crea una nueva tabla de cadenas
-  strtab* TC= crearStrTab();
+  TC = crearStrTab();
   //Se crea una nueva pila de direcciones
-  dirstack* StackDir crearDirStack()
+  StackDir = crearDirStack();
 };
 
 declaraciones:
@@ -149,11 +194,11 @@ declaraciones:
 | /*epsilon*/ {};
 
 tipo_registro:
-  REGISTRO SL INICIO declaraciones{
+  REGISTRO SL INICIO declaraciones {
     //Se crea una nueva tabla de símbolos
-    symtab *ts = crearSymTab();
+    ts = crearSymTab();
     //Se crea una nueva tabla de tipos
-    typetab *tt = crearTypeTab();
+    tt = crearTypeTab();
     //Se guarda la direccion en la Pila
     insertarDireccion(StackDir,dir);
     //Se reinicia la direccion
@@ -163,7 +208,7 @@ tipo_registro:
     //Se guarda la nueva tabla de simbolos en la pila
     insertarSymTab(StackTS, ts);
     }
-    SL FIN{
+    SL FIN {
     //Se recupera la direccion de la pila
     dir = sacarDireccion(StackDir);
     //Se recupera
@@ -176,12 +221,12 @@ tipo_registro:
     tipo_base = crearTipoStruct(ts1);
     arquetipo = crearArqueTipo(true, tipo_base);
     nuevoTipo = crearTipoNativo(tt->num, "struct", arquetipo, 20);
-    type = insertarTipo(tt, nuevoTipo) - 1;
+    type_global = insertarTipo(tt, nuevoTipo) - 1;
     }
 tipo:
 base tipo_arreglo {
     tipo_b=$1.tipo; 
-    $$.tipo_=$2.tipo; //tipo.tipo=tipo_arreglo.tipo
+    $$.tipo=$2.tipo; //tipo.tipo=tipo_arreglo.tipo
   };
 
 base:
@@ -192,17 +237,19 @@ base:
 | SIN {$$.tipo=4;};
 
 tipo_arreglo:
-  RCOR NUM LCOR tipo_arreglo{
-  if($2.tipo==0 && $2.valor.ival>0){ 
-  $$.tipo=StackTT.getCima().addTipo(”array”,$2.valor.ival,$4.tipo)
-  }else{
-  yyerror(”El ındice tiene que ser entero y mayor que cero”)
+  RCOR NUM LCOR tipo_arreglo {
+    if($2.tipo==0 && $2.valor.ival>0){ 
+    //$$.tipo=StackTT.getCima().addTipo(”array”,$2.valor.ival,$4.tipo)
+    }else{
+      yyerror("El indice tiene que ser entero y mayor que cero");
+    }
   }
-  }
-| /*epsilon*/ {$$.tipo=tipo_b};
+| /*epsilon*/ {$$.tipo=tipo_b;};
 
 lista_var:
-  lista_var COMA ID {}
+  lista_var COMA ID {
+   // if StackTS.getCima().ge
+  }
 | ID {};
 
 funciones:
@@ -262,21 +309,23 @@ relacional:
 
 expresion:
   expresion MAS expresion {
+       
         $$.tipo = max($1.tipo, $3.tipo);        
         newTemp($$.dir);
         char dir1[20], dir2[20];   
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
-        agregar_cuadrupla(code, ”+”,dir1,dir2, expresion.dir);
+        agregar_cuadrupla(cod,"+",dir1,dir2,$$.dir);
         //printf("E->E+E\n");
 }
 | expresion MENOS expresion {
+
         $$.tipo = max($1.tipo, $3.tipo);        
         newTemp($$.dir);
         char dir1[20], dir2[20];   
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
-        agregar_cuadrupla(code, ”-”,dir1,dir2, expresion.dir);
+        agregar_cuadrupla(cod,"-",dir1,dir2,$$.dir);
         //printf("E->E-E\n");
 }
 | expresion MUL expresion {
@@ -285,7 +334,7 @@ expresion:
         char dir1[20], dir2[20];   
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
-        agregar_cuadrupla(code, ”*”,dir1,dir2, expresion.dir);
+        agregar_cuadrupla(cod,"*",dir1,dir2,$$.dir);
         //printf("E->E*E\n");
 }
 | expresion DIV expresion {$$.tipo = max($1.tipo, $3.tipo);        
@@ -293,7 +342,7 @@ expresion:
         char dir1[20], dir2[20];   
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
-        agregar_cuadrupla(code, ”/”,dir1,dir2, expresion.dir);
+        agregar_cuadrupla(cod,"/",dir1,dir2,$$.dir);
         //printf("E->E/E\n");
 }
 | expresion MOD expresion {$$.tipo = max($1.tipo, $3.tipo);        
@@ -301,22 +350,34 @@ expresion:
         char dir1[20], dir2[20];   
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
-        agregar_cuadrupla(code, ”%”,dir1,dir2, expresion.dir);
+        agregar_cuadrupla(cod,"%",dir1,dir2,$$.dir);
         //printf("E->E%E\n");
 }
-| LPAR expresion RPAR {$$.dir = $2.dir;
-$$.tipo=$2.tipo}
+| LPAR expresion RPAR {$$ = $2;}
 | variable {
-  $$.dir=newTemp();
+  newTemp($$.dir);
   $$.tipo=$1.tipo;
   //agregar_cuadrupla(code,"*",$1.base[$1.dir], "-", $$.dir);
 }
-| NUM {$$.tipo=$1.tipo;
-  $$.dir=$1.valor;} 
-| CADENA {$$.tipo=$1;
-  $$.dir=insertarCadena(TC, $1);} 
-| CARACTER {$$.tipo=$1;
-  $$.dir=insertarCadena(TC, $1);} 
+| NUM {
+  $$.tipo=$1.tipo;
+  strcpy($$.dir, $1.sval);
+  /*if($1.tipo == 0){
+    $$.dir= $1.valor.ival;
+  }
+  else if($1.tipo == 1){
+    $$.dir, $1.valor.fval;
+  }
+  else{
+    $$.dir, $1.valor.dval;
+  }*/
+} 
+| CADENA {$$.tipo = 4;
+  //$$.dir = insertarCadena(TC, $1.sval);
+} 
+| CARACTER {$$.tipo = 3;
+  //$$.dir = insertarCadena(TC, $1.cval);
+} 
 | ID LPAR parametros RPAR {};
 
 variable:
@@ -351,7 +412,7 @@ void yyaccept(){
   - double= 2
   - char= 3
 */
-int  max(int t1, int t2){
+int max(int t1, int t2){
     if(t1 == t2)
         return t1;
     else if(t1==3 && t2 == 0){    //float   int
@@ -393,28 +454,28 @@ void newTemp(char *dir){
   - double= 2
   - char= 3
 */
-void *amp(char *dir, int t1, int t2, char* res){
+void amp(char *dir, int t1, int t2, char* res){
     if(t1 == t2){
         strcpy(res, dir);
     }else if((t1==3 && t2==0) || (t1== 0 && t2 == 3)){
         char temp[20];
         newTemp(temp);
-        fprintf(yyout, "%s = (int) %s\n", temp, dir);
+        //fprintf(yyout, "%s = (int) %s\n", temp, dir);
         strcpy(res, temp);
     }else if((t1==0 && t2==1) || (t1== 1 && t2 == 0)){
         char temp[20];
         newTemp(temp);
-        fprintf(yyout, "%s = (float) %s\n", temp, dir);
+        //fprintf(yyout, "%s = (float) %s\n", temp, dir);
         strcpy(res, temp);
     }else if((t1==0 && t2==2) || (t1== 2 && t2 == 0)){
         char temp[20];
         newTemp(temp);
-        fprintf(yyout, "%s = (double) %s\n", temp, dir);
+        //fprintf(yyout, "%s = (double) %s\n", temp, dir);
         strcpy(res, temp);
     }else if((t1==1 && t2==2) || (t1== 2 && t2 == 1)){
         char temp[20];
         newTemp(temp);
-        fprintf(yyout, "%s = (double) %s\n", temp, dir);
+        //fprintf(yyout, "%s = (double) %s\n", temp, dir);
         strcpy(res, temp);
     }
     else{
