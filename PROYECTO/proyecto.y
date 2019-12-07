@@ -68,6 +68,7 @@
 %union{  /*yylval*/
   struct{ /*Numero enteros, reales y reales dobles*/
     int tipo;
+    char sval[20];
     union{
       int ival;
       float fval;
@@ -107,7 +108,7 @@
 
   struct{ /*Expresiones*/
     int tipo;
-    int dir;
+    char dir[20];
     union{
       int ival;
       float fval;
@@ -305,66 +306,66 @@ relacional:
 
 expresion:
   expresion MAS expresion {
-        /*$$.tipo = max($1.tipo, $3.tipo);        
+        $$.tipo = max($1.tipo, $3.tipo);        
         newTemp($$.dir);
         char dir1[20], dir2[20];   
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
-        agregar_cuadrupla(code, ”+”,dir1,dir2, expresion.dir);*/
+       // agregar_cuadrupla(code, ”+”,dir1,dir2, expresion.dir);
         //printf("E->E+E\n");
 }
 | expresion MENOS expresion {
-        /*$$.tipo = max($1.tipo, $3.tipo);        
+        $$.tipo = max($1.tipo, $3.tipo);        
         newTemp($$.dir);
         char dir1[20], dir2[20];   
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
-        agregar_cuadrupla(code, ”-”,dir1,dir2, expresion.dir);*/
+        //agregar_cuadrupla(code, ”-”,dir1,dir2, expresion.dir);*/
         //printf("E->E-E\n");
 }
 | expresion MUL expresion {
-        /*$$.tipo = max($1.tipo, $3.tipo);        
+        $$.tipo = max($1.tipo, $3.tipo);        
         newTemp($$.dir);
         char dir1[20], dir2[20];   
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
-        agregar_cuadrupla(code, ”*”,dir1,dir2, expresion.dir);*/
+        //agregar_cuadrupla(code, ”*”,dir1,dir2, expresion.dir);*/
         //printf("E->E*E\n");
 }
 | expresion DIV expresion {$$.tipo = max($1.tipo, $3.tipo);        
-        /*newTemp($$.dir);
+        newTemp($$.dir);
         char dir1[20], dir2[20];   
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
-        agregar_cuadrupla(code, ”/”,dir1,dir2, expresion.dir);*/
+       // agregar_cuadrupla(code, ”/”,dir1,dir2, expresion.dir);*/
         //printf("E->E/E\n");
 }
 | expresion MOD expresion {$$.tipo = max($1.tipo, $3.tipo);        
-        /*newTemp($$.dir);
+        newTemp($$.dir);
         char dir1[20], dir2[20];   
         amp($1.dir, $1.tipo, $$.tipo, dir1);
         amp($3.dir, $3.tipo, $$.tipo, dir2);
-        agregar_cuadrupla(code, ”%”,dir1,dir2, expresion.dir);*/
+        //agregar_cuadrupla(code, ”%”,dir1,dir2, expresion.dir);*/
         //printf("E->E%E\n");
 }
-| LPAR expresion RPAR {$$.dir = $2.dir;
-$$.tipo=$2.tipo;}
+| LPAR expresion RPAR {$$ = $2;}
 | variable {
-  //$$.dir=newTemp();
+  newTemp($$.dir);
   $$.tipo=$1.tipo;
   //agregar_cuadrupla(code,"*",$1.base[$1.dir], "-", $$.dir);
 }
 | NUM {
   $$.tipo=$1.tipo;
-  if($1.tipo == 0){
-    $$.dir=$1.valor.ival;
+  strcpy($$.dir, $1.sval);
+  /*if($1.tipo == 0){
+    $$.dir= $1.valor.ival;
   }
   else if($1.tipo == 1){
-    $$.dir=$1.valor.fval;
+    $$.dir, $1.valor.fval;
   }
   else{
-    $$.dir=$1.valor.dval;
-  }
+    $$.dir, $1.valor.dval;
+  }*/
 } 
 | CADENA {$$.tipo = 4;
   //$$.dir = insertarCadena(TC, $1.sval);
