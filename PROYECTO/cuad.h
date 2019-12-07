@@ -13,37 +13,25 @@
 #include <string.h>
 
 //Constantes para operadores aritméticos
-#define ADICION 1000
-#define	SUSTRACCION 1001
-#define	MULTIPLICACION 1002
-#define	DIVISION 1003
-#define MODULO 1004
+static const char ADICION[] = "+";
+static const char SUSTRACCION[] = "-";
+static const char MULTIPLICACION[] = "*";
+static const char DIVISION[] = "/";
+static const char MODULO[] = "%";
 
 //Costantes para operadores relacionales
-#define MENOR 2000
-#define MAYOR 2001
-#define MENOR_O_IGUAL 2002
-#define IGUAL 2003
-#define DIFERENTE 2004
-
-//Constantes para operadores logicos
-#define AND 3000
-#define OR 3001
-#define NOT 3002
-#define XOR 3003
+static const char MENOR_QUE[] = "<";
+static const char MAYOR_QUE[] = ">";
+static const char MENOR_O_IGUAL[] = "<=";
+static const char IGUAL[] = "==";
+static const char DIFERENTE[] ="!=";
 
 //Constantes para operadores de asignacion
-#define ASIGNACION 4000
+static const char ASIGNACION[] =  "=";
 
 //Constante para los parámetros de una función
-#define PARAM 5000
+static const char PARAM[] = "param";
 
-//Constantes para hacer saltos
-#define GOTO 6000
-#define IF_GOTO 6001
-
-//Constante para llamar a una funcion
-#define CALL 7000
 
 
 //Estructura que almacenara las partes de la instruccion de tres direcciones

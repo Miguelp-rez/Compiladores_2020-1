@@ -15,11 +15,11 @@
 /*Comentarios de funciones en cuad.h*/
 quad *crea_quad(char* op , char* arg1, char *arg2, char *res){
 	quad* q = malloc(sizeof(quad));
-	if(q != NULL){
-    	q->op = op;
-			q->arg1 = arg1;
-			q->arg2 = arg2;
-			q->res = res;
+	if(q){
+    		q->op = op;
+		q->arg1 = arg1;
+		q->arg2 = arg2;
+		q->res = res;
     }
     else{
         printf("No hay memoria disponible\n");  //ERROR
@@ -86,16 +86,21 @@ void imprime(code *c){
 		FILE *codigo_intermedio = fopen("codigo_intermedio.txt","w");
 		quad *instruccion = c->root;
 		for(int i = 0 ; i < c->num_instrucciones ; i++){
-			printf("%s\n",instruccion->op);
-			if(strcmp(instruccion->op, "=")){
+			//strcmp retorna 0 si son iguales los argumentos
+                        printf("%s\t%s\t%s\t%s\n",
+                                  instruccion->op,
+                                  instruccion->arg1,
+                                  instruccion->arg2,
+                       	instruccion->res);
+			if(strcmp(instruccion->op, "=") == 0){
 						fprintf(codigo_intermedio, "%s = %s\n",instruccion->res,instruccion->arg1);
-						break;
-			}else if(strcmp(instruccion->op, "param")){
+						instruccion = instruccion->next;
+			}else if(strcmp(instruccion->op, PARAM) == 0){
 						fprintf(codigo_intermedio, "param %s\n",instruccion->arg1);
+						instruccion = instruccion->next;
 			} else {
 						printf("ERROR de existencia de operador\n");
 			}
-			instruccion = instruccion->next;
 		}
 }
 
