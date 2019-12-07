@@ -12,6 +12,40 @@
 #define CUAD_H
 #include <string.h>
 
+//Constantes para operadores aritméticos
+#define ADICION 1000
+#define	SUSTRACCION 1001
+#define	MULTIPLICACION 1002
+#define	DIVISION 1003
+#define MODULO 1004
+
+//Costantes para operadores relacionales
+#define MENOR 2000
+#define MAYOR 2001
+#define MENOR_O_IGUAL 2002
+#define IGUAL 2003
+#define DIFERENTE 2004
+
+//Constantes para operadores logicos
+#define AND 3000
+#define OR 3001
+#define NOT 3002
+#define XOR 3003
+
+//Constantes para operadores de asignacion
+#define ASIGNACION 4000
+
+//Constante para los parámetros de una función
+#define PARAM 5000
+
+//Constantes para hacer saltos
+#define GOTO 6000
+#define IF_GOTO 6001
+
+//Constante para llamar a una funcion
+#define CALL 7000
+
+
 //Estructura que almacenara las partes de la instruccion de tres direcciones
 typedef struct _quad quad;
 struct _quad {
