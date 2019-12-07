@@ -88,36 +88,30 @@ int main(){
     printf("---------------PRUEBA DE TABLA DE TIPOS---------------\n");
     typetab* tt = crearTypeTab();
 
-    /*insercion de tipo array
+    //insercion de tipo array
     printf("\n * Se inserta un tipo array valido\n");
-    arquetipo = getTipoBase(tt, 0);  //Entero
-    size = getTam(tt,0) * 2; //2 elementos
-    nuevoTipo = crearTipoArray(tt->num, "array", arquetipo, size, 2);
-    exito = insertarTipo(tt, nuevoTipo);
-    if(exito == -1)
-        printf("Error al insertar\n");
-    else
-        printf("EXITO\n");  
-*/
+    base tb;
+    tb.simple=0;
+    base *ptr_tb = &tb;
+    type* nuevoTipo = crearType("array", ptr_tb, 2);
+    exito = insertarTipo(tt, nuevoTipo);  
+
     //insercion de tipo struct
-    //printf("\n * Se inserta un tipo struct valido\n");
-    //symtab* st2 = crearSymTab();
-    //typetab* tt2 = crearTypeTab();
-    /*tipo_base = crearTipoStruct(st2);
-    arquetipo = crearArqueTipo(true, tipo_base);
-    nuevoTipo = crearTipoNativo(tt->num, "struct", arquetipo, 20);
+    printf("\n * Se inserta un tipo struct valido\n");
+    symtab* st2 = crearSymTab();
+    typetab* tt2 = crearTypeTab();
+    base tb2;
+    tb2.tabla= st2;
+    base *ptr_tb2 = &tb2;
+    nuevoTipo = crearType("registro", ptr_tb2, -1);
     exito = insertarTipo(tt, nuevoTipo);
-    if(exito == -1)
-        printf("Error al insertar\n");
-    else
-        printf("EXITO\n");
-    */
+    
     imprimirTablaType(tt);
-/*
+
     //PRUEBA DE PILA DE TABLAS DE TIPOS
     printf("---------------PRUEBA DE PILA TABLA DE TIPOS---------------\n");
     typestack *tts = crearTypeStack();
-    typetab *aux = crearTypeTab();
+    typetab *aux;
 
     printf("\n * Se inserta una tabla de tipos valida\n");
     insertarTypeTab(tts, tt);
@@ -140,12 +134,11 @@ int main(){
     printf("\n * Se recupera el tope de la pila de TT\n");
     aux = getCimaType(tts);
     imprimirTablaType(aux);
-    borrarTypeTab(aux);
 
     printf("\n * Se destruye la pila de TT\n");
     borrarTypeStack(tts);
     printf("\n * Se destruye la pila de TS\n");
     borrarSymStack(sts);
-*/
+
   return 0;
 }

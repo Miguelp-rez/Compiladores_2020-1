@@ -32,10 +32,10 @@ struct _symtab{
     symtab* next;
 };
 
-typedef struct _base base;
-struct _base{
-    int simple;   // Tipo simple
-    symtab *tabla;  // Tipo estructura
+typedef union _base base;
+union _base{
+    int simple;   // Base de tipo array
+    symtab *tabla;  // Base de tipo registro
 };
 
 typedef struct _type type;
