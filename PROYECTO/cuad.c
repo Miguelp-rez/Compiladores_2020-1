@@ -203,8 +203,7 @@ void imprime(code *c){
 								instruccion->arg2);
 			} else if(strcmp(instruccion->op, RETURN) == 0) {
 				fprintf(codigo_intermedio,
-								"%s = call %s\n",
-								instruccion->res,
+								"return %s\n",
 								instruccion->arg1);
 			} else {
 				printf("Error: El operador no existe");
