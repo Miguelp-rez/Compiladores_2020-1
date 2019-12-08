@@ -16,18 +16,46 @@ fin struct1  <*Poner mas variables*>
 func ent funcion1(ent param1) inicio
   ent [2][2] var1
   dreal var2
-  --sentencias
-  --sentencia
+  si expresion_booleana entonces
+    sentencias
+  fin
+  mientras
+  expresion_booleana hacer
+    sentencias
+  fin
+  hacer
+    sentencias
+  mientras que expresion_booleana
+  terminar
 fin
 func real [10] funcion2(ent [2] param1 real [5][2] param2) inicio
   real [5][3][4] var1, var2, var3
   car var4
-  --sentencias
-  --sentencia
+  si expresion_booleana entonces
+    sentencias
+  fin
+  mientras
+  expresion_booleana hacer
+    sentencias
+  fin
+  hacer
+    sentencias
+  mientras que expresion_booleana
+  devolver expresion
 fin
 func sin funcion3(sin) inicio
   ent var1, var2
-  --sentencias
-  --sentencia
+  si expresion_booleana entonces
+    sentencias
+  fin
+  mientras
+  expresion_booleana hacer
+    sentencias
+  fin
+  hacer
+    sentencias
+  mientras que expresion_booleana
+  leer variable
+  escribir expresion
 fin
 <*Provocar errores por comentarios que nunca finalizan*>

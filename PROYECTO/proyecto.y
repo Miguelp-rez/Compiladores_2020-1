@@ -51,9 +51,9 @@
   typetab *tt;
   typetab *tt1;
 
-  tipo *tipo_base;
-  tipoBase *arquetipo;
-  type *nuevoTipo;
+  base *base_type;
+  type *nuevo_tipo;
+  
 
 %}
 
@@ -191,8 +191,8 @@ programa: declaraciones SL funciones {
 };
 
 declaraciones:
-  tipo lista_var SL declaraciones {}
-| tipo_registro lista_var SL declaraciones {}
+  tipo lista_var SL declaraciones {type_global = $1.tipo;}
+| tipo_registro lista_var SL declaraciones {type_global = $1.tipo;}
 | /*epsilon*/ {};
 
 tipo_registro:
@@ -220,10 +220,9 @@ tipo_registro:
     //Se recupera la direccion de la pila
     dir = sacarDireccion(StackDir);
     //Todo lo de abajo es: type = StackTT.getCima().addTipo(”registro”,0, ts1)
-    tipo_base = crearTipoStruct(ts1);
-    arquetipo = crearArqueTipo(true, tipo_base);
-    nuevoTipo = crearTipoNativo(tt->num, "struct", arquetipo, 20);
-    type_global = insertarTipo(tt, nuevoTipo) - 1;
+    base_type->tabla = ts1;
+    nuevo_tipo = crearType("struct", base_type, -1);
+    type_global = insertarTipo(tt1, nuevo_tipo) - 1;
     }
 tipo:
 base tipo_arreglo {
@@ -455,9 +454,9 @@ char* newLabel(){
 		strcpy(label,"L");
 		char* num[10];
 		//Se guarda en num el valor de labelCounter como un str
-		sprintf(num,"%d",labelCounter);
-		strcat(label,num);
-		labelCounter++;
+		//sprintf(num,"%d",labelCounter);
+		//strcat(label,num);
+		//labelCounter++;
 		return label;
 }
 

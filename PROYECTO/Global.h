@@ -35,16 +35,17 @@ struct _symbol{
     symbol* next;
 };
 
+typedef struct _symtab symtab;
+struct _symtab{
+    symbol* root;
+    int num;
+    symtab* next;
+};
+
 typedef union _base base;
 union _base{
     int simple;   // Base de tipo array
     symtab *tabla;  // Base de tipo registro
-};
-
-typedef struct _base base;
-struct _base{
-    int simple;   // Tipo simple
-    symtab *tabla;  // Tipo estructura
 };
 
 typedef struct _type type;

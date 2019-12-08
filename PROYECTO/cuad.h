@@ -31,8 +31,8 @@ static const char DIFERENTE[] ="!=";
 static const char ASIGNACION[] =  "=";
 
 //Constantes para operadores lógicos
-static const char OO[] = "oo";
-static const char YY[] = "yy";
+static const char DISYUNCION[] = "oo";
+static const char CONJUNCION[] = "yy";
 
 //Constante para los parámetros de una función
 static const char PARAM[] = "param";
@@ -41,11 +41,11 @@ static const char PARAM[] = "param";
 static const char CALL[] = "call";
 
 //Constantes para hacer saltos
-static const char GOTO[] = "goto"
-static const char IF_GOTO[] = "if
+static const char GOTO[] = "goto";
+static const char IF_GOTO[] = "if";
 
 //Constante de retorno
-static const char RETURN[] = "return"
+static const char RETURN[] = "return";
 
 //Estructura que almacenara las partes de la instruccion de tres direcciones
 typedef struct _quad quad;

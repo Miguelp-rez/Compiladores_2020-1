@@ -42,7 +42,7 @@ void agregar_cuadrupla(code* c, char *op, char* arg1, char *arg2, char* res){
 }
 
 code* crea_code(){
-	code* c= malloc(sizeof(code));
+	code* c = malloc(sizeof(code));
     if(c != NULL){
         c->root = NULL;
 		c->num_instrucciones = 0;
@@ -171,13 +171,13 @@ void imprime(code *c){
 								"%s = %s\n",
 								instruccion->res,
 								instruccion->arg1);
-			} else if(strcmp(instruccion->op, OO) == 0) { //OR
+			} else if(strcmp(instruccion->op, DISYUNCION) == 0) { //OR
 				fprintf(codigo_intermedio,
 								"%s = %s || %s\n",
 								instruccion->res,
 								instruccion->arg1,
 								instruccion->arg2);
-			} else if(strcmp(instruccion->op, YY) == 0) { //AND
+			} else if(strcmp(instruccion->op, CONJUNCION) == 0) { //AND
 				fprintf(codigo_intermedio,
 								"%s = %s && %s\n",
 								instruccion->res,
