@@ -9,6 +9,11 @@
 */
 
 //FUNCIONES
+/*Asocia una tabla de tipos la de simbolos*/
+void setTT(symtab *st, typetab *tt){
+    st->tt_asociada = tt;
+}
+
 /* Retorna un apuntador a una variable Param */
 param* crearParam(int tipo){
     param* parametro= malloc(sizeof(param));

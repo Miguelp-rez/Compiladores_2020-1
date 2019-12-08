@@ -215,14 +215,14 @@ tipo_registro:
     dir = sacarDireccion(StackDir);
     //Se recupera
     tt1 = sacarTypeTab(StackTT);
-    //StackTS.getCima().setTT(tt1)  //Falta crear setTT()
+    setTT(getCimaSym(StackTS), tt1);
     ts1 = sacarSymTab(StackTS);
     //Se recupera la direccion de la pila
     dir = sacarDireccion(StackDir);
     //Todo lo de abajo es: type = StackTT.getCima().addTipo(”registro”,0, ts1)
     base_type->tabla = ts1;
     nuevo_tipo = crearType("struct", base_type, -1);
-    type_global = insertarTipo(tt1, nuevo_tipo) - 1;
+    type_global = insertarTipo(getCimaType(StackTT), nuevo_tipo) - 1;
     }
 tipo:
 base tipo_arreglo {
@@ -241,6 +241,9 @@ tipo_arreglo:
   RCOR NUM LCOR tipo_arreglo {
     if($2.tipo==0 && $2.valor.ival>0){
     //$$.tipo=StackTT.getCima().addTipo(”array”,$2.valor.ival,$4.tipo)
+      base_type->simple = $4.tipo;
+      nuevo_tipo = crearType("array", base_type, $2.valor.ival);
+      $$.tipo = insertarTipo(getCimaType(StackTT), nuevo_tipo) - 1;      
     }else{
       yyerror("El indice tiene que ser entero y mayor que cero");
     }

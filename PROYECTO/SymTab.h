@@ -12,6 +12,9 @@
 #define SYMTAB_H
 #include "Global.h"
 
+/*Asocia una tabla de tipos la de simbolos*/
+void setTT(symtab*, typetab*);
+
 /* Retorna un apuntador a una variable Param */
 param* crearParam(int tipo);
 

@@ -36,8 +36,11 @@ struct _symbol{
 };
 
 typedef struct _symtab symtab;
+typedef struct _typetab typetab;
+
 struct _symtab{
     symbol* root;
+    typetab *tt_asociada;
     int num;
     symtab* next;
 };
@@ -58,7 +61,6 @@ struct _type{
     base* tb;
 };
 
-typedef struct _typetab typetab;
 struct _typetab{
     type *root;
     int num;
