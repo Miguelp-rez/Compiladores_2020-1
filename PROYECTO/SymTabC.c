@@ -8,6 +8,12 @@
  * Fecha: 09/11/19
 */
 
+/* Para tipoVar:
+  - var     = 0
+  - funcion = 1
+  - param   = 2
+*/
+
 //FUNCIONES
 /*Asocia una tabla de tipos la de simbolos*/
 void setTT(symtab *st, typetab *tt){

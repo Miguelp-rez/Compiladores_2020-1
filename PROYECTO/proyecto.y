@@ -40,21 +40,24 @@
   int max(int t1, int t2);
   void newTemp(char *dir);
   void amp(char *dir, int t1, int t2, char* res);
-  /*Falta crear pila de direcciones*/
-  code* cod;
+
+  //TIPOS
   typestack *StackTT;
-  symstack *StackTS;
-  strtab* TC;
-  dirstack* StackDir;
-  symtab *ts;
-  symtab *ts1;
   typetab *tt;
   typetab *tt1;
-
   base *base_type;
   type *nuevo_tipo;
   
+  //SIMBOLOS
+  symstack *StackTS;
+  symtab *ts;
+  symtab *ts1;
+  symbol *nuevo_simbolo;
 
+  //OTROS
+  strtab* TC;
+  dirstack* StackDir;
+  code* cod;
 %}
 
 /*
@@ -65,6 +68,12 @@
   - Caracter           = 3
   - Cadena             = 4
   - Identificador      = 5
+*/
+
+/* Para tipoVar:
+  - var     = 0
+  - funcion = 1
+  - param   = 2
 */
 
 %union{  /*yylval*/
@@ -252,12 +261,33 @@ tipo_arreglo:
 
 lista_var:
   lista_var COMA ID {
-   // if StackTS.getCima().ge
+    if(buscar(getCimaSym(StackTS), $3.id) != -1){
+      nuevo_simbolo = crearSymbol($3.id, base_global, dir, 0);
+      insertar(getCimaSym(StackTS), nuevo_simbolo);
+      dir = dir + getTam(getCimaType(StackTT), base_global);
+    }else{
+      yyerror("El identificador ya fue declarado");
+    }
   }
-| ID {};
+| ID {
+    if(buscar(getCimaSym(StackTS), $1.id) != -1){
+      nuevo_simbolo = crearSymbol($1.id, base_global, dir, 0);
+      insertar(getCimaSym(StackTS), nuevo_simbolo);
+      dir = dir + getTam(getCimaType(StackTT), base_global);
+    }else{
+      yyerror("El identificador ya fue declarado");
+    }
+};
 
 funciones:
-  FUNC tipo ID RPAR argumentos LPAR INICIO SL declaraciones sentencias SL FIN SL funciones {}
+  FUNC tipo ID RPAR argumentos LPAR INICIO SL declaraciones sentencias SL FIN SL funciones {
+    /*separar como en tipo_registro?*/
+    if(buscar(StackTS->root, $3.id) != -1){
+      //completar
+    }else{
+      yyerror("El identificador ya fue declarado");
+    }
+  }
 | /*epsilon*/ {};
 
 argumentos:

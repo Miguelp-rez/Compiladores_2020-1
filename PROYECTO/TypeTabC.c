@@ -99,9 +99,9 @@ int insertarTipo(typetab *tt, type *t){
         }else if(strcmp(t->nombre, "dreal") == 0){
             t->tamBytes = 8;
         }else if(strcmp(t->nombre, "car") == 0){
-            t->tamBytes = 4;
+            t->tamBytes = 1;
         }else if(strcmp(t->nombre, "void") == 0){
-            t->tamBytes = 4;
+            t->tamBytes = 0;
         }else if(strcmp(t->nombre, "array") == 0){
             //Calcular tamBytes
             t->tamBytes = getTam(tt, t->tb->simple) * t->numElem;
