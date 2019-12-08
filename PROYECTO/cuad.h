@@ -40,6 +40,13 @@ static const char PARAM[] = "param";
 //Constante para la llamada a una funcion
 static const char CALL[] = "call";
 
+//Constantes para hacer saltos
+static const char GOTO[] = "goto"
+static const char IF_GOTO[] = "if
+
+//Constante de retorno
+static const char RETURN[] = "return"
+
 //Estructura que almacenara las partes de la instruccion de tres direcciones
 typedef struct _quad quad;
 struct _quad {

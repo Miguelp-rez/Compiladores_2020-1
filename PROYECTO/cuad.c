@@ -192,6 +192,20 @@ void imprime(code *c){
 								"%s = call %s\n",
 								instruccion->res,
 								instruccion->arg1);
+			} else if(strcmp(instruccion->op, GOTO) == 0) {
+				fprintf(codigo_intermedio,
+								"goto %s\n",
+								instruccion->arg1);
+			} else if(strcmp(instruccion->op, IF_GOTO) == 0) {
+				fprintf(codigo_intermedio,
+								"if %s goto %s\n",
+								instruccion->arg1,
+								instruccion->arg2);
+			} else if(strcmp(instruccion->op, RETURN) == 0) {
+				fprintf(codigo_intermedio,
+								"%s = call %s\n",
+								instruccion->res,
+								instruccion->arg1);
 			} else {
 				printf("Error: El operador no existe");
 			}
