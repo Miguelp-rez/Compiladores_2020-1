@@ -86,30 +86,31 @@ void imprime(code *c){
 		FILE *codigo_intermedio = fopen("codigo_intermedio.txt","w");
 		quad *instruccion = c->root;
 		for(int i = 0 ; i < c->num_instrucciones ; i++){
-                        printf("%s\t%s\t%s\t%s\n",
-                                  instruccion->op,
-                                  instruccion->arg1,
-                                  instruccion->arg2,
-                       	instruccion->res);
+      printf("%s\t%s\t%s\t%s\n",
+              instruccion->op,
+              instruccion->arg1,
+              instruccion->arg2,
+             	instruccion->res);
 			//strcmp retorna 0 si son iguales los argumentos
 			if(strcmp(instruccion->op, ADICION) == 0){
-				if (instruccion->res && instruccion->arg1 && instruccion->arg2){
+				//Validación de la forma de la instrucción
+				//if (instruccion->res && instruccion->arg1 && instruccion->arg2){
 					fprintf(codigo_intermedio,
 									"%s = %s + %s\n",
 									instruccion->res,
 									instruccion->arg1,
 									instruccion->arg2);
-				} else
-					printf("Instruccion mal formada.");
+				//} else
+					//printf("Instruccion mal formada.");
 			} else if(strcmp(instruccion->op, SUSTRACCION) == 0) {
-				if (instruccion->res && instruccion->arg1 && instruccion->arg2){
+				//if (instruccion->res && instruccion->arg1 && instruccion->arg2){
 					fprintf(codigo_intermedio,
 									"%s = %s - %s\n",
 									instruccion->res,
 									instruccion->arg1,
 									instruccion->arg2);
-				} else
-					printf("Instruccion mal formada.");
+				//} else
+					//printf("Instruccion mal formada.");
 
 			} else if(strcmp(instruccion->op, MULTIPLICACION) == 0) {
 				fprintf(codigo_intermedio,
@@ -198,6 +199,11 @@ void imprime(code *c){
 		}
 }
 
+
+
+//PRUEBA
+
+/*
 int main(int argc, char const *argv[])
 {
 	printf("\t***CUADRUPLAS***\n");
@@ -215,3 +221,4 @@ int main(int argc, char const *argv[])
   	elimina_code(cod);
 	return 0;
 }
+*/
