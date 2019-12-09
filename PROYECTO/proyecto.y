@@ -775,12 +775,20 @@ arreglo:
 | /*epsilon*/ {};
 
 parametros:
-  lista_param {}
-| /*epsilon*/ {};
+  lista_param { $$.lista = $1.lista; }
+| /*epsilon*/ { $$.lista = NULL; };
 
 lista_param:
-  lista_param COMA expresion {}
-| expresion {};
+  lista_param COMA expresion { 
+    $$.lista = $1.lista;
+    add($$.lista, $3.tipo);
+    agregar_cuadrupla(cod, "param", $3.dir, "", "");
+  }
+| expresion { 
+    $$.lista = crearLP();
+    add($$.lista, $1.tipo);
+    agregar_cuadrupla(cod, "param", $1.dir, "", "");
+  };
 
 %%
 void yyerror(char *msg){
