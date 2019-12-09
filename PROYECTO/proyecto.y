@@ -38,6 +38,8 @@
   int base_global; /*Variable global*/
   int type_global;
   int tipo_b;
+  int t;
+  char nombre[10];
   int i_temp = 0;
 	//Contador de etiquetas
 	int labelCounter = 0;
@@ -184,6 +186,21 @@
     l_etiquetas *listfalse;
   }relacional;
 
+  struct{ /*Parametros*/
+    listParam *lista;
+  }parametros;
+  
+  struct{ /*Lista de parametros*/
+    listParam *lista;
+  }lista_param;
+  
+  struct{ /*Arreglo*/
+      int base;
+      int tipo;
+      int tam;
+      char dir[20];
+  }arreglo;
+
 }
 
 %token<num> NUM
@@ -234,6 +251,9 @@
 %type<param_arr> param_arr
 %type<expresion_booleana> expresion_booleana
 %type<relacional> relacional
+%type<parametros> parametros
+%type<lista_param> lista_param
+%type<arreglo> arreglo
 
 %start programa
 %%
@@ -689,11 +709,69 @@ expresion:
 | ID LPAR parametros RPAR {};
 
 variable:
-  ID arreglo {}
-| ID PUNTO ID {};
+  ID arreglo {
+    strcpy($$.dir, $2.dir);
+    $$.base = $2.base;
+    $$.tipo = $2.tipo;
+  }
+| ID PUNTO ID {
+  /*if( buscar(StackTS->root, $1.id) != -1 ){
+      t = getTipo(getCimaSym(StackTS), $1.id);
+      nombre = getNombre(buscar(StackTS->root), t);
+      if(strcmp(nombre, "registro")){
+        base_type = getTipoBase(StackTT->root, t);
+        if( buscar(base_type.tabla, $3.id) != -1 ){
+          $$.tipo = getTipo(base_type.tabla, $3.id);
+          $$.dir = $3;
+          $$.base = $1;
+        }else{
+          yyerror("El id no existe en la estructura");
+        }
+      }else{
+        yyerror("El id no es una estructura");
+      }
+    }else
+    yyerror("El identifador no ha sido declarado");*/
+};
 
 arreglo:
-  ID LCOR expresion RCOR arreglo {}
+  ID LCOR expresion RCOR {/*
+    if( buscar(StackTS->root, $3.id) != -1 ){
+      t = getTipo(getCimaSym(StackTS), id.id);
+      nombre = getNombre(buscar(StackTS->root), t);
+      if(strcmp(nombre, "array")){
+        if( $3.tipo == 0 ){
+          $$.base = $1.id;
+          $$.tipo = getTipoBase(getCimaTT(StackTT), t);
+          $$.tam = getTam(getCimaTT(StackTT), $$.tipo);
+          $$.dir = newTemp();
+          add(cod, "*", $3.dir, $$.tam, $$.dir);
+        }else{
+          yyerror("La expresion para un indice debe de ser de tipo entero");
+        }
+      }else{
+        yyerror("El identificador no es un arreglo");
+      }
+    }else
+    yyerror("El identifador no ha sido declarado");*/
+  }
+| arreglo LCOR expresion RCOR {/*
+  if(getNombre(getCima(StackTT),$1.tipo)){
+    if($3.tipo = 0){
+      $$.base = $1.base;
+      $$.tipo = getTipoBase(getCimaTT(StackTT), $1.tipo);
+      $$.tam = getTam(getCimaTT(StackTT), $$.tipo);
+      temp = newTemp();
+      $$.dir = newTemp();
+      add(cod, "*", $3.dir, $$.tam, temp);
+      add(cod, "+", $1.dir, temp, $$.dir);
+    }else{
+      yyerror("La expresion para un indice debe ser de tipo entero");
+    }
+  }else{
+    yyerror("El arreglo no tiene tantas dimensiones");
+  }
+*/}
 | /*epsilon*/ {};
 
 parametros:
