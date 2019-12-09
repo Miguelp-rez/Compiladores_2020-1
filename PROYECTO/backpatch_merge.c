@@ -92,7 +92,10 @@ void backpatch(code* c,l_etiquetas* l_etis, etiqueta* eti){
     }
 }
 
-int main() {
+
+
+//PRUEBA
+/*int main() {
 
   return 0;
-}
+}*/
