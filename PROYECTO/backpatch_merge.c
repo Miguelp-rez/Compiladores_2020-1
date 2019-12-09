@@ -29,6 +29,17 @@ struct _l_etiquetas{
   //int num_codigo;
 };
 
+etiqueta* crear_etiqueta(char *valor){
+    etiqueta* etiqueta = malloc(sizeof(etiqueta));
+    if (etiqueta){
+      etiqueta->valor = valor;
+      etiqueta->next = NULL;
+      return etiqueta;
+    }
+    printf("No hay memoria suficiente para crear una lista de etiquetas\n");
+    return NULL;
+}
+
 l_etiquetas* crear_lista_etiquetas(){
     l_etiquetas* l_etis = malloc(sizeof(l_etiquetas));
     if (l_etis){

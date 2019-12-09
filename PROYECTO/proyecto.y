@@ -15,14 +15,14 @@
   #include <stdbool.h>
   #include "SymTab.h"
   #include "TypeTab.h"
-  #include "cuad.h"
   #include "SymTabC.c"
   #include "TypeTabC.c"
   #include "SymTabStack.c"
   #include "TypeTabStack.c"
-  #include "cuad.c"
+  #include "backpatch_merge.c"
   #include "DirStack.c"
   #include "StrTab.c"
+
 
   void yyerror(char* msg);
   void yyaccept();
@@ -34,12 +34,18 @@
   int tipo_b;
   int i_temp = 0;
 	//Contador de etiquetas
-	int labelCouter = 0;
-	/*falta declarar todas las funciones*/
+	int labelCounter = 0;
   int dir = 0;
+  int FuncType;
+  int FuncReturn;
+
   int max(int t1, int t2);
   void newTemp(char *dir);
   void amp(char *dir, int t1, int t2, char* res);
+  char* newLabel();
+
+  char *label;
+  etiqueta *nueva_etiqueta;
 
   //TIPOS
   typestack *StackTT;
@@ -132,6 +138,10 @@
     int tipo;
   }variable;
 
+  struct{ /*Sentencias*/
+    char *next;
+  }sentencias;
+
 }
 
 %token<num> NUM
@@ -173,6 +183,7 @@
 %type<base> base
 %type<tipo_arreglo> tipo_arreglo
 %type<variable> variable
+%type<sentencias> sentencias
 
 
 %start programa
@@ -283,7 +294,24 @@ funciones:
   FUNC tipo ID RPAR argumentos LPAR INICIO SL declaraciones sentencias SL FIN SL funciones {
     /*separar como en tipo_registro?*/
     if(buscar(StackTS->root, $3.id) != -1){
-      //completar
+      nuevo_simbolo = crearSymbol($3.id, base_global, -1, 1);
+      insertar(StackTS->root, nuevo_simbolo);
+      insertarDireccion(StackDir,dir);
+      FuncType = $2.tipo;
+      FuncReturn = 0;
+      dir = 0;
+      insertarTypeTab(StackTT, tt);
+      insertarSymTab(StackTS, ts);
+      dir = sacarDireccion(StackDir);
+      agregar_cuadrupla(cod, "label", "", "", $3.id);
+      label = newLabel();
+      nueva_etiqueta = crear_etiqueta(label); 
+      //backpatch(cod, $10.next, etiqueta);
+      agregar_cuadrupla(cod, "label", "", "", label);
+      sacarTypeTab(StackTT);
+      sacarSymTab(StackTS);
+      dir = sacarDireccion(StackDir);
+      
     }else{
       yyerror("El identificador ya fue declarado");
     }
@@ -299,7 +327,7 @@ lista_arg:
 | arg {};
 
 arg:
-  tipo_arg ID;
+  tipo_arg ID {};
 
 tipo_arg:
   base param_arr {};
@@ -352,7 +380,6 @@ expresion:
         //printf("E->E+E\n");
 }
 | expresion MENOS expresion {
-
         $$.tipo = max($1.tipo, $3.tipo);
         newTemp($$.dir);
         char dir1[20], dir2[20];
@@ -483,13 +510,13 @@ void newTemp(char *dir){
 }
 
 char* newLabel(){
-		char* label = malloc(10*sizeof(char)); //Puede haber hasta 999999999 temp
+    char* label = malloc(10*sizeof(char)); //Puede haber hasta 999999999 temp
 		strcpy(label,"L");
-		char* num[10];
+		char num[10];
 		//Se guarda en num el valor de labelCounter como un str
-		//sprintf(num,"%d",labelCounter);
-		//strcat(label,num);
-		//labelCounter++;
+		sprintf(num,"%d",labelCounter);
+		strcat(label,num);
+		labelCounter++;
 		return label;
 }
 
