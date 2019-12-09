@@ -142,6 +142,8 @@
 
   struct{ /*Variable*/
     int tipo;
+    int base;
+    char dir[20];
   }variable;
 
   struct{ /*Sentencias*/
@@ -459,11 +461,40 @@ sentencia:
     }
     $$.listnext = NULL;
 }
-| ESCRIBIR expresion {}
-| LEER variable {}
-| DEVOLVER {}
-| DEVOLVER expresion {}
-| TERMINAR {};
+| ESCRIBIR expresion {
+    agregar_cuadrupla(cod, "print", $2.dir, "", "");
+    $$.listnext = NULL;
+}
+| LEER variable {
+    agregar_cuadrupla(cod, "scan", $2.dir, "", $2.dir);
+    $$.listnext = NULL;
+}
+| DEVOLVER {
+    if(FuncType == 6){
+      agregar_cuadrupla(cod, "return", "", "", "");
+    }
+    else{
+      yyerror("La funcion debe retornar algun valor de tipo");
+    }
+    $$.listnext = NULL;
+}
+| DEVOLVER expresion {
+    if(FuncType == 6){
+      reduccion = reducir($2.dir, $2.tipo, FuncType);
+      agregar_cuadrupla(cod, "return", reduccion, "", "");
+      FuncReturn = 1;
+    }
+    else{
+      yyerror("La funcion debe retornar algun valor de tipo");
+    }
+    $$.listnext = NULL;
+}
+| TERMINAR {
+    //I = newIndex();
+    //agregar_cuadrupla(cod, "goto", "", "", I);
+    //$$.listnext = newList();
+    //add($$.listnext, I);
+};
 
 expresion_booleana:
   expresion_booleana OO expresion_booleana {}
@@ -526,30 +557,27 @@ expresion:
         agregar_cuadrupla(cod,"%",dir1,dir2,$$.dir);
         //printf("E->E%E\n");
 }
-| LPAR expresion RPAR {$$ = $2;}
+| LPAR expresion RPAR {
+    strcpy($$.dir, $2.dir);
+    $$.tipo = $2.tipo;
+  }
 | variable {
-  newTemp($$.dir);
-  $$.tipo=$1.tipo;
-  //agregar_cuadrupla(code,"*",$1.base[$1.dir], "-", $$.dir);
+    newTemp($$.dir);
+    $$.tipo = $1.tipo;
+    //agregar_cuadrupla(cod,"*", $1.base[$1.dir], "", $$.dir);
 }
 | NUM {
   $$.tipo=$1.tipo;
   strcpy($$.dir, $1.sval);
-  /*if($1.tipo == 0){
-    $$.dir= $1.valor.ival;
-  }
-  else if($1.tipo == 1){
-    $$.dir, $1.valor.fval;
-  }
-  else{
-    $$.dir, $1.valor.dval;
-  }*/
 }
 | CADENA {$$.tipo = 4;
-  //$$.dir = insertarCadena(TC, $1.sval);
+  insertarCadena(TC, $1.sval);
 }
-| CARACTER {$$.tipo = 3;
-  //$$.dir = insertarCadena(TC, $1.cval);
+| CARACTER {
+    char auxiliar [2] = "\0";
+    auxiliar[0] = $1.cval;
+    $$.tipo = 3;
+    insertarCadena(TC, auxiliar);
 }
 | ID LPAR parametros RPAR {};
 
