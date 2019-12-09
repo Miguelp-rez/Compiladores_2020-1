@@ -93,7 +93,7 @@
 %union{  /*yylval*/
   struct{ /*Numero enteros, reales y reales dobles*/
     int tipo;
-    char sval[20];
+    char sval[32];
     union{
       int ival;
       float fval;
@@ -133,7 +133,7 @@
 
   struct{ /*Expresiones*/
     int tipo;
-    char dir[20];
+    char dir[32];
     union{
       int ival;
       float fval;
@@ -145,7 +145,7 @@
   struct{ /*Variable*/
     int tipo;
     int base;
-    char dir[20];
+    char dir[32];
   }variable;
 
   struct{ /*Sentencias*/
@@ -198,7 +198,7 @@
       int base;
       int tipo;
       int tam;
-      char dir[20];
+      char dir[32];
   }arreglo;
 
 }
@@ -715,15 +715,15 @@ variable:
     $$.tipo = $2.tipo;
   }
 | ID PUNTO ID {
-  /*if( buscar(StackTS->root, $1.id) != -1 ){
+  if( buscar(StackTS->root, $1.id) != -1 ){
       t = getTipo(getCimaSym(StackTS), $1.id);
-      nombre = getNombre(buscar(StackTS->root), t);
+      strcpy(nombre, getNombre(getCimaType(StackTT), t));
       if(strcmp(nombre, "registro")){
         base_type = getTipoBase(StackTT->root, t);
-        if( buscar(base_type.tabla, $3.id) != -1 ){
-          $$.tipo = getTipo(base_type.tabla, $3.id);
-          $$.dir = $3;
-          $$.base = $1;
+        if( buscar(base_type->tabla, $3.id) != -1 ){
+          $$.tipo = getTipo(base_type->tabla, $3.id);
+          strcpy($$.dir, $3.id);
+          //$$.base = $1;
         }else{
           yyerror("El id no existe en la estructura");
         }
@@ -731,7 +731,7 @@ variable:
         yyerror("El id no es una estructura");
       }
     }else
-    yyerror("El identifador no ha sido declarado");*/
+    yyerror("El identifador no ha sido declarado");
 };
 
 arreglo:
