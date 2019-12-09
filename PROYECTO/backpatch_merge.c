@@ -10,24 +10,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "cuad.h"
-#include "cuad.c"
 #include <string.h>
-
-typedef struct _etiqueta etiqueta;
-typedef struct _l_etiquetas l_etiquetas;
-
-struct _etiqueta{
-  char* valor;
-  etiqueta* next;
-};
-
-struct _l_etiquetas{
-  quad* codigo;
-  etiqueta* root;
-  int num;
-  //int num_codigo;
-};
+#include "backpatch.h"
 
 etiqueta* crear_etiqueta(char *valor){
     etiqueta* etiqueta = malloc(sizeof(etiqueta));

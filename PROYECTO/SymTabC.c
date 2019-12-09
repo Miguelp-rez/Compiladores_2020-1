@@ -20,6 +20,11 @@ void setTT(symtab *st, typetab *tt){
     st->tt_asociada = tt;
 }
 
+void asociarLP(listParam *lp1, listParam *lp2){
+    lp1->root = lp2->root;
+    lp1->num = lp2->num;
+}
+
 /* Retorna un apuntador a una variable Param */
 param* crearParam(int tipo){
     param* parametro= malloc(sizeof(param));

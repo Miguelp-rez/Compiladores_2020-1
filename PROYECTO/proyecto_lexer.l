@@ -12,6 +12,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "cuad.h"
+#include "backpatch.h"
+#include "Global.h"
 #include "proyecto.tab.h"
 
 char *copia;

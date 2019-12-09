@@ -8,7 +8,6 @@
  * Fecha: 04/12/19
 */
 
-#include "cuad.h"
 #include <stdio.h>
 #include <stdlib.h>
 

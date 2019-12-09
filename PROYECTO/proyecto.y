@@ -13,6 +13,8 @@
   #include <stdlib.h>
   #include <string.h>
   #include <stdbool.h>
+  #include "cuad.h"
+  #include "cuad.c"
   #include "SymTab.h"
   #include "TypeTab.h"
   #include "SymTabC.c"
@@ -142,15 +144,15 @@
   }variable;
 
   struct{ /*Sentencias*/
-    char *next;
+    l_etiquetas *listnext;
   }sentencias;
 
   struct{ /*Argumentos*/
-    char *lista;
+    listParam *lista;
   }argumentos;
 
   struct{ /*Lista de argumentos*/
-    char *lista;
+    listParam *lista;
   }lista_arg;
 
   struct{ /*Arg*/
@@ -319,7 +321,6 @@ lista_var:
 
 funciones:
   FUNC tipo ID RPAR argumentos LPAR INICIO SL declaraciones sentencias SL FIN SL funciones {
-    /*separar como en tipo_registro?*/
     if(buscar(StackTS->root, $3.id) != -1){
       nuevo_simbolo = crearSymbol($3.id, base_global, -1, 1);
       insertar(StackTS->root, nuevo_simbolo);
@@ -333,12 +334,12 @@ funciones:
       agregar_cuadrupla(cod, "label", "", "", $3.id);
       label = newLabel();
       nueva_etiqueta = crear_etiqueta(label); 
-      //backpatch(cod, $10.next, etiqueta);
+      backpatch(cod, $10.listnext, nueva_etiqueta);
       agregar_cuadrupla(cod, "label", "", "", label);
       sacarTypeTab(StackTT);
       sacarSymTab(StackTS);
       dir = sacarDireccion(StackDir);
-      //StackTS.getCima().addArgs(id.lexval, argumentos.lista)
+      asociarLP(getListParam(getCimaSym(StackTS), $3.id), $5.lista);
       if($2.tipo != 6 && FuncReturn == 0){
         yyerror("La funcion no tiene valor de retorno");
       }
@@ -350,16 +351,16 @@ funciones:
 
 argumentos:
   lista_arg {$$.lista = $1.lista;}
-| SIN {$$.lista = "";};
+| SIN {$$.lista = NULL;};
 
 lista_arg:
   lista_arg arg {
     $$.lista = $1.lista;
-    //add($$.lista, $2.tipo);
+    add($$.lista, $2.tipo);
   }
 | arg {
-    //$$.lista = newLP();
-    //add($$.lista, $2.tipo);
+    $$.lista = crearLP();
+    add($$.lista, $1.tipo);
 };
 
 arg:
@@ -371,6 +372,7 @@ arg:
     }else{
       yyerror("El identificador ya fue declarado");
     }
+    $$.tipo = $1.tipo;
 };
 
 tipo_arg:
