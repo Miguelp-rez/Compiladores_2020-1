@@ -59,6 +59,8 @@
   symtab *ts;
   symtab *ts1;
   symbol *nuevo_simbolo;
+  param *nuevo_param;
+  listParam *nueva_LP;
 
   //OTROS
   strtab* TC;
@@ -74,6 +76,7 @@
   - Caracter           = 3
   - Cadena             = 4
   - Identificador      = 5
+  - Sin                = 6
 */
 
 /* Para tipoVar:
@@ -142,6 +145,26 @@
     char *next;
   }sentencias;
 
+  struct{ /*Argumentos*/
+    char *lista;
+  }argumentos;
+
+  struct{ /*Lista de argumentos*/
+    char *lista;
+  }lista_arg;
+
+  struct{ /*Arg*/
+    int tipo;
+  }arg;
+
+  struct{ /*Tipo arg*/
+    int tipo;
+  }tipo_arg;
+
+  struct{ /*Param arr*/
+    int tipo;
+  }param_arr;
+
 }
 
 %token<num> NUM
@@ -184,7 +207,11 @@
 %type<tipo_arreglo> tipo_arreglo
 %type<variable> variable
 %type<sentencias> sentencias
-
+%type<argumentos> argumentos
+%type<lista_arg> lista_arg
+%type<arg> arg
+%type<tipo_arg> tipo_arg
+%type<param_arr> param_arr
 
 %start programa
 %%
@@ -255,7 +282,7 @@ base:
 | REAL {$$.tipo=1;}
 | DREAL {$$.tipo=2;}
 | CAR {$$.tipo=3;}
-| SIN {$$.tipo=4;};
+| SIN {$$.tipo=6;};
 
 tipo_arreglo:
   RCOR NUM LCOR tipo_arreglo {
@@ -311,7 +338,10 @@ funciones:
       sacarTypeTab(StackTT);
       sacarSymTab(StackTS);
       dir = sacarDireccion(StackDir);
-      
+      //StackTS.getCima().addArgs(id.lexval, argumentos.lista)
+      if($2.tipo != 6 && FuncReturn == 0){
+        yyerror("La funcion no tiene valor de retorno");
+      }
     }else{
       yyerror("El identificador ya fue declarado");
     }
@@ -319,22 +349,43 @@ funciones:
 | /*epsilon*/ {};
 
 argumentos:
-  lista_arg {}
-| SIN {};
+  lista_arg {$$.lista = $1.lista;}
+| SIN {$$.lista = "";};
 
 lista_arg:
-  lista_arg arg {}
-| arg {};
+  lista_arg arg {
+    $$.lista = $1.lista;
+    //add($$.lista, $2.tipo);
+  }
+| arg {
+    //$$.lista = newLP();
+    //add($$.lista, $2.tipo);
+};
 
 arg:
-  tipo_arg ID {};
+  tipo_arg ID {
+    if(buscar(getCimaSym(StackTS), $2.id) != -1){
+      nuevo_simbolo = crearSymbol($2.id, base_global, dir, 0);
+      insertar(getCimaSym(StackTS), nuevo_simbolo);
+      dir = dir + getTam(getCimaType(StackTT), base_global);
+    }else{
+      yyerror("El identificador ya fue declarado");
+    }
+};
 
 tipo_arg:
-  base param_arr {};
+  base param_arr {
+    base_global = $1.tipo;
+    $$.tipo = $2.tipo;
+  };
 
 param_arr:
-  LCOR RCOR param_arr {}
-| /*epsilon*/ {};
+  LCOR RCOR param_arr {
+    base_type->simple = $3.tipo;
+    nuevo_tipo = crearType("array", base_type, 0);
+    $$.tipo = insertarTipo(getCimaType(StackTT), nuevo_tipo) - 1;  
+  }
+| /*epsilon*/ {$$.tipo = base_global;};
 
 sentencias:
   sentencias SL sentencia {}
