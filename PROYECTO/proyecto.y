@@ -25,7 +25,11 @@
   #include "DirStack.c"
   #include "StrTab.c"
 
-
+  int max(int t1, int t2);
+  void newTemp(char *dir);
+  void amp(char *dir, int t1, int t2, char* res);
+  char *reducir(char *dir, int tipo_exp, int tipo_id);
+  char* newLabel();
   void yyerror(char* msg);
   void yyaccept();
   extern int yylex();
@@ -41,13 +45,9 @@
   int FuncType;
   int FuncReturn;
 
-  int max(int t1, int t2);
-  void newTemp(char *dir);
-  void amp(char *dir, int t1, int t2, char* res);
-  char *reducir(char *dir, int tipo_exp, int tipo_id);
-  char* newLabel();
-
   char *label;
+  char *reduccion;
+  char aux[100] = "";
   etiqueta *nueva_etiqueta;
 
   //TIPOS
@@ -448,7 +448,16 @@ sentencia:
     $$.listnext = $6.listfalse;
 }
 | ID ASIGN expresion {
-
+    if(buscar(getCimaSym(StackTS), $1.id) != -1){
+      sprintf(aux, "Id %d", getDir(getCimaSym(StackTS), $1.id));
+      reduccion = reducir($3.dir, $3.tipo, getTipo(getCimaSym(StackTS), $1.id));
+      agregar_cuadrupla(cod, "=", reduccion, "", aux);
+      insertar(getCimaSym(StackTS), nuevo_simbolo);
+      dir = dir + getTam(getCimaType(StackTT), base_global);
+    }else{
+      yyerror("El identificador ya fue declarado");
+    }
+    $$.listnext = NULL;
 }
 | ESCRIBIR expresion {}
 | LEER variable {}
