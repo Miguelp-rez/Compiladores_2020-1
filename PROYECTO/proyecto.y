@@ -44,6 +44,7 @@
   int max(int t1, int t2);
   void newTemp(char *dir);
   void amp(char *dir, int t1, int t2, char* res);
+  char *reducir(char *dir, int tipo_exp, int tipo_id);
   char* newLabel();
 
   char *label;
@@ -446,7 +447,9 @@ sentencia:
     backpatch(cod, $3.listnext, nueva_etiqueta);
     $$.listnext = $6.listfalse;
 }
-| ID ASIGN expresion {}
+| ID ASIGN expresion {
+
+}
 | ESCRIBIR expresion {}
 | LEER variable {}
 | DEVOLVER {}
@@ -576,7 +579,7 @@ void yyaccept(){
 int max(int t1, int t2){
     if(t1 == t2)
         return t1;
-    else if(t1==3 && t2 == 0){    //float   int
+    else if(t1==3 && t2 == 0){    //char int
         return t2;
     }else if( t1 == 0 && t2==3){  //int char
         return t1;
@@ -597,6 +600,32 @@ int max(int t1, int t2){
     else{
         yyerror("Error");
         return -1;
+    }
+}
+
+/*- int = 0
+  - float= 1
+  - double= 2
+  - char= 3
+*/
+char *reducir(char *dir, int tipo_exp, int tipo_id){
+    if(tipo_exp == tipo_id)
+        return dir;
+    else if(tipo_exp == 3 && tipo_id == 0){    //char a int
+        return dir;
+    //int a char --> error
+    }else if(tipo_exp == 0 && tipo_id == 1){   //int a float
+        return dir;
+    //float a int --> error
+    }else if(tipo_exp == 0 && tipo_id == 2){   //int a double
+        return dir;
+    //double a int --> error
+    }else if(tipo_exp == 1 && tipo_id == 2){  //float a double
+        return dir;
+    //double a float --> error
+    }else{
+        yyerror("Error");
+        return "";
     }
 }
 
