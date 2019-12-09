@@ -181,6 +181,21 @@
     l_etiquetas *listfalse;
   }expresion_booleana;
 
+  struct{ /*Parametros*/
+    listParam *lista;
+  }parametros;
+  
+  struct{ /*Lista de parametros
+    listParam *lista;
+  }lista_param;
+  
+  struct{ /*Arreglo*/
+      int base;
+      int tipo;
+      int tam;
+      char dir[20];
+  }arreglo
+
 }
 
 %token<num> NUM
@@ -230,6 +245,8 @@
 %type<tipo_arg> tipo_arg
 %type<param_arr> param_arr
 %type<expresion_booleana> expresion_booleana
+%type<parametros> parametros
+%type<lista_param> lista_param
 
 %start programa
 %%
