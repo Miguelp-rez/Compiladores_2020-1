@@ -179,6 +179,11 @@
     l_etiquetas *listfalse;
   }expresion_booleana;
 
+  struct{ /*Relacional*/
+    l_etiquetas *listtrue;
+    l_etiquetas *listfalse;
+  }relacional;
+
 }
 
 %token<num> NUM
@@ -228,6 +233,7 @@
 %type<tipo_arg> tipo_arg
 %type<param_arr> param_arr
 %type<expresion_booleana> expresion_booleana
+%type<relacional> relacional
 
 %start programa
 %%
@@ -497,21 +503,122 @@ sentencia:
 };
 
 expresion_booleana:
-  expresion_booleana OO expresion_booleana {}
-| expresion_booleana YY expresion_booleana {}
-| NO expresion_booleana {}
-| relacional {}
-| VERDADERO {}
-| FALSO {};
+  expresion_booleana OO expresion_booleana {
+    label = newLabel();
+    nueva_etiqueta = crear_etiqueta(label);
+    backpatch(cod, $1.listfalse, nueva_etiqueta);
+    $$.listtrue = merge($1.listtrue,$3.listtrue);
+    $$.listfalse = $3.listfalse;
+    agregar_cuadrupla(cod, "label", "", "", label);
+  }
+| expresion_booleana YY expresion_booleana {
+    label = newLabel();
+    nueva_etiqueta = crear_etiqueta(label);
+    backpatch(cod, $3.listtrue, nueva_etiqueta);
+    $$.listtrue = $3.listtrue;
+    $$.listfalse = merge($1.listfalse,$3.listfalse);
+    agregar_cuadrupla(cod, "label", "", "", label);
+}
+| NO expresion_booleana {
+    $$.listtrue = $2.listfalse;
+    $$.listfalse = $2.listtrue;
+}
+| relacional {
+    $$.listtrue = $1.listtrue;
+    $$.listfalse = $1.listfalse;
+}
+| VERDADERO {
+    //I = newIndex();
+    //$$.listtrue = newList();
+    //$$.listtrue.add(I)
+    //add quad(code, ”goto”, -, -, I)
+    //expresion booleana.listfalse = nulo
+}
+| FALSO {
+    //I = newIndex()
+    //expresion booleana.listtrue = nulo
+    //expresion booleana.listfalse = newList()
+    //expresion booleana.listfalse.add(I)
+    //add quad(code, ”goto”, -, -, I)
+};
 
 relacional:
-  relacional M relacional {}
-| relacional MA relacional {}
-| relacional MEQ relacional {}
-| relacional MAEQ relacional {}
-| relacional EQEQ relacional {}
-| relacional MMA relacional {}
-| expresion {};
+  relacional M relacional {
+    //relacional.listtrue = newList()
+    //relacional.listfalse = newList()
+    //I= newIndex(), I1 = newIndex()
+    //relacional.listtrue.add(I)
+    //relacional.listfalse.add(I1)
+    //relacional.tipo = max(relacional1.tipo, relacional2.tipo)
+    //α1 = ampliar(relacional1.dir, relacional1.tipo, relacional.tipo)
+    //α2 = ampliar(relacional2.dir, relacional2.tipo, relacional.tipo)
+    //add quad(code, ”<”,α1 ,α2, I)
+    //add quad(code, ”goto”, -, -, I1)  
+  }
+| relacional MA relacional {
+    //relacional.listtrue = newList()
+    //relacional.listfalse = newList()
+    //I= newIndex(), I1 = newIndex()
+    //relacional.listtrue.add(I)
+    //relacional.listfalse.add(I1)
+    //relacional.tipo = max(relacional1.tipo, relacional2.tipo)
+    //α1 = ampliar(relacional1.dir, relacional1.tipo, relacional.tipo)
+    //α2 = ampliar(relacional2.dir, relacional2.tipo, relacional.tipo)
+    //add quad(code, ”>”,α1 ,α2, I)
+    //add quad(code, ”goto”, -, -, I1)
+}
+| relacional MEQ relacional {
+    //relacional.listtrue = newList()
+    //relacional.listfalse = newList()
+    //I= newIndex(), I1 = newIndex()
+    //relacional.listtrue.add(I)
+    //relacional.listfalse.add(I1)
+    //relacional.tipo = max(relacional1.tipo, relacional2.tipo)
+    //α1 = ampliar(relacional1.dir, relacional1.tipo, relacional.tipo)
+    //α2 = ampliar(relacional2.dir, relacional2.tipo, relacional.tipo)
+    //add quad(code, ”<=”,α1 ,α2, I)
+    //add quad(code, ”goto”, -, -, I1)
+}
+| relacional MAEQ relacional {
+    //relacional.listtrue = newList()
+    //relacional.listfalse = newList()
+    //I= newIndex(), I1 = newIndex()
+    //relacional.listtrue.add(I)
+    //relacional.listfalse.add(I1)
+    //relacional.tipo = max(relacional1.tipo, relacional2.tipo)
+    //α1 = ampliar(relacional1.dir, relacional1.tipo, relacional.tipo)
+    //α2 = ampliar(relacional2.dir, relacional2.tipo, relacional.tipo)
+    //add quad(code, ”>=”,α1 ,α2, I)
+    //add quad(code, ”goto”, -, -, I1)
+}
+| relacional EQEQ relacional {
+    //relacional.listtrue = newList()
+    //relacional.listfalse = newList()
+    //I= newIndex(), I1 = newIndex()
+    //relacional.listtrue.add(I)
+    //relacional.listfalse.add(I1)
+    //relacional.tipo = max(relacional1.tipo, relacional2.tipo)
+    //α1 = ampliar(relacional1.dir, relacional1.tipo, relacional.tipo)
+    //α2 = ampliar(relacional2.dir, relacional2.tipo, relacional.tipo)
+    //add quad(code, ”==”,α1 ,α2, I)
+    //add quad(code, ”goto”, -, -, I1)
+}
+| relacional MMA relacional {
+    //relacional.listtrue = newList()
+    //relacional.listfalse = newList()
+    //I= newIndex(), I1 = newIndex()
+    //relacional.listtrue.add(I)
+    //relacional.listfalse.add(I1)
+    //relacional.tipo = max(relacional1.tipo, relacional2.tipo)
+    //α1 = ampliar(relacional1.dir, relacional1.tipo, relacional.tipo)
+    //α2 = ampliar(relacional2.dir, relacional2.tipo, relacional.tipo)
+    //add quad(code, ”<>”,α1 ,α2, I)
+    //add quad(code, ”goto”, -, -, I1)
+}
+| expresion {
+    //relacional.tipo = expresion.tipo
+    //relacional.dir = expresion.dir
+};
 
 expresion:
   expresion MAS expresion {
