@@ -147,6 +147,10 @@
     l_etiquetas *listnext;
   }sentencias;
 
+  struct{ /*Sentencia*/
+    l_etiquetas *listnext;
+  }sentencia;
+
   struct{ /*Argumentos*/
     listParam *lista;
   }argumentos;
@@ -166,6 +170,11 @@
   struct{ /*Param arr*/
     int tipo;
   }param_arr;
+
+  struct{ /*Expresiones booleanas*/
+    l_etiquetas *listtrue;
+    l_etiquetas *listfalse;
+  }expresion_booleana;
 
 }
 
@@ -209,11 +218,13 @@
 %type<tipo_arreglo> tipo_arreglo
 %type<variable> variable
 %type<sentencias> sentencias
+%type<sentencia> sentencia
 %type<argumentos> argumentos
 %type<lista_arg> lista_arg
 %type<arg> arg
 %type<tipo_arg> tipo_arg
 %type<param_arr> param_arr
+%type<expresion_booleana> expresion_booleana
 
 %start programa
 %%
@@ -390,14 +401,51 @@ param_arr:
 | /*epsilon*/ {$$.tipo = base_global;};
 
 sentencias:
-  sentencias SL sentencia {}
-| sentencia  {};
+  sentencias SL sentencia {
+    label = newLabel();
+    nueva_etiqueta = crear_etiqueta(label);
+    backpatch(cod, $1.listnext, nueva_etiqueta);
+    $$.listnext = $3.listnext;
+  }
+| sentencia  {$$.listnext = $1.listnext;};
 
 sentencia:
-  SI expresion_booleana ENTONCES SL sentencias SL FIN {}
-| SI expresion_booleana SL sentencias SL SINO SL sentencias SL FIN {}
-| MIENTRAS SL expresion_booleana HACER SL sentencias SL FIN {}
-| HACER SL sentencia SL MIENTRASQ expresion_booleana {}
+  SI expresion_booleana ENTONCES SL sentencias SL FIN {
+    label = newLabel();
+    nueva_etiqueta = crear_etiqueta(label);
+    backpatch(cod, $2.listtrue, nueva_etiqueta);
+    $$.listnext = merge($2.listfalse, $5.listnext);
+  }
+| SI expresion_booleana SL sentencias SL SINO SL sentencias SL FIN {
+    label = newLabel();
+    nueva_etiqueta = crear_etiqueta(label);
+    backpatch(cod, $2.listtrue, nueva_etiqueta);
+    label = newLabel();
+    nueva_etiqueta = crear_etiqueta(label);
+    backpatch(cod, $2.listfalse, nueva_etiqueta);
+    $$.listnext = merge($4.listnext, $8.listnext);
+}
+| MIENTRAS SL expresion_booleana HACER SL sentencias SL FIN {
+    label = newLabel();
+    nueva_etiqueta = crear_etiqueta(label);
+    backpatch(cod, $6.listnext, nueva_etiqueta);
+    agregar_cuadrupla(cod, "goto", "", "", label);
+    label = newLabel();
+    nueva_etiqueta = crear_etiqueta(label);
+    backpatch(cod, $3.listtrue, nueva_etiqueta);
+    $$.listnext = $3.listfalse;
+    //la cuadrupla se agrega antes de este punto
+}
+| HACER SL sentencia SL MIENTRASQ expresion_booleana {
+    label = newLabel();
+    nueva_etiqueta = crear_etiqueta(label);
+    backpatch(cod, $6.listtrue, nueva_etiqueta);
+    agregar_cuadrupla(cod, "label", "", "", label);
+    label = newLabel();
+    nueva_etiqueta = crear_etiqueta(label);
+    backpatch(cod, $3.listnext, nueva_etiqueta);
+    $$.listnext = $6.listfalse;
+}
 | ID ASIGN expresion {}
 | ESCRIBIR expresion {}
 | LEER variable {}
