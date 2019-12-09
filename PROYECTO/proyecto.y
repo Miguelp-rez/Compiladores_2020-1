@@ -38,8 +38,6 @@
   int base_global; /*Variable global*/
   int type_global;
   int tipo_b;
-  int t;
-  char nombre[10];
   int i_temp = 0;
 	//Contador de etiquetas
 	int labelCounter = 0;
@@ -181,21 +179,6 @@
     l_etiquetas *listfalse;
   }expresion_booleana;
 
-  struct{ /*Parametros*/
-    listParam *lista;
-  }parametros;
-  
-  struct{ /*Lista de parametros
-    listParam *lista;
-  }lista_param;
-  
-  struct{ /*Arreglo*/
-      int base;
-      int tipo;
-      int tam;
-      char dir[20];
-  }arreglo
-
 }
 
 %token<num> NUM
@@ -245,8 +228,6 @@
 %type<tipo_arg> tipo_arg
 %type<param_arr> param_arr
 %type<expresion_booleana> expresion_booleana
-%type<parametros> parametros
-%type<lista_param> lista_param
 
 %start programa
 %%
@@ -516,122 +497,22 @@ sentencia:
 };
 
 expresion_booleana:
-  expresion_booleana OO expresion_booleana {
-    label = newLabel();
-    nueva_etiqueta = crear_etiqueta(label);
-    backpatch(cod, $1.listfalse, nueva_etiqueta);
-    $$.listtrue = merge($1.listtrue,$3.listtrue);
-    $$.listfalse = $3.listfalse;
-    agregar_cuadrupla(cod, "label", "", "", nueva_etiqueta);
-  }
-| expresion_booleana YY expresion_booleana {
-    label = newLabel();
-    nueva_etiqueta = crear_etiqueta(label);
-    backpatch(cod, $3.listtrue, nueva_etiqueta);
-    $$.listtrue = $3.listtrue;
-    $$.listfalse = merge($1.listfalse,$3.listfalse);
-    agregar_cuadrupla(cod, "label", "", "", nueva_etiqueta);
-}
-| NO expresion_booleana {
-    $$.listtrue = $2.listfalse;
-    $$listfalse = $2.listtrue;
-}
-| relacional {
-    $$.listtrue = $1.listtrue;
-    $$.listfalse = $1.listfalse;
-}
-| VERDADERO {
-    //I = newIndex();
-    //$$.listtrue = newList();
-    //$$.listtrue.add(I)
-    //add quad(code, ”goto”, -, -, I)
-    //expresion booleana.listfalse = nulo
-}
-| FALSO {
-    //I = newIndex()
-    //expresion booleana.listtrue = nulo
-    //expresion booleana.listfalse = newList()
-    //expresion booleana.listfalse.add(I)
-    //add quad(code, ”goto”, -, -, I)
-};
+  expresion_booleana OO expresion_booleana {}
+| expresion_booleana YY expresion_booleana {}
+| NO expresion_booleana {}
+| relacional {}
+| VERDADERO {}
+| FALSO {};
 
 relacional:
-  relacional M relacional {
-    //relacional.listtrue = newList()
-    //relacional.listfalse = newList()
-    //I= newIndex(), I1 = newIndex()
-    //relacional.listtrue.add(I)
-    //relacional.listfalse.add(I1)
-    //relacional.tipo = max(relacional1.tipo, relacional2.tipo)
-    //α1 = ampliar(relacional1.dir, relacional1.tipo, relacional.tipo)
-    //α2 = ampliar(relacional2.dir, relacional2.tipo, relacional.tipo)
-    //add quad(code, ”<”,α1 ,α2, I)
-    //add quad(code, ”goto”, -, -, I1)  
-  }
-| relacional MA relacional {
-    //relacional.listtrue = newList()
-    //relacional.listfalse = newList()
-    //I= newIndex(), I1 = newIndex()
-    //relacional.listtrue.add(I)
-    //relacional.listfalse.add(I1)
-    //relacional.tipo = max(relacional1.tipo, relacional2.tipo)
-    //α1 = ampliar(relacional1.dir, relacional1.tipo, relacional.tipo)
-    //α2 = ampliar(relacional2.dir, relacional2.tipo, relacional.tipo)
-    //add quad(code, ”>”,α1 ,α2, I)
-    //add quad(code, ”goto”, -, -, I1)
-}
-| relacional MEQ relacional {
-    //relacional.listtrue = newList()
-    //relacional.listfalse = newList()
-    //I= newIndex(), I1 = newIndex()
-    //relacional.listtrue.add(I)
-    //relacional.listfalse.add(I1)
-    //relacional.tipo = max(relacional1.tipo, relacional2.tipo)
-    //α1 = ampliar(relacional1.dir, relacional1.tipo, relacional.tipo)
-    //α2 = ampliar(relacional2.dir, relacional2.tipo, relacional.tipo)
-    //add quad(code, ”<=”,α1 ,α2, I)
-    //add quad(code, ”goto”, -, -, I1)
-}
-| relacional MAEQ relacional {
-    //relacional.listtrue = newList()
-    //relacional.listfalse = newList()
-    //I= newIndex(), I1 = newIndex()
-    //relacional.listtrue.add(I)
-    //relacional.listfalse.add(I1)
-    //relacional.tipo = max(relacional1.tipo, relacional2.tipo)
-    //α1 = ampliar(relacional1.dir, relacional1.tipo, relacional.tipo)
-    //α2 = ampliar(relacional2.dir, relacional2.tipo, relacional.tipo)
-    //add quad(code, ”>=”,α1 ,α2, I)
-    //add quad(code, ”goto”, -, -, I1)
-}
-| relacional EQEQ relacional {
-    //relacional.listtrue = newList()
-    //relacional.listfalse = newList()
-    //I= newIndex(), I1 = newIndex()
-    //relacional.listtrue.add(I)
-    //relacional.listfalse.add(I1)
-    //relacional.tipo = max(relacional1.tipo, relacional2.tipo)
-    //α1 = ampliar(relacional1.dir, relacional1.tipo, relacional.tipo)
-    //α2 = ampliar(relacional2.dir, relacional2.tipo, relacional.tipo)
-    //add quad(code, ”==”,α1 ,α2, I)
-    //add quad(code, ”goto”, -, -, I1)
-}
-| relacional MMA relacional {
-    //relacional.listtrue = newList()
-    //relacional.listfalse = newList()
-    //I= newIndex(), I1 = newIndex()
-    //relacional.listtrue.add(I)
-    //relacional.listfalse.add(I1)
-    //relacional.tipo = max(relacional1.tipo, relacional2.tipo)
-    //α1 = ampliar(relacional1.dir, relacional1.tipo, relacional.tipo)
-    //α2 = ampliar(relacional2.dir, relacional2.tipo, relacional.tipo)
-    //add quad(code, ”<>”,α1 ,α2, I)
-    //add quad(code, ”goto”, -, -, I1)
-}
-| expresion {
-    //relacional.tipo = expresion.tipo
-    //relacional.dir = expresion.dir
-};
+  relacional M relacional {}
+| relacional MA relacional {}
+| relacional MEQ relacional {}
+| relacional MAEQ relacional {}
+| relacional EQEQ relacional {}
+| relacional MMA relacional {}
+| expresion {};
+
 expresion:
   expresion MAS expresion {
         $$.tipo = max($1.tipo, $3.tipo);
@@ -701,86 +582,20 @@ expresion:
 | ID LPAR parametros RPAR {};
 
 variable:
-  arreglo {
-    $$.dir = $1.dir;
-    $$.base = $1.base;
-    $$.tipo = $1.tipo;
-  }
-| ID PUNTO ID {
-    if( buscar(StackTS->root, $3.id) != -1 ){
-      t = getTipo(getCimaSym(StackTS), id.id);
-      nombre = getNombre(buscar(StackTS->root), t);
-      if(strcmp(nombre, "registro")){
-        base_type = getTipoBase(StackTT->root, t);
-        if( buscar(base_type.tabla, $3.id) != -1 ){
-          $$.tipo = getTipo(base_type.tabla, $3.id);
-          $$.dir = $3;
-          $$.base = $1;
-        }else{
-          yyerror("El id no existe en la estructura");
-        }
-      }else{
-        yyerror("El id no es una estructura");
-      }
-    }else
-    yyerror("El identifador no ha sido declarado");
-  };
+  ID arreglo {}
+| ID PUNTO ID {};
 
 arreglo:
-  ID LCOR expresion RCOR {
-    if( buscar(StackTS->root, $3.id) != -1 ){
-      t = getTipo(getCimaSym(StackTS), id.id);
-      nombre = getNombre(buscar(StackTS->root), t);
-      if(strcmp(nombre, "array")){
-        if( $3.tipo == 0 ){
-          $$.base = $1.id;
-          $$.tipo = getTipoBase(getCimaTT(StackTT), t);
-          $$.tam = getTam(getCimaTT(StackTT), $$.tipo);
-          $$.dir = newTemp();
-          add(cod, "*", $3.dir, $$.tam, $$.dir);
-        }else{
-          yyerror("La expresion para un indice debe de ser de tipo entero");
-        }
-      }else{
-        yyerror("El identificador no es un arreglo");
-      }
-    }else
-    yyerror("El identifador no ha sido declarado");
-  }
-| arreglo LCOR expresion RCOR {
-  if(getNombre(getCima(StackTT),$1.tipo)){
-    if($3.tipo = 0){
-      $$.base = $1.base;
-      $$.tipo = getTipoBase(getCimaTT(StackTT), $1.tipo);
-      $$.tam = getTam(getCimaTT(StackTT), $$.tipo);
-      temp = newTemp();
-      $$.dir = newTemp();
-      add(cod, "*", $3.dir, $$.tam, temp);
-      add(cod, "+", $1.dir, temp, $$.dir);
-    }else{
-      yyerror("La expresion para un indice debe ser de tipo entero");
-    }
-  }else{
-    yyerror("El arreglo no tiene tantas dimensiones");
-  }
-}
+  ID LCOR expresion RCOR arreglo {}
 | /*epsilon*/ {};
 
 parametros:
-  lista_param { $$.lista = $1.lista }
-| /*epsilon*/ { $$.lista = NULL };
+  lista_param {}
+| /*epsilon*/ {};
 
 lista_param:
-  lista_param COMA expresion { 
-    $$.lista = $1.lista 
-    add($$.lista, $1.tipo) 
-    agregar_cuadrupla(cod, "param", $3.dir, '-'', '-')
-  }
-| expresion { 
-    $$.lista = crearLP()
-    add($$.lista, $1.tipo) 
-    agregar_cuadrupla(cod, "param", $3.dir, '-', '-')
-  };
+  lista_param COMA expresion {}
+| expresion {};
 
 %%
 void yyerror(char *msg){
