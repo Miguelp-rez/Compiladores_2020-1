@@ -109,6 +109,7 @@ symbol* crearSymbol(char *id, int tipo, int dir, int tipoVar){
  * inicia contador en 0
  */
 symtab* crearSymTab(){
+        printf("ts");
   symtab* st = malloc(sizeof(symtab));
   st->root = NULL;
   st->num = 0;

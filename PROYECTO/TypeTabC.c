@@ -31,6 +31,7 @@ type *crearType(char* nombre, base* tb, int numElem){
 
 /*Crea una lista de tipos*/
 typetab* crearTypeTab(){
+    printf("tt");
     typetab* tt= malloc(sizeof(typetab));
     if(tt){
         tt->root = NULL;

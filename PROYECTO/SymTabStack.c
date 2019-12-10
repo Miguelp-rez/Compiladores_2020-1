@@ -23,6 +23,7 @@ symtab* getCimaSym(symstack *pts);
 symtab* sacarSymTab(symstack *pts);
 
 symstack *crearSymStack(){
+    printf("ps");
     symstack *nuevaPTS = malloc(sizeof(symstack));
     if(nuevaPTS){
         nuevaPTS->root = NULL;
@@ -53,6 +54,7 @@ symtab* getCimaSym(symstack *pts){
 }
 
 void insertarSymTab(symstack *pts, symtab *sym_tab){
+    printf("insertar ts \n");
     if(pts){    //Si existe la pila
         if (pts->root == NULL){     //La pila esta vacia
             pts->root = sym_tab;

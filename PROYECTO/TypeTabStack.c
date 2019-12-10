@@ -23,6 +23,7 @@ typetab* getCimaType(typestack *ptt);
 typetab* sacarTypeTab(typestack *ptt);
 
 typestack *crearTypeStack(){
+        printf("pt");
     typestack *nuevaPTT = malloc(sizeof(typestack));
     if(nuevaPTT){
         nuevaPTT->root = NULL;
@@ -53,6 +54,7 @@ typetab* getCimaType(typestack *ptt){
 }
 
 void insertarTypeTab(typestack *ptt, typetab *type_tab){
+    printf("insertar tt\n");
     if(ptt){    //Si existe la pila
         if (ptt->root == NULL){     //La pila esta vacia
             ptt->root = type_tab;

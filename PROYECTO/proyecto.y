@@ -17,7 +17,7 @@
   #include "cuad.c"
   #include "SymTab.h"
   #include "TypeTab.h"
-  #include "SymTabC.c"
+  #include "SymTabC.c"  
   #include "TypeTabC.c"
   #include "SymTabStack.c"
   #include "TypeTabStack.c"
@@ -37,7 +37,6 @@
 
   int base_global; /*Variable global*/
   int type_global;
-  int tipo_b;
   int t;
   char nombre[10];
   int i_temp = 0;
@@ -259,7 +258,8 @@
 %%
 
 /*Estructura de la gramatica, falta agregar todas las reglas semanticas*/
-programa: declaraciones SL funciones {
+programa: {
+  printf("0");
   dir = 0;
   //Se crea una nueva pila de tablas de tipos
   StackTT = crearTypeStack();
@@ -277,10 +277,10 @@ programa: declaraciones SL funciones {
   TC = crearStrTab();
   //Se crea una nueva pila de direcciones
   StackDir = crearDirStack();
-};
+}declaraciones SL funciones ;
 
 declaraciones:
-  tipo lista_var SL declaraciones {type_global = $1.tipo;}
+  tipo lista_var SL declaraciones {type_global = $1.tipo;   printf("aqui");}
 | tipo_registro lista_var SL declaraciones {type_global = $1.tipo;}
 | /*epsilon*/ {};
 
@@ -312,16 +312,16 @@ tipo_registro:
     base_type->tabla = ts1;
     nuevo_tipo = crearType("struct", base_type, -1);
     type_global = insertarTipo(getCimaType(StackTT), nuevo_tipo) - 1;
-    }
+    };
 tipo:
 base tipo_arreglo {
-    tipo_b=$1.tipo;
+    base_global=$1.tipo;
     $$.tipo=$2.tipo; //tipo.tipo=tipo_arreglo.tipo
   };
 
 base:
   ENT {$$.tipo=0;}
-| REAL {$$.tipo=1;}
+| REAL {  printf("aqui"); $$.tipo=1;}
 | DREAL {$$.tipo=2;}
 | CAR {$$.tipo=3;}
 | SIN {$$.tipo=6;};
@@ -337,7 +337,7 @@ tipo_arreglo:
       yyerror("El indice tiene que ser entero y mayor que cero");
     }
   }
-| /*epsilon*/ {$$.tipo=tipo_b;};
+| /*epsilon*/ {$$.tipo=base_global;};
 
 lista_var:
   lista_var COMA ID {
@@ -350,6 +350,7 @@ lista_var:
     }
   }
 | ID {
+    printf("1");
     if(buscar(getCimaSym(StackTS), $1.id) != -1){
       nuevo_simbolo = crearSymbol($1.id, base_global, dir, 0);
       insertar(getCimaSym(StackTS), nuevo_simbolo);
@@ -735,17 +736,17 @@ variable:
 };
 
 arreglo:
-  ID LCOR expresion RCOR {/*
-    if( buscar(StackTS->root, $3.id) != -1 ){
-      t = getTipo(getCimaSym(StackTS), id.id);
-      nombre = getNombre(buscar(StackTS->root), t);
+  ID LCOR expresion RCOR {
+    if( buscar(StackTS->root, $1.id) != -1 ){
+      t = getTipo(getCimaSym(StackTS), $1.id);
+      strcpy(nombre, getNombre(getCimaType(StackTT), t));
       if(strcmp(nombre, "array")){
         if( $3.tipo == 0 ){
-          $$.base = $1.id;
-          $$.tipo = getTipoBase(getCimaTT(StackTT), t);
-          $$.tam = getTam(getCimaTT(StackTT), $$.tipo);
-          $$.dir = newTemp();
-          add(cod, "*", $3.dir, $$.tam, $$.dir);
+          /*$$.base = $1.id;
+          $$.tipo = getTipoBase(getCimaType(StackTT), t);
+          $$.tam = getTam(getCimaType(StackTT), $$.tipo);*/
+          newTemp($$.dir);
+          /*agregar_cuadrupla(cod, "*", $3.dir, $$.tam, $$.dir);*/
         }else{
           yyerror("La expresion para un indice debe de ser de tipo entero");
         }
@@ -753,25 +754,25 @@ arreglo:
         yyerror("El identificador no es un arreglo");
       }
     }else
-    yyerror("El identifador no ha sido declarado");*/
+    yyerror("El identifador no ha sido declarado");
   }
-| arreglo LCOR expresion RCOR {/*
-  if(getNombre(getCima(StackTT),$1.tipo)){
+| arreglo LCOR expresion RCOR {
+  if(getNombre(getCimaType(StackTT),$1.tipo)){
     if($3.tipo = 0){
       $$.base = $1.base;
-      $$.tipo = getTipoBase(getCimaTT(StackTT), $1.tipo);
-      $$.tam = getTam(getCimaTT(StackTT), $$.tipo);
-      temp = newTemp();
-      $$.dir = newTemp();
-      add(cod, "*", $3.dir, $$.tam, temp);
-      add(cod, "+", $1.dir, temp, $$.dir);
+      /*$$.tipo = getTipoBase(getCimaType(StackTT), $1.tipo);*/
+      $$.tam = getTam(getCimaType(StackTT), $$.tipo);
+      /*newTemp(temp);*/
+      newTemp($$.dir);
+      /*agregar_cuadrupla(cod, "*", $3.dir, $$.tam, temp);
+      agregar_cuadrupla(cod, "+", $1.dir, temp, $$.dir);*/
     }else{
       yyerror("La expresion para un indice debe ser de tipo entero");
     }
   }else{
     yyerror("El arreglo no tiene tantas dimensiones");
   }
-*/}
+}
 | /*epsilon*/ {};
 
 parametros:
@@ -792,10 +793,11 @@ lista_param:
 
 %%
 void yyerror(char *msg){
-  printf("%s en la linea %d\n", msg, yylineno);
+  printf(":%s: en la linea %d\n", msg, yylineno);
 }
 
 void yyaccept(){
+  imprime(cod);
   printf("ACEPTA");
 }
 

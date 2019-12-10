@@ -5,7 +5,7 @@ extern int yyparse();
 extern FILE *yyin;
 extern FILE *yyout;
 
-int main(int argc, char **argv){
+/*int main(int argc, char **argv){
 
   //validacion de cantidad de argumentos
   if(argc < 2){
@@ -44,9 +44,9 @@ int main(int argc, char **argv){
   fclose(yyin);
   fclose(yyout);
   return 0;
-}
+}*/
 
-/*int main(int argc, char **argv){
+int main(int argc, char **argv){
   int exit_status = 0;
   FILE *f = fopen(argv[1], "r");
   if (argc < 2) return -1;
@@ -57,6 +57,6 @@ int main(int argc, char **argv){
     printf("Aceptado\n");
   else
     printf("No Aceptado\n");
-  fclose(f);
+  fclose(f);  
   return 0;
-}*/
+}
